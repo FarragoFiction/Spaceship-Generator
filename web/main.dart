@@ -47,16 +47,18 @@ void buildBars(Starship starship) {
   table.style.width = "100%";
   for(int i=0; i < Room.rooms.length; i++) {
     SvgSvgElement element = new SvgSvgElement();
-    element.style.height = "50";
-    element.style.width = "300";
+    element.setAttribute("height", "50");
+    element.setAttribute("width", "300");
+
     if(starship.getNumOfRoomType(i) > 0) {
       RectElement progress = new RectElement();
-      progress.style.setProperty("fill", "#00ff00");
+      progress.setAttribute("height", "50");
+      progress.setAttribute("width",
+          (300 * starship.getNumOfRoomType(i) / starship.getNumOfMaxRoom()).toString());
+
       progress.style.top = "0";
-      progress.style.height = "50";
       progress.style.left = "0";
-      progress.style.width =
-        (300 * starship.getNumOfRoomType(i) / starship.getNumOfMaxRoom()).toString();
+      progress.style.setProperty("fill", "#00ff00");
 
       element.append(progress);
       TableCellElement bar = new TableCellElement();
