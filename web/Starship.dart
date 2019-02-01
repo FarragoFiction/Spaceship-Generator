@@ -139,7 +139,7 @@ String description;
 
 
     if (getNumOfRoomType(Room.THRUSTERS) <= 0) {
-      description += " It is a stationary sattelite.";
+      description += " It is a stationary satellite.";
 
       secondNames.add(" Station");
       secondNames.add(" Space Station");
@@ -276,9 +276,9 @@ String description;
     String ret = "";
 
     //comment about ship size
-    if(getSize() <= 10) {
+    if(getSize() <= 15) {
       ret += " It is a small spacecraft.";
-    } else if(getSize() <= 40) {
+    } else if(getSize() <= 35) {
       ret += " It is a mid-sized spacecraft.";
     } else {
       ret += " It is a large spacecraft.";
