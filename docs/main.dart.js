@@ -3050,7 +3050,7 @@ if(P.N().gam().h(0,"id")==null){z=C.n.X(2147483647)
 y=document
 J.a1(y.querySelector("#sharelink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+"?id="+z+'">link to this ship</a>',null,null)
 J.a1(y.querySelector("#newlink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+'">make new ship</a>',null,null)
-J.a1(y.querySelector("#repository"),"beforeend",'<a href="https://acactusorsomething.github.io/Spaceship-Generator/">Github Repository</a>',null,null)}else{z=H.U(P.N().gam().h(0,"id"),null,null)
+J.a1(y.querySelector("#repository"),"beforeend",'<a href="https://github.com/aCactusOrSomething/Spaceship-Generator/index.html">Github Repository</a>',null,null)}else{z=H.U(P.N().gam().h(0,"id"),null,null)
 y=document
 J.a1(y.querySelector("#sharelink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+'">link to this ship</a>',null,null)
 J.a1(y.querySelector("#newlink"),"beforeend",'<a href="'+J.cy(J.y(P.N()),0,J.cv(J.y(P.N()),"?"))+'">make new ship</a>',null,null)}x=D.dy(z)
