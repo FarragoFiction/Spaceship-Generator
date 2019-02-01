@@ -256,7 +256,7 @@ if(j instanceof Array)j=j[0]
 var i=[]
 var h=[]
 processStatics(l,s)
-x.push([p,o,i,h,n,j,k,m])}finishClasses(s)}I.a5=function(){}
+x.push([p,o,i,h,n,j,k,m])}finishClasses(s)}I.a6=function(){}
 var dart=[["","",,H,{"^":"",fi:{"^":"c;a"}}],["","",,J,{"^":"",
 k:function(a){return void 0},
 au:function(a,b,c,d){return{i:a,p:b,e:c,x:d}},
@@ -297,11 +297,11 @@ gD:function(a){return 0},
 i:["aX",function(a){return String(a)}]},
 dl:{"^":"aE;"},
 ao:{"^":"aE;"},
-a3:{"^":"aE;",
+a4:{"^":"aE;",
 i:function(a){var z=a[$.$get$b4()]
 return z==null?this.aX(a):J.y(z)},
 $S:function(){return{func:1,opt:[,,,,,,,,,,,,,,,,]}}},
-a1:{"^":"l;$ti",
+a2:{"^":"l;$ti",
 ag:function(a,b){if(!!a.immutable$list)throw H.a(new P.t(b))},
 be:function(a,b){if(!!a.fixed$length)throw H.a(new P.t(b))},
 aL:function(a,b){var z,y,x,w
@@ -357,7 +357,7 @@ if(b>=a.length||b<0)throw H.a(H.u(a,b))
 a[b]=c},
 $ise:1,
 $ase:null},
-fh:{"^":"a1;$ti"},
+fh:{"^":"a2;$ti"},
 cB:{"^":"c;a,b,c,d",
 gA:function(){return this.d},
 t:function(){var z,y,x
@@ -412,10 +412,10 @@ else{z=b>31?31:b
 z=a>>z>>>0}return z},
 ba:function(a,b){if(b<0)throw H.a(H.v(b))
 return b>31?0:a>>>b},
-$isa6:1},
-bj:{"^":"af;",$isa6:1,$isx:1},
-bi:{"^":"af;",$isa6:1},
-a2:{"^":"l;",
+$isa7:1},
+bj:{"^":"af;",$isa7:1,$isx:1},
+bi:{"^":"af;",$isa7:1},
+a3:{"^":"l;",
 u:function(a,b){if(typeof b!=="number"||Math.floor(b)!==b)throw H.a(H.u(a,b))
 if(b<0)throw H.a(H.u(a,b))
 if(b>=a.length)H.H(H.u(a,b))
@@ -488,7 +488,7 @@ if(97<=y&&y<=102)return y-87
 return-1},
 bh:function(){return new P.am("No element")},
 d3:function(){return new P.am("Too many elements")},
-a4:function(a,b,c,d){if(c-b<=32)H.dw(a,b,c,d)
+a5:function(a,b,c,d){if(c-b<=32)H.dw(a,b,c,d)
 else H.dv(a,b,c,d)},
 dw:function(a,b,c,d){var z,y,x,w,v,u
 for(z=b+1,y=J.w(a);z<=c;++z){x=y.h(a,z)
@@ -599,8 +599,8 @@ t.j(a,n,r)
 n=k+1
 t.j(a,a0,t.h(a,n))
 t.j(a,n,p)
-H.a4(a,b,l-2,a1)
-H.a4(a,k+2,a0,a1)
+H.a5(a,b,l-2,a1)
+H.a5(a,k+2,a0,a1)
 if(e)return
 if(l<y&&k>x){for(;J.j(a1.$2(t.h(a,l),r),0);)++l
 for(;J.j(a1.$2(t.h(a,k),p),0);)--k
@@ -617,7 +617,7 @@ t.j(a,l,t.h(a,k))
 t.j(a,k,i)
 l=f}else{t.j(a,j,t.h(a,k))
 t.j(a,k,i)}k=g
-break}}H.a4(a,l,k,a1)}else H.a4(a,l,k,a1)},
+break}}H.a5(a,l,k,a1)}else H.a5(a,l,k,a1)},
 cJ:{"^":"bU;a",
 gn:function(a){return this.a.length},
 h:function(a,b){return C.a.u(this.a,b)},
@@ -647,7 +647,7 @@ $asbn:function(a,b){return[b]},
 $asbb:function(a,b){return[b]},
 $asae:function(a,b){return[b]}},
 bZ:{"^":"ae;a,b,$ti",
-gG:function(a){return new H.dQ(J.a9(this.a),this.b,this.$ti)}},
+gG:function(a){return new H.dQ(J.aa(this.a),this.b,this.$ti)}},
 dQ:{"^":"d4;a,b,$ti",
 t:function(){var z,y
 for(z=this.a,y=this.b;z.t();)if(y.$1(z.gA())===!0)return!0
@@ -758,7 +758,7 @@ return z},
 cn:function(){return J.y(this.dartException)},
 H:function(a){throw H.a(a)},
 a_:function(a){throw H.a(new P.S(a))},
-a7:function(a){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l
+a8:function(a){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l
 z=new H.f2(a)
 if(a==null)return
 if(typeof a!=="object")return a
@@ -1131,7 +1131,7 @@ return this.a===b.a&&this.b===b.b&&this.c===b.c},
 gD:function(a){var z,y
 z=this.c
 if(z==null)y=H.L(this.a)
-else y=typeof z!=="object"?J.a8(z):H.L(z)
+else y=typeof z!=="object"?J.a9(z):H.L(z)
 z=H.L(this.b)
 if(typeof y!=="number")return y.bu()
 return(y^z)>>>0},
@@ -1167,7 +1167,7 @@ return y==null?null:y.ga0()}else return this.bl(b)},
 bl:function(a){var z,y,x
 z=this.d
 if(z==null)return
-y=this.ax(z,J.a8(a)&0x3ffffff)
+y=this.ax(z,J.a9(a)&0x3ffffff)
 x=this.aK(y,a)
 if(x<0)return
 return y[x].ga0()},
@@ -1178,7 +1178,7 @@ this.b=z}this.as(z,b,c)}else if(typeof b==="number"&&(b&0x3ffffff)===b){y=this.c
 if(y==null){y=this.ad()
 this.c=y}this.as(y,b,c)}else{x=this.d
 if(x==null){x=this.ad()
-this.d=x}w=J.a8(b)&0x3ffffff
+this.d=x}w=J.a9(b)&0x3ffffff
 v=this.ax(x,w)
 if(v==null)this.af(x,w,[this.a9(b,c)])
 else{u=this.aK(v,b)
@@ -1233,16 +1233,16 @@ df:{"^":"l;","%":";ArrayBufferView;bq|br|bs|aG"},
 bq:{"^":"df;",
 gn:function(a){return a.length},
 $isC:1,
-$asC:I.a5},
+$asC:I.a6},
 aG:{"^":"bs;",
 j:function(a,b,c){if(b>>>0!==b||b>=a.length)H.H(H.u(a,b))
 a[b]=c},
 $ise:1,
 $ase:function(){return[P.x]}},
-br:{"^":"bq+ai;",$asC:I.a5,
+br:{"^":"bq+ai;",$asC:I.a6,
 $ase:function(){return[P.x]},
 $ise:1},
-bs:{"^":"br+cW;",$asC:I.a5,
+bs:{"^":"br+cW;",$asC:I.a6,
 $ase:function(){return[P.x]}},
 fq:{"^":"aG;",
 h:function(a,b){if(b>>>0!==b||b>=a.length)H.H(H.u(a,b))
@@ -1380,7 +1380,7 @@ y.b=z
 this.f=z}++this.a
 this.r=this.r+1&67108863
 return z},
-au:function(a){return J.a8(a)&0x3ffffff},
+au:function(a){return J.a9(a)&0x3ffffff},
 aw:function(a,b){var z,y
 if(a==null)return-1
 z=a.length
@@ -1440,7 +1440,7 @@ z.m+=H.b(b)}},
 du:{"^":"c;$ti",
 gF:function(a){return this.a===0},
 N:function(a,b){var z
-for(z=J.a9(b);z.t();)this.aA(0,z.gA())},
+for(z=J.aa(b);z.t();)this.aA(0,z.gA())},
 i:function(a){return P.aC(this,"{","}")}},
 dt:{"^":"du;$ti"}}],["","",,P,{"^":"",cC:{"^":"b1;a",
 bn:function(a,b,c){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i
@@ -1548,7 +1548,7 @@ dB:function(a,b,c){var z,y,x,w
 if(b<0)throw H.a(P.n(b,0,J.I(a),null,null))
 z=c==null
 if(!z&&c<b)throw H.a(P.n(c,b,J.I(a),null,null))
-y=J.a9(a)
+y=J.aa(a)
 for(x=0;x<b;++x)if(!y.t())throw H.a(P.n(b,0,x,null,null))
 w=[]
 if(z)for(;y.t();)w.push(y.gA())
@@ -1866,7 +1866,7 @@ if(u>=8)return H.d(e,u)
 e[u]=y}return d},
 aO:{"^":"c;"},
 "+bool":0,
-fM:{"^":"a6;"},
+fM:{"^":"a7;"},
 "+double":0,
 r:{"^":"c;"},
 di:{"^":"r;",
@@ -1969,7 +1969,7 @@ o=u
 n=""
 m=""}l=C.a.l(w,o,p)
 return y+n+l+m+"\n"+C.a.ap(" ",x-o+n.length)+"^\n"}},
-x:{"^":"a6;"},
+x:{"^":"a7;"},
 "+int":0,
 ae:{"^":"c;$ti",
 an:["aW",function(a,b){return new H.bZ(this,b,[H.eH(this,"ae",0)])}],
@@ -1996,7 +1996,7 @@ fs:{"^":"c;",
 gD:function(a){return P.c.prototype.gD.call(this,this)},
 i:function(a){return"null"}},
 "+Null":0,
-a6:{"^":"c;"},
+a7:{"^":"c;"},
 "+num":0,
 c:{"^":";",
 O:function(a,b){return this===b},
@@ -2011,7 +2011,7 @@ gF:function(a){return this.m.length===0},
 i:function(a){var z=this.m
 return z.charCodeAt(0)==0?z:z},
 w:{
-bE:function(a,b,c){var z=J.a9(b)
+bE:function(a,b,c){var z=J.aa(b)
 if(!z.t())return a
 if(c.length===0){do a+=H.b(z.gA())
 while(z.t())}else{a+=H.b(z.gA())
@@ -2485,7 +2485,7 @@ return z.gS(z)},
 T:function(a){var z,y,x
 z="element tag unavailable"
 try{y=J.cu(a)
-if(typeof y==="string")z=a.tagName}catch(x){H.a7(x)}return z},
+if(typeof y==="string")z=a.tagName}catch(x){H.a8(x)}return z},
 h:{"^":"K;","%":"HTMLAudioElement|HTMLBRElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDialogElement|HTMLDirectoryElement|HTMLDivElement|HTMLFontElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLImageElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLMarqueeElement|HTMLMediaElement|HTMLMeterElement|HTMLModElement|HTMLOptGroupElement|HTMLOptionElement|HTMLParagraphElement|HTMLPictureElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLShadowElement|HTMLSpanElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableDataCellElement|HTMLTableHeaderCellElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement|HTMLVideoElement;HTMLElement"},
 f3:{"^":"h;q:type=,a4:href}",
 i:function(a){return String(a)},
@@ -2844,9 +2844,9 @@ var q=0
 if(c.children)q=c.children.length
 for(var p=0;p<q;p++){var o=c.children[p]
 if(o.id=='attributes'||o.name=='attributes'||o.id=='lastChild'||o.name=='lastChild'||o.id=='children'||o.name=='children')return true}return false}(a)
-z=w===!0?!0:!(a.attributes instanceof NamedNodeMap)}catch(t){H.a7(t)}v="element unprintable"
-try{v=J.y(a)}catch(t){H.a7(t)}try{u=W.T(a)
-this.b8(a,b,z,v,u,y,x)}catch(t){if(H.a7(t) instanceof P.J)throw t
+z=w===!0?!0:!(a.attributes instanceof NamedNodeMap)}catch(t){H.a8(t)}v="element unprintable"
+try{v=J.y(a)}catch(t){H.a8(t)}try{u=W.T(a)
+this.b8(a,b,z,v,u,y,x)}catch(t){if(H.a8(t) instanceof P.J)throw t
 else{this.Z(a,b)
 window
 s="Removing corrupted element "+H.b(v)
@@ -2881,7 +2881,7 @@ break
 case 8:case 11:case 3:case 4:break
 default:x.Z(a,b)}z=a.lastChild
 for(x=a==null;null!=z;){y=null
-try{y=J.ct(z)}catch(w){H.a7(w)
+try{y=J.ct(z)}catch(w){H.a8(w)
 v=z
 if(x){if(J.cs(v)!=null)v.parentNode.removeChild(v)}else a.removeChild(v)
 z=null
@@ -2985,7 +2985,7 @@ k:function(a){var z,y,x,w
 for(z=this.a,y=z.length,x=0,w=0;w<y;++w)if(z[w].a===a)++x
 return x},
 aT:function(){var z=this.a;(z&&C.c).ag(z,"sort")
-H.a4(z,0,z.length-1,new D.dz())},
+H.a5(z,0,z.length-1,new D.dz())},
 aS:function(){var z,y
 for(z=0,y=0;y<$.$get$V().a;++y)if(this.k(y)>z)z=this.k(y)
 return z},
@@ -3009,7 +3009,7 @@ if(this.k(11)>0&&this.k(1)>0)r=" It has a "+this.aD()+" sized crew."
 else if(this.k(11)<=0&&this.k(1)>0)r=" It has a pilot and no other crew."
 else if(this.k(11)>0&&this.k(1)<=0)r=" It has a "+this.aD()+" group of people frozen in cryostasis."
 else{s.push(" Drone")
-r=" It is a drone."}if(this.k(8)<=0){r+=" It is a stationary sattelite."
+r=" It is a drone."}if(this.k(8)<=0){r+=" It is a stationary satellite."
 s.push(" Station")
 s.push(" Space Station")}else{s.push(" Ship")
 s.push(" Starship")}if(this.k(1)>3){if(this.k(11)>3&&this.k(8)>0){r+=" It is a colonizing ship."
@@ -3048,19 +3048,20 @@ $2:function(a,b){return J.co(J.aX(a),J.aX(b))}}}],["","",,F,{"^":"",
 ck:function(){var z,y,x,w,v,u
 if(P.N().gam().h(0,"id")==null){z=C.n.X(2147483647)
 y=document
-J.aa(y.querySelector("#sharelink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+"?id="+z+'">link to this ship</a>',null,null)
-J.aa(y.querySelector("#newlink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+'">make new ship</a>',null,null)}else{z=H.U(P.N().gam().h(0,"id"),null,null)
+J.a1(y.querySelector("#sharelink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+"?id="+z+'">link to this ship</a>',null,null)
+J.a1(y.querySelector("#newlink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+'">make new ship</a>',null,null)
+J.a1(y.querySelector("#repository"),"beforeend",'<a href="https://acactusorsomething.github.io/Spaceship-Generator/">Github Repository</a>',null,null)}else{z=H.U(P.N().gam().h(0,"id"),null,null)
 y=document
-J.aa(y.querySelector("#sharelink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+'">link to this ship</a>',null,null)
-J.aa(y.querySelector("#newlink"),"beforeend",'<a href="'+J.cy(J.y(P.N()),0,J.cv(J.y(P.N()),"?"))+'">make new ship</a>',null,null)}x=D.dy(z)
+J.a1(y.querySelector("#sharelink"),"beforeend",'<a href="'+H.b(J.y(P.N()))+'">link to this ship</a>',null,null)
+J.a1(y.querySelector("#newlink"),"beforeend",'<a href="'+J.cy(J.y(P.N()),0,J.cv(J.y(P.N()),"?"))+'">make new ship</a>',null,null)}x=D.dy(z)
 y=document
 y.querySelector("#name").textContent=H.b(x.b)
 y.querySelector("#id").textContent="ID: "+H.b(x.c)
 F.eB(x)
 w=y.querySelector("#output")
 v=x.a.length
-if(v<=10)u=" It is a small spacecraft."
-else u=v<=40?" It is a mid-sized spacecraft.":" It is a large spacecraft."
+if(v<=15)u=" It is a small spacecraft."
+else u=v<=35?" It is a mid-sized spacecraft.":" It is a large spacecraft."
 u=C.a.M(u,x.d)
 w.toString
 w.appendChild(y.createTextNode(u))},
@@ -3103,35 +3104,35 @@ q.appendChild(s)
 y.appendChild(q)}}z.querySelector("#output").appendChild(y)}},1]]
 setupProgram(dart,0)
 J.k=function(a){if(typeof a=="number"){if(Math.floor(a)==a)return J.bj.prototype
-return J.bi.prototype}if(typeof a=="string")return J.a2.prototype
+return J.bi.prototype}if(typeof a=="string")return J.a3.prototype
 if(a==null)return J.d6.prototype
 if(typeof a=="boolean")return J.d5.prototype
-if(a.constructor==Array)return J.a1.prototype
-if(typeof a!="object"){if(typeof a=="function")return J.a3.prototype
+if(a.constructor==Array)return J.a2.prototype
+if(typeof a!="object"){if(typeof a=="function")return J.a4.prototype
 return a}if(a instanceof P.c)return a
 return J.aq(a)}
-J.w=function(a){if(typeof a=="string")return J.a2.prototype
+J.w=function(a){if(typeof a=="string")return J.a3.prototype
 if(a==null)return a
-if(a.constructor==Array)return J.a1.prototype
-if(typeof a!="object"){if(typeof a=="function")return J.a3.prototype
+if(a.constructor==Array)return J.a2.prototype
+if(typeof a!="object"){if(typeof a=="function")return J.a4.prototype
 return a}if(a instanceof P.c)return a
 return J.aq(a)}
 J.Q=function(a){if(a==null)return a
-if(a.constructor==Array)return J.a1.prototype
-if(typeof a!="object"){if(typeof a=="function")return J.a3.prototype
+if(a.constructor==Array)return J.a2.prototype
+if(typeof a!="object"){if(typeof a=="function")return J.a4.prototype
 return a}if(a instanceof P.c)return a
 return J.aq(a)}
 J.cg=function(a){if(typeof a=="number")return J.af.prototype
-if(typeof a=="string")return J.a2.prototype
+if(typeof a=="string")return J.a3.prototype
 if(a==null)return a
 if(!(a instanceof P.c))return J.ao.prototype
 return a}
-J.aQ=function(a){if(typeof a=="string")return J.a2.prototype
+J.aQ=function(a){if(typeof a=="string")return J.a3.prototype
 if(a==null)return a
 if(!(a instanceof P.c))return J.ao.prototype
 return a}
 J.G=function(a){if(a==null)return a
-if(typeof a!="object"){if(typeof a=="function")return J.a3.prototype
+if(typeof a!="object"){if(typeof a=="function")return J.a4.prototype
 return a}if(a instanceof P.c)return a
 return J.aq(a)}
 J.a0=function(a,b){if(typeof a=="number"&&typeof b=="number")return a+b
@@ -3148,9 +3149,9 @@ J.ax=function(a,b,c){return J.w(a).bf(a,b,c)}
 J.cp=function(a,b){return J.Q(a).R(a,b)}
 J.cq=function(a,b,c,d){return J.Q(a).a_(a,b,c,d)}
 J.aV=function(a){return J.G(a).gbd(a)}
-J.a8=function(a){return J.k(a).gD(a)}
+J.a9=function(a){return J.k(a).gD(a)}
 J.aW=function(a){return J.w(a).gF(a)}
-J.a9=function(a){return J.Q(a).gG(a)}
+J.aa=function(a){return J.Q(a).gG(a)}
 J.I=function(a){return J.w(a).gn(a)}
 J.cr=function(a){return J.G(a).gbm(a)}
 J.cs=function(a){return J.G(a).gbo(a)}
@@ -3158,7 +3159,7 @@ J.ct=function(a){return J.G(a).gbp(a)}
 J.cu=function(a){return J.G(a).gbr(a)}
 J.aX=function(a){return J.G(a).gq(a)}
 J.cv=function(a,b){return J.w(a).a1(a,b)}
-J.aa=function(a,b,c,d,e){return J.G(a).aJ(a,b,c,d,e)}
+J.a1=function(a,b,c,d,e){return J.G(a).aJ(a,b,c,d,e)}
 J.cw=function(a){return J.Q(a).bq(a)}
 J.cx=function(a,b){return J.G(a).sa4(a,b)}
 J.cy=function(a,b,c){return J.aQ(a).l(a,b,c)}
@@ -3171,12 +3172,12 @@ var $=I.p
 C.m=W.ay.prototype
 C.A=W.cN.prototype
 C.B=J.l.prototype
-C.c=J.a1.prototype
+C.c=J.a2.prototype
 C.C=J.bi.prototype
 C.b=J.bj.prototype
 C.d=J.af.prototype
-C.a=J.a2.prototype
-C.J=J.a3.prototype
+C.a=J.a3.prototype
+C.J=J.a4.prototype
 C.v=J.dl.prototype
 C.w=W.dC.prototype
 C.k=J.ao.prototype
@@ -3302,7 +3303,7 @@ this[t]=z[t]}}Isolate.prototype=a.prototype
 Isolate.prototype.constructor=Isolate
 Isolate.p=z
 Isolate.o=a.o
-Isolate.a5=a.a5
+Isolate.a6=a.a6
 return Isolate}}!function(){var z=function(a){var t={}
 t[a]=1
 return Object.keys(convertToFastObject(t))[0]}

@@ -15,7 +15,7 @@ void main() {
     querySelector('#sharelink').appendHtml('<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
     querySelector('#newlink').appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
     querySelector('#repository').appendHtml('<a href="https://acactusorsomething.github.io/Spaceship-Generator/">Github Repository</a>');
-    
+
   } else {
     seed = int.parse(Uri.base.queryParameters['id']);
     querySelector('#sharelink').appendHtml('<a href="${Uri.base.toString()}">link to this ship</a>');
