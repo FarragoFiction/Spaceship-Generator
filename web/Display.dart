@@ -34,9 +34,6 @@ class NixieTube implements Display {
   }
 
   @override
-  //according to wikipedia Nixie tube segments aren't ordered numerically.
-  // 6 7 5 8 4 3 9 2 0 1 from front (6) to back (1)
-  //todo impliment this.
   SvgSvgElement graphicalDisplay() {
 
     SvgSvgElement ret = new SvgSvgElement();
@@ -47,7 +44,7 @@ class NixieTube implements Display {
     glowFilter.id = "glow";
 
     FEGaussianBlurElement blurElement = new FEGaussianBlurElement();
-    blurElement.setAttribute("stdDeviation", "1");
+    blurElement.setAttribute("stdDeviation", "3");
 
     glowFilter.append(blurElement);
     defs.append(glowFilter);
@@ -142,17 +139,26 @@ class NixieTube implements Display {
         TextElement tex;
 
         if(digit == segmentsInOrder[j]) {
-          tex = litSegment(segmentsInOrder[j]);
-          print("$digit is ${segmentsInOrder[j]}");
+          TextElement tube = litSegment(segmentsInOrder[j]);
+          tube.setAttribute("x", "${i * WIDTH_CONSTANT}");
+          tube.setAttribute("y", "${HEIGHT_CONSTANT - 10}");
+          ret.append(tube);
+
+          tex = glowSegment(segmentsInOrder[j]);
+          tex.setAttribute("x", "${i * WIDTH_CONSTANT}");
+          tex.setAttribute("y", "${HEIGHT_CONSTANT - 10}");
+          ret.append(tex);
         } else {
           tex = unlitSegment(segmentsInOrder[j]);
-          print("$digit is NOT ${segmentsInOrder[j]}");
+
+          tex.setAttribute("x", "${i * WIDTH_CONSTANT}");
+          tex.setAttribute("y", "${HEIGHT_CONSTANT - 10}");
+          ret.append(tex);
         }
 
-        tex.setAttribute("x", "${i * WIDTH_CONSTANT}");
-        tex.setAttribute("y", "${HEIGHT_CONSTANT - 10}");
 
-        ret.append(tex);
+
+
       }
 
     }
@@ -187,7 +193,7 @@ class NixieTube implements Display {
     return tex;
   }
 
-  TextElement litSegment(int number) {
+  TextElement glowSegment(int number) {
     TextElement tex = new TextElement();
     tex.setAttribute("textLength", "${WIDTH_CONSTANT}");
     tex.setAttribute("fill", "#FF9900");
@@ -199,5 +205,47 @@ class NixieTube implements Display {
     tex.text = number.toString();
     return tex;
   }
+
+  TextElement litSegment(int number) {
+    TextElement tex = new TextElement();
+    tex.setAttribute("textLength", "${WIDTH_CONSTANT}");
+    tex.setAttribute("fill", "#FFBB44");
+    tex.setAttribute("font-size", "45");
+    tex.setAttribute("font-family", "'Nixie One', monospace");
+    tex.style.textAlign = "center";
+
+
+    tex.text = number.toString();
+    return tex;
+  }
+
 }
 
+class Semicircle implements Display {
+  int value;
+  int maxValue;
+  bool needle;
+  bool bar;
+
+  Semicircle(int value, int maxValue, bool needle, bool bar) {
+    this.value = value;
+    this.maxValue = maxValue;
+  }
+
+  @override
+  int getMaxValue(){
+    return maxValue;
+  }
+
+  @override
+  int getValue(){
+    return value;
+  }
+
+  //fuck bezier curves. fuck them
+  @override
+  SvgSvgElement graphicalDisplay(){
+
+
+  }
+}

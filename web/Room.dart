@@ -15,7 +15,8 @@ class Room {
   static final int SCIENCE_EQUIPMENT = 12;
 
   static Map<int, String> rooms = {
-     0: "plating", //ideally never used
+     0: "plating", //ideally never used //haha nevermind it has a use
+
      1: "life support",
      2: "robot arm",
      3: "munitions storage",
@@ -40,18 +41,3 @@ class Room {
   }
 
 }
-
-//todo these later - small steps first. get it running. build your garbage trash ships first huddie.
-/*class Thrusters extends Room {
-  bool isFTL;
-  int speed;
-  String name;
-  Thrusters(String name, bool isFTL, int speed) {
-    this.isFTL = isFTL;
-    this.speed = speed;
-  }
-}
-
-class Power extends Room {
-
-}*/

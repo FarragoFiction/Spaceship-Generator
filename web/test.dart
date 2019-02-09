@@ -9,7 +9,7 @@ SvgSvgElement svgElement;
 DivElement output;
 InputElement slider;
 main() {
-  nixie = new NixieTube(113, 999);
+  nixie = new NixieTube(113, 200);
   svgElement = nixie.graphicalDisplay();
   DivElement output = querySelector('#output');
   InputElement slider = querySelector('#slider');

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'Starship.dart';
 import 'Room.dart';
 import 'dart:svg';
+import 'Display.dart';
 
 final int MAX_SEED = 2147483647;
 void main() {
@@ -26,7 +27,7 @@ void main() {
   Starship starship = new Starship(seed);
   querySelector('#name').text = "${starship.getName()}";
   querySelector('#id').text = "ID: ${starship.getId()}";
-  buildBars(starship);
+  buildDisplay(starship);
   //roomList(starship);
   querySelector('#output').appendText(starship.getDescription());
 
@@ -42,31 +43,24 @@ void roomList(Starship starship) {
   querySelector('#output').append(rooms);
 }
 
-void buildBars(Starship starship) {
+
+
+void buildDisplay(Starship starship) {
   TableElement table = new TableElement();
-  table.style.width = "100%";
+  table.style.width = "70%";
   for(int i=0; i < Room.rooms.length; i++) {
-    SvgSvgElement element = new SvgSvgElement();
-    element.setAttribute("height", "50");
-    element.setAttribute("width", "300");
+    SvgSvgElement element;
 
     if(starship.getNumOfRoomType(i) > 0) {
-      RectElement progress = new RectElement();
-      progress.setAttribute("height", "50");
-      progress.setAttribute("width",
-          (300 * starship.getNumOfRoomType(i) / starship.getNumOfMaxRoom()).toString());
+      NixieTube numbers = new NixieTube(starship.getNumOfRoomType(i), 99);
 
-      progress.style.top = "0";
-      progress.style.left = "0";
-      progress.style.setProperty("fill", "#00ff00");
-
-      element.append(progress);
+      element = numbers.graphicalDisplay();
       TableCellElement bar = new TableCellElement();
       bar.append(element);
       bar.style.textAlign = "left";
 
       TableCellElement text = new TableCellElement();
-      text.appendText("${Room.rooms[i]}: ${starship.getNumOfRoomType(i)}");
+      text.appendText("${Room.rooms[i]}:");
       text.style.textAlign = "right";
 
       TableRowElement thisRow = new TableRowElement();
@@ -77,3 +71,4 @@ void buildBars(Starship starship) {
   }
   querySelector('#output').append(table);
 }
+

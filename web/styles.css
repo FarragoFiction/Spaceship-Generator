@@ -27,7 +27,10 @@ a {
   color: #008081;
 }
 
-table, tr, td{
-text-align: center;
+table{
+  width: 100%;
 }
 
+tr {
+  width: 50%;
+}
