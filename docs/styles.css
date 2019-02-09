@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Comfortaa|Major+Mono+Display');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa|Major+Mono+Display|Nixie+One');
 
 html, body {
   width: 100%;
@@ -27,7 +27,10 @@ a {
   color: #008081;
 }
 
-table, tr, td{
-text-align: center;
+table{
+  width: 100%;
 }
 
+tr {
+  width: 50%;
+}
