@@ -4,7 +4,7 @@ import 'Display.dart';
 import 'dart:svg';
 
 NixieTube nixie;
-Semicircle dial;
+AnalogueGague gague;
 SvgSvgElement nixieElement;
 SvgSvgElement dialElement;
 
@@ -21,9 +21,9 @@ main() {
   output.append(nixieElement);
   output.appendHtml("</br>");
 
-  dial = new Semicircle(113, 200, true, true);
-  dialElement = dial.graphicalDisplay();
-  output.append(dial.graphicalDisplay());
+  gague = new AnalogueGague(113, 200, true, true);
+  dialElement = gague.graphicalDisplay();
+  output.append(gague.graphicalDisplay());
 
 }
 
@@ -31,8 +31,8 @@ void update(String value) {
   nixie.value = int.parse(value);
   nixieElement = nixie.graphicalDisplay();
 
-  dial.value = int.parse(value);
-  dialElement = dial.graphicalDisplay();
+  gague.value = int.parse(value);
+  dialElement = gague.graphicalDisplay();
   
   querySelector('#output').children.clear();
   querySelector('#output').append(nixieElement);

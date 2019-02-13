@@ -221,13 +221,13 @@ class NixieTube implements Display {
 
 }
 
-class Semicircle implements Display {
+class AnalogueGague implements Display {
   int value;
   int maxValue;
   bool needle;
   bool bar;
 
-  Semicircle(int value, int maxValue, bool needle, bool bar) {
+  AnalogueGague(int value, int maxValue, bool needle, bool bar) {
     this.value = value;
     this.maxValue = maxValue;
     this.needle = needle;
