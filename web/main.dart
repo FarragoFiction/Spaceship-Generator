@@ -4,7 +4,7 @@ import 'dart:math';
 import 'Starship.dart';
 import 'Room.dart';
 import 'dart:svg';
-import 'Display.dart';
+import 'displays/Display.dart';
 
 final int MAX_SEED = 2147483647;
 void main() {
