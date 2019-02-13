@@ -4,25 +4,38 @@ import 'Display.dart';
 import 'dart:svg';
 
 NixieTube nixie;
-SvgSvgElement svgElement;
+Semicircle dial;
+SvgSvgElement nixieElement;
+SvgSvgElement dialElement;
 
 DivElement output;
 InputElement slider;
 main() {
   nixie = new NixieTube(113, 200);
-  svgElement = nixie.graphicalDisplay();
+  nixieElement = nixie.graphicalDisplay();
   DivElement output = querySelector('#output');
   InputElement slider = querySelector('#slider');
 
   slider.value = "113";
   slider.onInput.listen((e) => update(slider.value));
-  output.append(svgElement);
+  output.append(nixieElement);
+  output.appendHtml("</br>");
+
+  dial = new Semicircle(113, 200, true, true);
+  dialElement = dial.graphicalDisplay();
+  output.append(dial.graphicalDisplay());
+
 }
 
 void update(String value) {
   nixie.value = int.parse(value);
-  svgElement = nixie.graphicalDisplay();
+  nixieElement = nixie.graphicalDisplay();
+
+  dial.value = int.parse(value);
+  dialElement = dial.graphicalDisplay();
   
   querySelector('#output').children.clear();
-  querySelector('#output').append(svgElement);
+  querySelector('#output').append(nixieElement);
+  querySelector('#output').appendHtml("</br>");
+  querySelector('#output').append(dialElement);
 }
