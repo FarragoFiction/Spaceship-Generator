@@ -22,6 +22,8 @@ abstract class Display {
   -rolling numbers/mechanical counter (would this be noticeable enough to show?)
   -dot matrix display
 
+  3 is okay for test purposes though
+
   modifications:
   -ability to specify size of graphicalDisplay(), or at least make them all consistent
   -specify color

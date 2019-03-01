@@ -3,6 +3,7 @@ import 'dart:core';
 import 'dart:math';
 import 'Starship.dart';
 import 'Room.dart';
+import 'Dashboard.dart';
 import 'dart:svg';
 import 'displays/Display.dart';
 
@@ -30,7 +31,7 @@ void main() {
   buildDisplay(starship);
   //roomList(starship);
   querySelector('#output').appendText(starship.getDescription());
-
+  querySelector('#canvasSpot').append(new Dashboard(starship).buildDashboard());
 }
 
 void roomList(Starship starship) {
