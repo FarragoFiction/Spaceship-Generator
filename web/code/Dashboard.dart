@@ -3,6 +3,29 @@ import 'dart:svg' as Svg;
 import 'dart:math' as Math;
 import 'displays/Display.dart';
 import 'Starship.dart';
+import 'FillerSVG.dart';
+
+List<String> temporaryFlavorLabels = [
+  "fuel",
+  "strength",
+  "tears",
+  "energy",
+  "dreams",
+  "efficiency",
+  "enthusiasm",
+  "velocity",
+  "disaster lvl",
+  "pain",
+  "coherence",
+  "propability",
+  "power",
+  "rpm",
+  "mass",
+  "potential",
+  "charge",
+  "bullets",
+  "errors",
+];
 
 class Dashboard {
   final int WIDTH = 1200;
@@ -76,10 +99,20 @@ class Dashboard {
 
   CanvasRenderingContext2D drawFrame(CanvasRenderingContext2D ctx) {
     String casingColor = "#a6a6a6";
+    String seamColor = "#808080";
+
+    ctx.fillStyle = seamColor;
+
+    ctx.fillRect(0, HEIGHT - 140, WIDTH, 100);
+    ctx.fillRect(0, 0, 180, HEIGHT);
+    ctx.fillRect(WIDTH - 180, 0, 160, HEIGHT);
+
+
+
     ctx.fillStyle = casingColor;
 
     //ctx.fillRect(0, 0, WIDTH, 100);
-    ctx.fillRect(0, HEIGHT - 100, WIDTH, 100);
+    ctx.fillRect(0, HEIGHT - 120, WIDTH, 120);
     ctx.fillRect(0, 0, 160, HEIGHT);
     ctx.fillRect(WIDTH - 160, 0, 160, HEIGHT);
     return ctx;
@@ -88,47 +121,92 @@ class Dashboard {
   //assume they fit in 160 x 100 size area
   //should be room for 19 displays
   DivElement drawDisplays() {
+    int boxWidth = 160;
+    int boxHeight = 100;
     DivElement ret = new DivElement();
     ret.style.position = "absolute";
     ret.style.zIndex = "1";
 
     List<List<int>> availableStartingPoints = [ //list of the coordinates i can start drawing displays in
-        [0, 700],
-        [171, 700],
-        [343, 700],
-        [514, 700],
-        [686, 700],
-        [858, 700],
-        [1029, 700],
+        [0, 650],
+        [171, 650],
+        [343, 650],
+        [514, 650],
+        [686, 650],
+        [858, 650],
+        [1039, 650],
 
-        [1029, 100],
-        [1029, 200],
-        [1029, 300],
-        [1029, 400],
-        [1029, 500],
-        [1029, 600],
+        [1039, 0],
+        [1039, 100],
+        [1039, 200],
+        [1039, 300],
+        [1039, 400],
+        [1039, 500],
 
+        [0, 0],
         [0, 100],
         [0, 200],
         [0, 300],
         [0, 400],
         [0, 500],
-        [0, 600],
       ];
 
 
 
       Math.Random rand = new Math.Random(starship.getId());
-      for(int i = 0; i < rand.nextInt(availableStartingPoints.length); i++) {
-        List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
-        SevenSegmentDisplay display = new SevenSegmentDisplay(rand.nextInt(100), 100);
+      int numStartPoints = availableStartingPoints.length;
 
+      //setup the main displays
+      for(int i = 0; i < rand.nextInt(availableStartingPoints.length); i++) {
+        DivElement wrapper = new DivElement();
+        List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
+        SevenSegmentDisplay display = makeDisplay(rand.nextInt(4), rand.nextInt(101), 100);
+
+        //make the svg
         Svg.SvgSvgElement svg = display.graphicalDisplay();
-        svg.style.position = "absolute";
-        svg.style.top = coordinates[1].toString();
-        svg.style.left = coordinates[0].toString();
-        ret.append(svg);
+        wrapper.style.position = "absolute";
+        //print(svg.getAttribute("height"));
+        int x = coordinates[0] + (boxWidth - int.parse(svg.getAttribute("width"))) ~/ 2;
+        int y = coordinates[1] + (boxWidth - int.parse(svg.getAttribute("height"))) ~/ 2;
+        wrapper.style.top = "${y}px";
+        wrapper.style.left = "${x}px";
+        wrapper.append(svg);
+
+        //add a label
+        /*DivElement label = new DivElement();
+        label.style.position = "absolute";
+        label.style.top = "${coordinates[1] + boxHeight + 15}px";
+        label.style.left = "${coordinates[0]}px";
+
+        //label.style.width = "$boxWidth";
+        //label.style.textAlign = "center";
+        label.style.backgroundColor = "black";
+        label.text = "test";
+        */
+        String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
+        wrapper.appendText(label);
+        ret.append(wrapper);
       }
+
+      //add filler elements
+      while(availableStartingPoints.length > 0) {
+        List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
+
+
+        Switches filler = new Switches(rand);
+        Svg.SvgSvgElement fillerSvg = filler.getFiller();
+
+        int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+        int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+
+        fillerSvg.style.position = "absolute";
+        fillerSvg.style.top = "${y}px";
+        fillerSvg.style.left = "${x}px";
+
+        ret.append(fillerSvg);
+      }
+
+
       return ret;
   }
 
@@ -136,7 +214,21 @@ class Dashboard {
   CanvasRenderingContext2D drawFillerElements(CanvasRenderingContext2D ctx) {
 
   }
+
+
+  Display makeDisplay(int id, num value, num maxValue) {
+    if(id == 0)
+      return new AnalogueGague(value, maxValue, true, false);
+    if(id == 1)
+      return new AnalogueGague(value, maxValue, false, true);
+    if(id == 2)
+      return new NixieTube(value, maxValue);
+    if(id == 3)
+      return new SevenSegmentDisplay(value, maxValue);
+    return null;
+  }
 }
+
 //this is gonna be hard.
 
 /*LAYERS IN ORDER

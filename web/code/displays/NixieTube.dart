@@ -6,7 +6,7 @@ class NixieTube implements Display {
   int maxValue;
   final int WIDTH_CONSTANT = 30;
   final int HEIGHT_CONSTANT = 40;
-
+  //todo visually: make inactive tubes more transparent
   NixieTube(int value, int maxValue) {
     this.value = value;
     this.maxValue = maxValue;
@@ -27,6 +27,8 @@ class NixieTube implements Display {
 
     SvgSvgElement ret = new SvgSvgElement();
 
+
+
     //setup for glowing
     DefsElement defs = new DefsElement();
     FilterElement glowFilter = new FilterElement();
@@ -46,7 +48,7 @@ class NixieTube implements Display {
         "1 0 0 0 0 "
             "0 1 0 0 0 "
             "0 0 1 0 0 "
-            "0 0 0 0.5 0 ");
+            "0 0 0 0.3 0 ");
     transparencyFilter.append(matrixElement);
     defs.append(transparencyFilter);
 
@@ -58,6 +60,15 @@ class NixieTube implements Display {
 
     ret.setAttribute("width", width.toString());
     ret.setAttribute("height", HEIGHT_CONSTANT.toString());
+
+    //add back panel
+    RectElement panel = new RectElement();
+    panel.setAttribute("x", "0");
+    panel.setAttribute("y", "0");
+    panel.setAttribute("width", "$width");
+    panel.setAttribute("height", "$HEIGHT_CONSTANT");
+    panel.setAttribute("fill", "#555555");
+    ret.append(panel);
 
     /*
     //draw  display cells
@@ -166,7 +177,7 @@ class NixieTube implements Display {
   TextElement unlitSegment(int number) {
     TextElement tex = new TextElement();
     tex.setAttribute("textLength", "$WIDTH_CONSTANT");
-    tex.setAttribute("fill", "#555555");
+    tex.setAttribute("fill", "#777777");
     tex.setAttribute("font-size", "45");
     tex.setAttribute("font-family", "'Nixie One', monospace");
     tex.style.textAlign = "center";

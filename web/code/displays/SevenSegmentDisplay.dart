@@ -6,7 +6,7 @@ import 'dart:svg';
 class SevenSegmentDisplay extends Display {
   static final int WIDTH_CONSTANT = 2;
   //static final
-
+  //todo visually: make segments thicker, make unused ones more dull.
   static final Map<int, List<int>> SEGMENT_MAP = {
     -1: [], //nothing for this value
     0 : [0, 2, 3, 5, 6, 7, 8, 9],
@@ -40,8 +40,17 @@ class SevenSegmentDisplay extends Display {
 
 
     SvgSvgElement ret = new SvgSvgElement();
-    ret.setAttribute("height", "54");
-    ret.setAttribute("width", "${30 * getNumOfDigits(maxValue)}");
+    ret.setAttribute("height", "56");
+    ret.setAttribute("width", "${31 * getNumOfDigits(maxValue)}");
+
+    //add back panel
+    RectElement panel = new RectElement();
+    panel.setAttribute("x", "0");
+    panel.setAttribute("y", "0");
+    panel.setAttribute("height", "56");
+    panel.setAttribute("width", "${31 * getNumOfDigits(maxValue)}");
+    panel.setAttribute("fill", "#555555");
+    ret.append(panel);
 
     for(int i = 0; i < getNumOfDigits(maxValue); i++) {
       int digit = -1; //not a digit, so if the below conditions aren't met no segment will be lit
@@ -59,7 +68,7 @@ class SevenSegmentDisplay extends Display {
         //print(digit);
       }
 
-      int absX = 30 * i;
+      int absX = 31 * i;
       for(int j = 0; j < 7; j++) {
         Segment segment;
         segment = Segment.makeSegmentForPortion(j, absX);
@@ -88,7 +97,7 @@ class SevenSegmentDisplay extends Display {
     DD
    E  F
     GG
-    segments are 24 * 2, whole digit is 28 * 54.
+    segments are 22 * 4, whole digit is 30 * 54.
  */
 class Segment {
   bool isVertical;
@@ -107,48 +116,48 @@ class Segment {
     ret.setAttribute("y", "$startY");
 
     if(isVertical) {
-      ret.setAttribute("width", "2");
-      ret.setAttribute("height", "24");
+      ret.setAttribute("width", "4");
+      ret.setAttribute("height", "22");
     } else {
-      ret.setAttribute("width", "24");
-      ret.setAttribute("height", "2");
+      ret.setAttribute("width", "22");
+      ret.setAttribute("height", "4");
     }
 
     if(isLit) {
       ret.setAttribute("fill", "#00ff00");
     } else {
-      ret.setAttribute("fill", "#111111");
+      ret.setAttribute("fill", "#777777");
     }
 
     return ret;
   }
 
   static Segment make0(int startX) {
-    return new Segment(startX + 2, 0, false);
+    return new Segment(startX + 4, 0, false);
   }
 
   static Segment make1(int startX) {
-    return new Segment(startX, 2, true);
+    return new Segment(startX, 4, true);
   }
 
   static Segment make2(int startX) {
-    return new Segment(startX + 26, 2, true);
+    return new Segment(startX + 26, 4, true);
   }
 
   static Segment make3(int startX) {
-    return new Segment(startX + 2, 26, false);
+    return new Segment(startX + 4, 26, false);
   }
 
   static Segment make4(int startX) {
-    return new Segment(startX, 28, true);
+    return new Segment(startX, 30, true);
   }
 
   static Segment make5(int startX) {
-    return new Segment(startX + 26, 28, true);
+    return new Segment(startX + 26, 30, true);
   }
 
   static Segment make6(int startX) {
-    return new Segment(startX + 2, 52, false);
+    return new Segment(startX + 4, 52, false);
   }
 
   static Segment makeSegmentForPortion(int segmentId, int startX) {

@@ -8,30 +8,53 @@ import 'dart:svg';
 import 'displays/Display.dart';
 
 final int MAX_SEED = 2147483647;
+TableCellElement shareLink;
+TableCellElement newLink;
+HeadingElement name;
+HeadingElement id;
+DivElement output;
+DivElement canvasSpot;
+
+
 void main() {
   int seed;
+  shareLink = querySelector('#sharelink');
+  newLink = querySelector('#newlink');
+  name = querySelector('#name');
+  id = querySelector('#id');
+  output = querySelector('#output');
+  canvasSpot = querySelector('#canvasSpot');
 
-  if(Uri.base.queryParameters['id'] == null) {
-    Random rand = new Random();
-    seed = rand.nextInt(MAX_SEED);
-    querySelector('#sharelink').appendHtml('<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
-    querySelector('#newlink').appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
-
-  } else {
-    seed = int.parse(Uri.base.queryParameters['id']);
-    querySelector('#sharelink').appendHtml('<a href="${Uri.base.toString()}">link to this ship</a>');
-    querySelector('#newlink').appendHtml('<a href="${Uri.base.toString().substring(0, Uri.base.toString().indexOf("?"))}">make new ship</a>');
+  if(shareLink != null && newLink != null) {
+    if (Uri.base.queryParameters['id'] == null) {
+      Random rand = new Random();
+      seed = rand.nextInt(MAX_SEED);
+      shareLink.appendHtml(
+          '<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
+      newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
+    } else {
+      seed = int.parse(Uri.base.queryParameters['id']);
+      shareLink.appendHtml(
+          '<a href="${Uri.base.toString()}">link to this ship</a>');
+      newLink.appendHtml('<a href="${Uri.base.toString().substring(
+          0, Uri.base.toString().indexOf("?"))}">make new ship</a>');
+    }
   }
 
 
-
   Starship starship = new Starship(seed);
-  querySelector('#name').text = "${starship.getName()}";
-  querySelector('#id').text = "ID: ${starship.getId()}";
+
+  if(name != null)
+    name.text = "${starship.getName()}";
+  if(id != null)
+    id.text = "ID: ${starship.getId()}";
+
   buildDisplay(starship);
   //roomList(starship);
-  querySelector('#output').appendText(starship.getDescription());
-  querySelector('#canvasSpot').append(new Dashboard(starship).buildDashboard());
+  if(output != null)
+    output.appendText(starship.getDescription());
+  if(canvasSpot != null)
+    canvasSpot.append(new Dashboard(starship).buildDashboard());
 }
 
 void roomList(Starship starship) {
@@ -41,7 +64,8 @@ void roomList(Starship starship) {
     listElement.appendText(starship.rooms[i].toString());
     rooms.append(listElement);
   }
-  querySelector('#output').append(rooms);
+  if(output != null)
+    output.append(rooms);
 }
 
 
@@ -70,6 +94,7 @@ void buildDisplay(Starship starship) {
       table.append(thisRow);
     }
   }
-  querySelector('#output').append(table);
+  if(output != null)
+    output.append(table);
 }
 
