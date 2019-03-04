@@ -186,7 +186,7 @@ class Dashboard {
         String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
         wrapper.appendText(label);
         ret.append(wrapper);
-      }
+      }//h
 
       //add filler elements
       while(availableStartingPoints.length > 0) {
