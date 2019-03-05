@@ -203,8 +203,8 @@ class Dashboard {
         List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
 
         //determine what kind of filler
-        int type = rand.nextInt(3);
-        if(type == 2) {
+        int type = rand.nextInt(2);
+        if(type == 0) {
           Buttons filler = new Buttons(rand);
           Svg.SvgSvgElement fillerSvg = filler.getFiller();
 
