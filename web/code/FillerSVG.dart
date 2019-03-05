@@ -59,3 +59,49 @@ class Switches implements FillerSVG {
   return ret;
  }
 }
+
+class Buttons implements FillerSVG {
+ Random random;
+ Buttons(Random random) {
+  this.random = random;
+ }
+
+ @override
+ SvgSvgElement getFiller() {
+  SvgSvgElement ret = new SvgSvgElement();
+  ret.setAttribute("height", "100");
+  ret.setAttribute("width", "150");
+
+  List<List<int>> availableCoordinates = [
+   [0,0],
+   [50,0],
+   [100,0],
+   [0,50],
+   [50,50],
+   [100,50]
+  ];
+
+  List<String> colors = [
+   "#b30000", //red
+   "#00b300", //green
+   "#0000b3", //blue
+   "#b3b300", //yellow
+  ];
+  for(int i = 0; i < availableCoordinates.length; i++) {
+   //draw base of button
+   List<int> coordinates = availableCoordinates[i];
+   CircleElement base = new CircleElement();
+   base.setAttribute("cx", "${coordinates[0] + 25}");
+   base.setAttribute("cy", "${coordinates[1] + 25}");
+   base.setAttribute("r", "17");
+   base.setAttribute("stroke", "#555555");
+   base.setAttribute("stroke-width", "5");
+
+
+   base.setAttribute("fill", colors[random.nextInt(colors.length)]);
+   ret.append(base);
+
+  }
+  return ret;
+ }
+}

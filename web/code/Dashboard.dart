@@ -6,25 +6,35 @@ import 'Starship.dart';
 import 'FillerSVG.dart';
 
 List<String> temporaryFlavorLabels = [
-  "fuel",
-  "strength",
-  "tears",
-  "energy",
+  "appeal",
+  "belief",
+  "bullets",
+  "charge",
+  "coherence",
+  "coins",
+  "disaster lvl",
   "dreams",
   "efficiency",
+  "energy",
   "enthusiasm",
-  "velocity",
-  "disaster lvl",
-  "pain",
-  "coherence",
-  "propability",
-  "power",
-  "rpm",
-  "mass",
-  "potential",
-  "charge",
-  "bullets",
   "errors",
+  "fuel",
+  "guns",
+  "holiday spirit",
+  "lifeforms",
+  "lives",
+  "love",
+  "mass",
+  "numbers",
+  "pain",
+  "points",
+  "potential",
+  "power",
+  "propability",
+  "rpm",
+  "strength",
+  "tears",
+  "velocity",
 ];
 
 class Dashboard {
@@ -154,10 +164,10 @@ class Dashboard {
 
 
       Math.Random rand = new Math.Random(starship.getId());
-      int numStartPoints = availableStartingPoints.length;
+      int displayCutoff = rand.nextInt(availableStartingPoints.length);
 
       //setup the main displays
-      for(int i = 0; i < rand.nextInt(availableStartingPoints.length); i++) {
+      for(int i = 0; i < displayCutoff; i++) {
         DivElement wrapper = new DivElement();
         List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
         SevenSegmentDisplay display = makeDisplay(rand.nextInt(4), rand.nextInt(101), 100);
@@ -192,28 +202,42 @@ class Dashboard {
       while(availableStartingPoints.length > 0) {
         List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
 
+        //determine what kind of filler
+        int type = rand.nextInt(3);
+        if(type == 2) {
+          Buttons filler = new Buttons(rand);
+          Svg.SvgSvgElement fillerSvg = filler.getFiller();
 
-        Switches filler = new Switches(rand);
-        Svg.SvgSvgElement fillerSvg = filler.getFiller();
+          int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+          int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
 
-        int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
-        int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+          fillerSvg.style.position = "absolute";
+          fillerSvg.style.top = "${y}px";
+          fillerSvg.style.left = "${x}px";
 
-        fillerSvg.style.position = "absolute";
-        fillerSvg.style.top = "${y}px";
-        fillerSvg.style.left = "${x}px";
+          ret.append(fillerSvg);
+        } else if(type == 1) {
+          Switches filler = new Switches(rand);
+          Svg.SvgSvgElement fillerSvg = filler.getFiller();
 
-        ret.append(fillerSvg);
+          int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+          int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+
+          fillerSvg.style.position = "absolute";
+          fillerSvg.style.top = "${y}px";
+          fillerSvg.style.left = "${x}px";
+
+          ret.append(fillerSvg);
+        }
+
+
       }
 
 
       return ret;
   }
 
-  //maybe merge this with the drawDisplays method above?
-  CanvasRenderingContext2D drawFillerElements(CanvasRenderingContext2D ctx) {
 
-  }
 
 
   Display makeDisplay(int id, num value, num maxValue) {
