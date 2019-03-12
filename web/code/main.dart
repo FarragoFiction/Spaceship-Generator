@@ -10,6 +10,9 @@ import 'displays/Display.dart';
 final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
 TableCellElement newLink;
+TableCellElement dashboardLink;
+TableCellElement statsheetLink;
+
 HeadingElement name;
 HeadingElement id;
 DivElement output;
@@ -20,6 +23,8 @@ void main() {
   int seed;
   shareLink = querySelector('#sharelink');
   newLink = querySelector('#newlink');
+  dashboardLink = querySelector('#dashboardlink');
+  statsheetLink = querySelector('#statsheetlink');
   name = querySelector('#name');
   id = querySelector('#id');
   output = querySelector('#output');
@@ -32,6 +37,7 @@ void main() {
       shareLink.appendHtml(
           '<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
       newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
+
     } else {
       seed = int.parse(Uri.base.queryParameters['id']);
       shareLink.appendHtml(
@@ -39,6 +45,17 @@ void main() {
       newLink.appendHtml('<a href="${Uri.base.toString().substring(
           0, Uri.base.toString().indexOf("?"))}">make new ship</a>');
     }
+  }
+
+  if(dashboardLink != null) {
+    dashboardLink.appendHtml(
+      '<a href="dashboard.html?id=$seed">view ship dashboard</a>'
+    );
+  }
+  if(statsheetLink != null) {
+    statsheetLink.appendHtml(
+        '<a href="index.html?id=$seed">view ship stats</a>'
+    );
   }
 
 

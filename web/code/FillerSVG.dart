@@ -82,10 +82,10 @@ class Buttons implements FillerSVG {
   ];
 
   List<String> colors = [
-   "#b30000", //red
-   "#00b300", //green
-   "#0000b3", //blue
-   "#b3b300", //yellow
+   "#b35555", //red
+   "#55b355", //green
+   "#5555b3", //blue
+   "#b3b355", //yellow
   ];
   for(int i = 0; i < availableCoordinates.length; i++) {
    //draw base of button

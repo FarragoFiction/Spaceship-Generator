@@ -5,37 +5,7 @@ import 'displays/Display.dart';
 import 'Starship.dart';
 import 'FillerSVG.dart';
 
-List<String> temporaryFlavorLabels = [
-  "appeal",
-  "belief",
-  "bullets",
-  "charge",
-  "coherence",
-  "coins",
-  "disaster lvl",
-  "dreams",
-  "efficiency",
-  "energy",
-  "enthusiasm",
-  "errors",
-  "fuel",
-  "guns",
-  "holiday spirit",
-  "lifeforms",
-  "lives",
-  "love",
-  "mass",
-  "numbers",
-  "pain",
-  "points",
-  "potential",
-  "power",
-  "propability",
-  "rpm",
-  "strength",
-  "tears",
-  "velocity",
-];
+
 
 class Dashboard {
   final int WIDTH = 1200;
@@ -166,6 +136,10 @@ class Dashboard {
       Math.Random rand = new Math.Random(starship.getId());
       int displayCutoff = rand.nextInt(availableStartingPoints.length);
 
+      //setup labels
+      List<String> labels = new List<String>();
+      labels.addAll(starship.dashboardLabels);
+
       //setup the main displays
       for(int i = 0; i < displayCutoff; i++) {
         DivElement wrapper = new DivElement();
@@ -193,7 +167,10 @@ class Dashboard {
         label.style.backgroundColor = "black";
         label.text = "test";
         */
-        String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
+        //String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
+        int labelIndex = rand.nextInt(labels.length);
+        String label = labels[labelIndex];
+        labels.removeAt(labelIndex);
         wrapper.appendText(label);
         ret.append(wrapper);
       }//h
