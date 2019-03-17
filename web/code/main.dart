@@ -59,7 +59,10 @@ void main() {
   }
 
 
-  Starship starship = new Starship(seed);
+  //Starship starship = Starship.getRandomStarship(seed);
+  Starship starship = Starship.parseBetaDataString("40-1-0-3-2-1-4-0-3-0-1-5-0--Chicago Overcoat", seed);
+  print("my Beta data string is\n${starship.getBetaDatastring()}");
+
 
   if(name != null)
     name.text = "${starship.getName()}";

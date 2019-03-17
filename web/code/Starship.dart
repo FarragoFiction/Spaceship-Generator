@@ -5,8 +5,8 @@ final String CATCHALL = " Nobody knows why this ship was built. Who did this, ac
 
 //todo change naming system
 final List<String> DEFAULT_FIRST_NAMES = [
-  "Husk",
-  "Einstein",
+
+  //planets
   "Mercury",
   "Venus",
   "Earth",
@@ -16,10 +16,19 @@ final List<String> DEFAULT_FIRST_NAMES = [
   "Uranus",
   "Neptune",
   "Pluto",
+
+  //cities
+
+
+  //people
+  "Einstein",
+
+  //miscellaneous
   "Needle",
   "Starshine",
   "Cowboy",
   "Thimble",
+  "Husk",
 ];
 
 final List<String> DEFAULT_DASHBOARD_LABELS = [
@@ -48,18 +57,29 @@ final List<String> DEFAULT_DASHBOARD_LABELS = [
 ];
 
 
+
 class Starship {
 
-List<Room> rooms;
-String name;
-int id;
-String description;
-List<String> dashboardLabels;
+  List<Room> rooms;
+  String defaultName;
+  String trueName;
+  int id;
+  String description;
+  List<String> dashboardLabels;
 
-
-  Starship(int seed){
-    Random rand = new Random(seed);
+  Starship(int seed) {
     id = seed;
+    trueName = "";
+    rooms = new List<Room>();
+    dashboardLabels = new List<String>();
+    description = "";
+    String defaultName = "Husk";
+  }
+
+  static Starship getRandomStarship(int seed){
+    Starship starship = new Starship(seed);
+
+    Random rand = new Random(seed);
 
     //determine size
     bool isValid = false;
@@ -68,23 +88,26 @@ List<String> dashboardLabels;
       size = rand.nextInt(50) + 4;
       if(size >= 4) {
         isValid = true;
-        rooms = new List<Room>(size);
+        starship.rooms = new List<Room>(size);
       }
     }
 
     //assign rooms
-    for(int i = 0; i < rooms.length; i++) {
-      rooms[i] = new Room(rand.nextInt(Room.rooms.length));
+    for(int i = 0; i < starship.rooms.length; i++) {
+      starship.rooms[i] = new Room(rand.nextInt(Room.rooms.length));
     }
-    sortRooms();
+    starship.sortRooms();
 
-    dashboardLabels = new List<String>();
-    dashboardLabels.addAll(DEFAULT_DASHBOARD_LABELS);
+    starship.dashboardLabels = new List<String>();
+    starship.dashboardLabels.addAll(DEFAULT_DASHBOARD_LABELS);
 
     //assign description and name
-    setDescriptionAndName(rand);
+    starship.setDescriptionAndName(rand);
 
+    //todo remove this pls <3
+    //trueName = "Test Name UWU";
 
+    return starship;
   }
 
   int getSize() {
@@ -123,8 +146,12 @@ List<String> dashboardLabels;
     return ret;
   }
 
-  String getName() { //todo implement names
-    return name;
+  String getName() {
+    if(trueName == "") {
+      return defaultName;
+    } else {
+      return trueName;
+    }
   }
 
 
@@ -142,9 +169,6 @@ List<String> dashboardLabels;
     return "unknown";
   }
 
-
-
-
   //this is probably VERY bad practice?
   //but it works.
   void setDescriptionAndName(Random rand) {
@@ -152,7 +176,11 @@ List<String> dashboardLabels;
     String description = "";
     List<String> firstNames = DEFAULT_FIRST_NAMES;
     List<String> secondNames = [""]; //Want having NO second name to be a possibility.
+    //second names should be capitalized and have a space before them.
 
+    if(getSize() > 40) {
+      secondNames.add(" Overcoat"); //Hello yes it is me, homestuck gargbage
+    }
 
 
     if(getNumOfRoomType(Room.CREW_QUARTERS) > 0 && getNumOfRoomType(Room.LIFE_SUPPORT) > 0) {
@@ -318,6 +346,7 @@ List<String> dashboardLabels;
 
 
 
+
     if(getNumOfRoomType(Room.COMMONS_AREA) > cutoff) {
       if(getNumOfRoomType(Room.CREW_QUARTERS) > 0) {
         description += " It is very luxurious.";
@@ -337,7 +366,7 @@ List<String> dashboardLabels;
 
     this.description = description;
 
-    this.name =
+    this.defaultName =
         "${firstNames[rand.nextInt(firstNames.length)]}"
         "${secondNames[rand.nextInt(secondNames.length)]}";
 
@@ -367,5 +396,44 @@ List<String> dashboardLabels;
     return id;
   }
 
+  //gonna make a test version, and ask JR how to improve it later
 
+  /*
+  this version is pretty simple.
+  -string starts number of rooms at each index in order
+  -each is seperated by a dash, which signifies the next one
+  -in case i make future room additions the ship name is seperated from the numbers by two(2) dashes
+  */
+  String getBetaDatastring() {
+    String ret = "";
+    for(int i = 0; i < Room.rooms.length; i++) {
+      ret = "$ret${getNumOfRoomType(i)}-";
+    }
+    ret = "$ret-${getName()}";
+    return ret;
+  }
+
+  static Starship parseBetaDataString(String betaDataString, int seed) {
+    Starship starship = new Starship(seed);
+
+    bool doubleDashes = false;
+    //outer loop for each portion
+    int roomId = 0;
+    while(betaDataString.codeUnitAt(0) != "-".codeUnitAt(0)) {
+      String dataPiece = "";
+      while(betaDataString.codeUnitAt(0) != "-".codeUnitAt(0)) {
+        dataPiece = "$dataPiece${betaDataString.substring(0,1)}";
+        betaDataString = betaDataString.substring(1);
+      }
+      int numOfRooms = int.parse(dataPiece);
+      for(int i = 0; i < numOfRooms; i++) {
+        starship.rooms.add(new Room(roomId));
+      }
+      betaDataString = betaDataString.substring(1);
+      roomId++;
+    }
+    starship.trueName = betaDataString.substring(1);
+    starship.setDescriptionAndName(new Random(seed));
+    return starship;
+  }
 }
