@@ -60,7 +60,18 @@ void main() {
 
 
   //Starship starship = Starship.getRandomStarship(seed);
-  Starship starship = Starship.parseBetaDataString("40-1-0-3-2-1-4-0-3-0-1-5-0--Chicago Overcoat", seed);
+  //Starship starship = Starship.parseBetaDataString("20-1-0-3-2-1-4-0-3-0-1-5-0--Chicago%20Overcoat", seed);
+
+  Starship starship;
+
+  //b for blueprint
+  if(Uri.base.queryParameters['b'] == null) {
+    starship = Starship.getRandomStarship(seed);
+  } else {
+    starship = Starship.parseBetaDataString(Uri.base.queryParameters['b'], seed);
+  }
+
+
   print("my Beta data string is\n${starship.getBetaDatastring()}");
 
 

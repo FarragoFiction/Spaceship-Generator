@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:core';
 import 'Room.dart';
 
 final String CATCHALL = " Nobody knows why this ship was built. Who did this, actually?";
@@ -410,29 +411,35 @@ class Starship {
       ret = "$ret${getNumOfRoomType(i)}-";
     }
     ret = "$ret-${getName()}";
+
+
+    //gotta encode it so i can shove into URLs
+    ret = Uri.encodeComponent(ret);
+
     return ret;
   }
 
   static Starship parseBetaDataString(String betaDataString, int seed) {
+    String decodedString = Uri.decodeComponent(betaDataString);
     Starship starship = new Starship(seed);
 
     bool doubleDashes = false;
     //outer loop for each portion
     int roomId = 0;
-    while(betaDataString.codeUnitAt(0) != "-".codeUnitAt(0)) {
+    while(decodedString.codeUnitAt(0) != "-".codeUnitAt(0)) {
       String dataPiece = "";
-      while(betaDataString.codeUnitAt(0) != "-".codeUnitAt(0)) {
-        dataPiece = "$dataPiece${betaDataString.substring(0,1)}";
-        betaDataString = betaDataString.substring(1);
+      while(decodedString.codeUnitAt(0) != "-".codeUnitAt(0)) {
+        dataPiece = "$dataPiece${decodedString.substring(0,1)}";
+        decodedString = decodedString.substring(1);
       }
       int numOfRooms = int.parse(dataPiece);
       for(int i = 0; i < numOfRooms; i++) {
         starship.rooms.add(new Room(roomId));
       }
-      betaDataString = betaDataString.substring(1);
+      decodedString = decodedString.substring(1);
       roomId++;
     }
-    starship.trueName = betaDataString.substring(1);
+    starship.trueName = decodedString.substring(1);
     starship.setDescriptionAndName(new Random(seed));
     return starship;
   }
