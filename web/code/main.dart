@@ -71,6 +71,7 @@ void main() {
     starship = Starship.parseBetaDataString(Uri.base.queryParameters['b'], seed);
   }
 
+  //window.console.table(starship);
 
   print("my Beta data string is\n${starship.getBetaDatastring()}");
 
