@@ -4,12 +4,17 @@ import 'dart:svg';
 class NixieTube implements Display {
   int value;
   int maxValue;
-  final int WIDTH_CONSTANT = 30;
-  final int HEIGHT_CONSTANT = 40;
+  String label;
+
+  static final int WIDTH_CONSTANT = 30;
+  static final int HEIGHT_CONSTANT = 40;
+
+
   //todo visually: make inactive tubes more transparent
-  NixieTube(int value, int maxValue) {
+  NixieTube(int value, int maxValue, String label) {
     this.value = value;
     this.maxValue = maxValue;
+    this.label = label;
   }
 
   @override
@@ -20,6 +25,11 @@ class NixieTube implements Display {
   @override
   int getValue() {
     return value;
+  }
+
+  @override
+  String getLabel() {
+    return label;
   }
 
   @override
@@ -221,4 +231,7 @@ class NixieTube implements Display {
     return 1;
   }
 
+  int getTypeId() {
+    return NIXIE_ID;
+  }
 }

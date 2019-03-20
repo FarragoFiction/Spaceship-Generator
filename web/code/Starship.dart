@@ -405,7 +405,7 @@ class Starship {
   -each is seperated by a dash, which signifies the next one
   -in case i make future room additions the ship name is seperated from the numbers by two(2) dashes
   */
-  String getBetaDatastring() {
+  String getDatastring() {
     String ret = "";
     for(int i = 0; i < Room.rooms.length; i++) {
       ret = "$ret${getNumOfRoomType(i)}-";
@@ -419,7 +419,7 @@ class Starship {
     return ret;
   }
 
-  static Starship parseBetaDataString(String betaDataString, int seed) {
+  static Starship parseDataString(String betaDataString, int seed) {
     String decodedString = Uri.decodeComponent(betaDataString);
     Starship starship = new Starship(seed);
 
@@ -439,6 +439,7 @@ class Starship {
       decodedString = decodedString.substring(1);
       roomId++;
     }
+
     starship.trueName = decodedString.substring(1);
     starship.setDescriptionAndName(new Random(seed));
     return starship;

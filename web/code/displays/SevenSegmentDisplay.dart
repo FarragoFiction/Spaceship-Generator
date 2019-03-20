@@ -19,10 +19,17 @@ class SevenSegmentDisplay extends Display {
   };
   int value;
   int maxValue;
+  String label;
 
-  SevenSegmentDisplay(int value, int maxValue){
+  @override
+  int getTypeId(){
+    return SEVEN_SEGMENT_ID;
+  }
+
+  SevenSegmentDisplay(int value, int maxValue, String label){
     this.value = value;
     this.maxValue = maxValue;
+    this.label = label;
   }
 
   @override
@@ -33,6 +40,11 @@ class SevenSegmentDisplay extends Display {
   @override
   int getMaxValue(){
     return maxValue;
+  }
+
+  @override
+  String getLabel() {
+    return label;
   }
 
   @override
@@ -178,4 +190,6 @@ class Segment {
       ret = make6(startX);
     return ret;
   }
+
+
 }

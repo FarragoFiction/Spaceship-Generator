@@ -1,11 +1,9 @@
 import 'dart:core';
 import 'dart:svg';
 import 'dart:math';
+import 'DashboardSegment.dart';
 
-abstract class FillerSVG {
- SvgSvgElement getFiller();
-
-}
+abstract class FillerSVG extends DashboardSegment{}
 /* filler elements:
 buttons
 switches
@@ -13,12 +11,15 @@ switches
 
 class Switches implements FillerSVG {
  Random random;
+ List<bool> toggleStates;
+
  Switches(Random random) {
   this.random = random;
+  toggleStates = [];
  }
 
  @override
- SvgSvgElement getFiller() {
+ SvgSvgElement graphicalDisplay() {
   SvgSvgElement ret = new SvgSvgElement();
   ret.setAttribute("height", "100");
   ret.setAttribute("width", "150");
@@ -51,8 +52,10 @@ class Switches implements FillerSVG {
    switchPortion.setAttribute("fill", "#CCCCCC");
    if(random.nextBool()) {
     switchPortion.setAttribute("cy", "${coordinates[1] + 25 - 12}");
+    toggleStates.add(true);
    } else {
     switchPortion.setAttribute("cy", "${coordinates[1] + 25 + 12}");
+    toggleStates.add(false);
    }
    ret.append(switchPortion);
   }
@@ -62,12 +65,21 @@ class Switches implements FillerSVG {
 
 class Buttons implements FillerSVG {
  Random random;
+ List<int> colorStates;
+ static final List<String> COLORS = [
+  "#b35555", //red
+  "#55b355", //green
+  "#5555b3", //blue
+  "#b3b355", //yellow
+ ];
+
  Buttons(Random random) {
   this.random = random;
+  colorStates = [];
  }
 
  @override
- SvgSvgElement getFiller() {
+ SvgSvgElement graphicalDisplay() {
   SvgSvgElement ret = new SvgSvgElement();
   ret.setAttribute("height", "100");
   ret.setAttribute("width", "150");
@@ -81,12 +93,6 @@ class Buttons implements FillerSVG {
    [100,50]
   ];
 
-  List<String> colors = [
-   "#b35555", //red
-   "#55b355", //green
-   "#5555b3", //blue
-   "#b3b355", //yellow
-  ];
   for(int i = 0; i < availableCoordinates.length; i++) {
    //draw base of button
    List<int> coordinates = availableCoordinates[i];
@@ -97,11 +103,14 @@ class Buttons implements FillerSVG {
    base.setAttribute("stroke", "#555555");
    base.setAttribute("stroke-width", "5");
 
-
-   base.setAttribute("fill", colors[random.nextInt(colors.length)]);
+   int color = random.nextInt(COLORS.length);
+   colorStates.add(color);
+   base.setAttribute("fill", COLORS[color]);
    ret.append(base);
 
+
   }
+  //print(colorStates);
   return ret;
  }
 }

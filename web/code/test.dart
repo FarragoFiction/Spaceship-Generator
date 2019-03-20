@@ -13,11 +13,11 @@ SvgSvgElement sevenSegmentElement;
 DivElement output;
 InputElement slider;
 main() {
-  nixie = new NixieTube(113, 200);
+  nixie = new NixieTube(113, 200, "");
   nixieElement = nixie.graphicalDisplay();
-  gague = new AnalogueGague(113, 200, true, true);
+  gague = new AnalogueGague(113, 200, true, true, "");
   dialElement = gague.graphicalDisplay();
-  leds = new SevenSegmentDisplay(113, 200);
+  leds = new SevenSegmentDisplay(113, 200, "");
   sevenSegmentElement = leds.graphicalDisplay();
 
   DivElement output = querySelector('#output');

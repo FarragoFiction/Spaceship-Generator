@@ -8,12 +8,14 @@ class AnalogueGague implements Display {
   int maxValue;
   bool needle;
   bool bar;
+  String label;
 
-  AnalogueGague(int value, int maxValue, bool needle, bool bar) {
+  AnalogueGague(int value, int maxValue, bool needle, bool bar, String label) {
     this.value = value;
     this.maxValue = maxValue;
     this.needle = needle;
     this.bar = bar;
+    this.label = label;
   }
 
   @override
@@ -26,6 +28,10 @@ class AnalogueGague implements Display {
     return value;
   }
 
+  @override
+  String getLabel() {
+    return label;
+  }
 
   @override
   SvgSvgElement graphicalDisplay(){
@@ -77,8 +83,16 @@ class AnalogueGague implements Display {
       needleDisp.setAttribute("stroke-width", "2");
       ret.append(needleDisp);
     }
-    print("($stopX, $stopY)");
     return ret;
+  }
+
+  int getTypeId() {
+    if(needle && !bar)
+      return NEEDLE_GAUGE_ID;
+    else if(bar && !needle)
+      return BAR_GAUGE_ID;
+    //todo if you want to make them more flexible, add a 3rd case for when it has both. but there aint time for that today.
+    return -1;
   }
 
 

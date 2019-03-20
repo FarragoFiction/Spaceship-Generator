@@ -6,6 +6,7 @@ import 'Room.dart';
 import 'Dashboard.dart';
 import 'dart:svg';
 import 'displays/Display.dart';
+import 'BitConverter.dart';
 
 final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
@@ -30,14 +31,13 @@ void main() {
   output = querySelector('#output');
   canvasSpot = querySelector('#canvasSpot');
 
-  if(shareLink != null && newLink != null) {
+  if (shareLink != null && newLink != null) {
     if (Uri.base.queryParameters['id'] == null) {
       Random rand = new Random();
       seed = rand.nextInt(MAX_SEED);
       shareLink.appendHtml(
           '<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
       newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
-
     } else {
       seed = int.parse(Uri.base.queryParameters['id']);
       shareLink.appendHtml(
@@ -47,12 +47,12 @@ void main() {
     }
   }
 
-  if(dashboardLink != null) {
+  if (dashboardLink != null) {
     dashboardLink.appendHtml(
-      '<a href="dashboard.html?id=$seed">view ship dashboard</a>'
+        '<a href="dashboard.html?id=$seed">view ship dashboard</a>'
     );
   }
-  if(statsheetLink != null) {
+  if (statsheetLink != null) {
     statsheetLink.appendHtml(
         '<a href="index.html?id=$seed">view ship stats</a>'
     );
@@ -65,28 +65,32 @@ void main() {
   Starship starship;
 
   //b for blueprint
-  if(Uri.base.queryParameters['b'] == null) {
+  if (Uri.base.queryParameters['b'] == null) {
     starship = Starship.getRandomStarship(seed);
   } else {
-    starship = Starship.parseBetaDataString(Uri.base.queryParameters['b'], seed);
+    starship = Starship.parseDataString(Uri.base.queryParameters['b'], seed);
   }
 
   //window.console.table(starship);
 
-  print("my Beta data string is\n${starship.getBetaDatastring()}");
+  print("my Beta data string is\n${starship.getDatastring()}");
 
 
-  if(name != null)
+  if (name != null)
     name.text = "${starship.getName()}";
-  if(id != null)
+  if (id != null)
     id.text = "ID: ${starship.getId()}";
 
   buildDisplay(starship);
   //roomList(starship);
-  if(output != null)
+  if (output != null) {
     output.appendText(starship.getDescription());
-  if(canvasSpot != null)
+  }
+  if (canvasSpot != null) {
+    Dashboard dashboard = new Dashboard(starship);
     canvasSpot.append(new Dashboard(starship).buildDashboard());
+
+  }
 }
 
 void roomList(Starship starship) {
@@ -109,7 +113,7 @@ void buildDisplay(Starship starship) {
     SvgSvgElement element;
 
     if(starship.getNumOfRoomType(i) > 0) {
-      NixieTube numbers = new NixieTube(starship.getNumOfRoomType(i), 99);
+      NixieTube numbers = new NixieTube(starship.getNumOfRoomType(i), 99, "");
 
       element = numbers.graphicalDisplay();
       TableCellElement bar = new TableCellElement();

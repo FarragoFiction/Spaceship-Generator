@@ -1,14 +1,21 @@
 import 'dart:core';
 import 'dart:svg';
+import '../DashboardSegment.dart';
 
 export 'AnalogueGague.dart';
 export 'NixieTube.dart';
 export 'SevenSegmentDisplay.dart';
 
-abstract class Display {
+final int NEEDLE_GAUGE_ID = 0;
+final int BAR_GAUGE_ID = 1;
+final int NIXIE_ID = 2;
+final int SEVEN_SEGMENT_ID = 3;
+
+abstract class Display extends DashboardSegment {
   int getMaxValue();//maximum value the display can show
   int getValue(); //current value displayed by Display
-  SvgSvgElement graphicalDisplay();
+  int getTypeId(); //so i know what my id is
+  String getLabel();
 
 }
 

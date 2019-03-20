@@ -1,16 +1,16 @@
 import 'dart:html';
 import 'dart:svg' as Svg;
 import 'dart:math' as Math;
-import 'displays/Display.dart';
+import 'DashboardSegment.dart';
 import 'Starship.dart';
-import 'FillerSVG.dart';
+import 'BitConverter.dart';
 
 
 
 class Dashboard {
-  final int WIDTH = 1200;
-  final int HEIGHT = 800;
-  final List<String> COLORS = [
+  static final int WIDTH = 1200;
+  static final int HEIGHT = 800;
+  static final List<String> STAR_COLORS = [
     "#FFFFFF",
     "#FFFFCC",
     "#FFCCFF",
@@ -18,6 +18,28 @@ class Dashboard {
     "#CCFFCC",
     "#FFCCCC",
     "#CCCCFF",
+  ];
+
+  static final List<List<int>> SEGMENT_STARTING_POINTS = [ //list of the coordinates i can start drawing displays in
+    [0, 650],
+    [171, 650],
+    [343, 650],
+    [514, 650],
+    [686, 650],
+    [858, 650],
+    [1039, 650],
+    [1039, 0],
+    [1039, 100],
+    [1039, 200],
+    [1039, 300],
+    [1039, 400],
+    [1039, 500],
+    [0, 0],
+    [0, 100],
+    [0, 200],
+    [0, 300],
+    [0, 400],
+    [0, 500],
   ];
 
   Starship starship;
@@ -62,7 +84,7 @@ class Dashboard {
       int y = random.nextInt(HEIGHT);
       int r = 1 + random.nextInt(3);
 
-      ctx.fillStyle = COLORS[random.nextInt(COLORS.length)];
+      ctx.fillStyle = STAR_COLORS[random.nextInt(STAR_COLORS.length)];
       ctx.beginPath();
       ctx.arc(x, y, r, 0, 2 * Math.PI);
       ctx.fill();
@@ -107,29 +129,7 @@ class Dashboard {
     ret.style.position = "absolute";
     ret.style.zIndex = "1";
 
-    List<List<int>> availableStartingPoints = [ //list of the coordinates i can start drawing displays in
-        [0, 650],
-        [171, 650],
-        [343, 650],
-        [514, 650],
-        [686, 650],
-        [858, 650],
-        [1039, 650],
-
-        [1039, 0],
-        [1039, 100],
-        [1039, 200],
-        [1039, 300],
-        [1039, 400],
-        [1039, 500],
-
-        [0, 0],
-        [0, 100],
-        [0, 200],
-        [0, 300],
-        [0, 400],
-        [0, 500],
-      ];
+    List<List<int>> availableStartingPoints = SEGMENT_STARTING_POINTS;
 
 
 
@@ -144,7 +144,15 @@ class Dashboard {
       for(int i = 0; i < displayCutoff; i++) {
         DivElement wrapper = new DivElement();
         List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
-        SevenSegmentDisplay display = makeDisplay(rand.nextInt(4), rand.nextInt(101), 100);
+
+        //add a label
+        int labelIndex = rand.nextInt(labels.length);
+        String label = labels[labelIndex];
+        labels.removeAt(labelIndex);
+
+        Display display = makeDisplay(rand.nextInt(4), rand.nextInt(101), 100, label);
+
+        print(encodeDatastringOfSegment(display));
 
         //make the svg
         Svg.SvgSvgElement svg = display.graphicalDisplay();
@@ -156,21 +164,9 @@ class Dashboard {
         wrapper.style.left = "${x}px";
         wrapper.append(svg);
 
-        //add a label
-        /*DivElement label = new DivElement();
-        label.style.position = "absolute";
-        label.style.top = "${coordinates[1] + boxHeight + 15}px";
-        label.style.left = "${coordinates[0]}px";
 
-        //label.style.width = "$boxWidth";
-        //label.style.textAlign = "center";
-        label.style.backgroundColor = "black";
-        label.text = "test";
-        */
         //String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
-        int labelIndex = rand.nextInt(labels.length);
-        String label = labels[labelIndex];
-        labels.removeAt(labelIndex);
+
         wrapper.appendText(label);
         ret.append(wrapper);
       }//h
@@ -183,7 +179,10 @@ class Dashboard {
         int type = rand.nextInt(2);
         if(type == 0) {
           Buttons filler = new Buttons(rand);
-          Svg.SvgSvgElement fillerSvg = filler.getFiller();
+
+          Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+
+          print(encodeDatastringOfSegment(filler));
 
           int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
           int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
@@ -195,8 +194,10 @@ class Dashboard {
           ret.append(fillerSvg);
         } else if(type == 1) {
           Switches filler = new Switches(rand);
-          Svg.SvgSvgElement fillerSvg = filler.getFiller();
 
+          Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+
+          print(encodeDatastringOfSegment(filler));
           int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
           int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
 
@@ -216,18 +217,112 @@ class Dashboard {
 
 
 
-
-  Display makeDisplay(int id, num value, num maxValue) {
+  //TODO make this use the constatns
+  static Display makeDisplay(int id, num value, num maxValue, String label) {
     if(id == 0)
-      return new AnalogueGague(value, maxValue, true, false);
+      return new AnalogueGague(value, maxValue, true, false, label);
     if(id == 1)
-      return new AnalogueGague(value, maxValue, false, true);
+      return new AnalogueGague(value, maxValue, false, true, label);
     if(id == 2)
-      return new NixieTube(value, maxValue);
+      return new NixieTube(value, maxValue, label);
     if(id == 3)
-      return new SevenSegmentDisplay(value, maxValue);
+      return new SevenSegmentDisplay(value, maxValue, label);
     return null;
   }
+
+
+
+
+  /*paraphrased notes from JR about datastrings:
+-take shortcuts where you can, but beware of the ways they can limit you
+-you can store booleans as a single bit and then pack multiple bits together into a byte (8 bits)
+ */
+
+  /*
+  So for these datastrings I think im good, but the dashboard ones maybe not.
+  Most of the space is gonna be occupied by strings, but I can simplify everything else.
+ */
+
+  /*
+  if the first character is one of the following it's a display.
+    0: analogue gague with needle
+    1: analogue gague with bar
+    2: nixie tube
+    3: seven segment display
+
+  the next two characters are it's value.
+  BE SURE TO ENCODE SINGLE DIGIT VALUES WITH A 0 IN FRONT OF THEM.
+  after that, it's the display label. just a plain string.
+
+   */
+  static String encodeDatastringOfSegment(DashboardSegment segment) {
+    String ret;
+
+    if(segment is Display) {
+      //what am I? [0]
+      ret = "${segment.getTypeId()}";
+      //what is my value? [1-2]
+      if (segment.getValue() < 10) {
+        ret += "00${segment.getValue()}";
+      } else if (segment.getValue() < 100) {
+        ret += "0${segment.getValue()}";
+      } else {
+        ret += "${segment.getValue()}";
+      }
+      //what is my name? [3-n]
+      ret += segment.getLabel();
+    } else if(segment is FillerSVG) {
+      ret = "4";
+      List<bool> bits = [];
+      if(segment is Switches) { //i can tell the difference between these based on how long they are. Switches should be 2 digits, buttons should be 3
+        bits.addAll(segment.toggleStates);
+        ret += BitConverter.toUnsignedHexadecimal(bits);
+      } else if(segment is Buttons) {
+        for(int i = 0; i < segment.colorStates.length; i++) {
+          if (segment.colorStates[i] == 0 || segment.colorStates[i] == 1) {
+            bits.add(false);
+          } else {
+            bits.add(true);
+          }
+          if(segment.colorStates[i] == 0 || segment.colorStates[i] == 2) {
+            bits.add(false);
+          } else {
+            bits.add(true);
+          }
+        }
+        ret += BitConverter.toUnsignedHexadecimal(bits);
+      }
+    }
+
+    //todo find a better way to signify the end of this portion
+    ret += "'";
+    //this is the single quotation mark ('). todo if i keep this as the separation character make sure people dont actually use it or else very bad things hapen.
+    //maybe i can use a reserved character? I dont wanna try that just yet since it could very likely fuck shit
+
+    //not sure if i should encode for URL just yet, gonna leave it without for now
+    return ret;
+  }
+
+  //fuck, i guess return a list with the display and it's label in it?
+  static DashboardSegment decodeDatastringOfSegment(String datastring) {
+    DashboardSegment segment;
+
+    int displayId = int.parse(datastring.substring(0,1));
+    if(displayId < 4) { //todo change this if you add more display types
+      String label = datastring.substring(4, datastring.length - 1);
+      int displayValue = int.parse(datastring.substring(1,4));
+      segment = makeDisplay(displayId, displayValue, 100, label);
+    } else {
+      //todo implement building the other things
+    }
+
+    return segment;
+  }
+
+
+
+
+
 }
 
 //this is gonna be hard.
