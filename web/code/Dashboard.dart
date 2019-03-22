@@ -65,7 +65,7 @@ class Dashboard {
     drawBackground(ctx);
     drawStars(ctx);
     drawFrame(ctx);
-    ret.append(drawDisplays());
+    ret.append(drawRandomDisplays());
 
     canvasDiv.append(canvas);
     ret.append(canvasDiv);
@@ -118,7 +118,7 @@ class Dashboard {
 
   //assume they fit in 160 x 100 size area
   //should be room for 19 displays
-  DivElement drawDisplays() {
+  DivElement drawRandomDisplays() {
     int boxWidth = 160;
     int boxHeight = 100;
     DivElement ret = new DivElement();
@@ -216,6 +216,96 @@ class Dashboard {
 
     return ret;
   }
+
+  /*
+  DivElement drawCustomDisplays(String datastring) {
+    int boxWidth = 160;
+    int boxHeight = 100;
+    DivElement ret = new DivElement();
+    ret.style.position = "absolute";
+    ret.style.zIndex = "1";
+
+
+    //setup the main displays
+    for (int i = 0; i < 19; i++) {
+      DivElement wrapper = new DivElement();
+
+
+      List<int> coordinates = SEGMENT_STARTING_POINTS[i];
+
+      //add a label
+
+      //TODO SPLIT THE DATASTRING
+      Display display = decodeDatastringOfSegment(datastring);
+
+      segments[coordinates[2]] = display;
+
+      //make the svg
+      Svg.SvgSvgElement svg = display.graphicalDisplay();
+      wrapper.style.position = "absolute";
+      //print(svg.getAttribute("height"));
+      int x = coordinates[0] +
+          (boxWidth - int.parse(svg.getAttribute("width"))) ~/ 2;
+      int y = coordinates[1] +
+          (boxWidth - int.parse(svg.getAttribute("height"))) ~/ 2;
+      wrapper.style.top = "${y}px";
+      wrapper.style.left = "${x}px";
+      wrapper.append(svg);
+
+      //String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
+
+      wrapper.appendText(label);
+      ret.append(wrapper);
+    }
+
+    //add filler elements
+    while (availableStartingPoints.length > 0) {
+      int spotInOrder = rand.nextInt(availableStartingPoints.length);
+      List<int> coordinates = availableStartingPoints.removeAt(spotInOrder);
+
+      //determine what kind of filler
+      int type = rand.nextInt(2);
+      if (type == 0) {
+        Buttons filler = new Buttons(rand);
+
+        Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+        segments[coordinates[2]] = filler;
+
+        //print(encodeDatastringOfSegment(filler));
+
+        int x = coordinates[0] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+        int y = coordinates[1] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+
+        fillerSvg.style.position = "absolute";
+        fillerSvg.style.top = "${y}px";
+        fillerSvg.style.left = "${x}px";
+
+        ret.append(fillerSvg);
+      } else if (type == 1) {
+        Switches filler = new Switches(rand);
+
+        Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+        segments[coordinates[2]] = filler;
+
+        //print(encodeDatastringOfSegment(filler));
+        int x = coordinates[0] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+        int y = coordinates[1] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+
+        fillerSvg.style.position = "absolute";
+        fillerSvg.style.top = "${y}px";
+        fillerSvg.style.left = "${x}px";
+
+        ret.append(fillerSvg);
+      }
+    }
+
+    return ret;
+  }
+   */
 
   //TODO make this use the constatns
   static Display makeDisplay(int id, num value, num maxValue, String label) {
@@ -322,6 +412,12 @@ class Dashboard {
     //print(ret);
     return Uri.encodeComponent(ret);
   }
+
+  /*static List<String> splitDatastring(String datastring) {
+    String single= "";
+    List<String> ret = new List<String>();
+    for(int i = 0; i < datastring.)
+  }*/
 }
 
 /*LAYERS IN ORDER
