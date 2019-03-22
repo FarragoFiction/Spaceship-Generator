@@ -88,7 +88,10 @@ void main() {
   }
   if (canvasSpot != null) {
     Dashboard dashboard = new Dashboard(starship);
-    canvasSpot.append(new Dashboard(starship).buildDashboard());
+    canvasSpot.append(dashboard.buildDashboard());
+    print("my display data string is\n"
+    "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
+
 
   }
 }

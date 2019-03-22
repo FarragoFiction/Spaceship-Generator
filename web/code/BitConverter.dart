@@ -47,8 +47,9 @@ class BitConverter {
     //print("$debugBinary");
 
     ret = "$ret${HEXADECIMAL_DIGITS[value]}";
-
-
     return ret;
+  }
+
+  static List<bool> fromUnsignedHexadecimal(String hex) {
   }
 }

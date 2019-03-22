@@ -5,8 +5,6 @@ import 'DashboardSegment.dart';
 import 'Starship.dart';
 import 'BitConverter.dart';
 
-
-
 class Dashboard {
   static final int WIDTH = 1200;
   static final int HEIGHT = 800;
@@ -20,27 +18,31 @@ class Dashboard {
     "#CCCCFF",
   ];
 
-  static final List<List<int>> SEGMENT_STARTING_POINTS = [ //list of the coordinates i can start drawing displays in
-    [0, 650],
-    [171, 650],
-    [343, 650],
-    [514, 650],
-    [686, 650],
-    [858, 650],
-    [1039, 650],
-    [1039, 0],
-    [1039, 100],
-    [1039, 200],
-    [1039, 300],
-    [1039, 400],
-    [1039, 500],
-    [0, 0],
-    [0, 100],
-    [0, 200],
-    [0, 300],
-    [0, 400],
-    [0, 500],
+  static final List<List<int>> SEGMENT_STARTING_POINTS = [
+    //list of the coordinates i can start drawing displays in
+    //and their index in THIS list because im dummy stupid
+    [0, 650, 0],
+    [171, 650, 1],
+    [343, 650, 2],
+    [514, 650, 3],
+    [686, 650, 4],
+    [858, 650, 5],
+    [1039, 650, 6],
+    [1039, 0, 7],
+    [1039, 100, 8],
+    [1039, 200, 9],
+    [1039, 300, 10],
+    [1039, 400, 11],
+    [1039, 500, 12],
+    [0, 0, 13],
+    [0, 100, 14],
+    [0, 200, 15],
+    [0, 300, 16],
+    [0, 400, 17],
+    [0, 500, 18],
   ];
+
+  List<DashboardSegment> segments = new List(19);
 
   Starship starship;
 
@@ -51,7 +53,7 @@ class Dashboard {
   DivElement buildDashboard() {
     DivElement ret = new DivElement();
     //ret.style.position = "relative";
-    
+
     DivElement canvasDiv = new DivElement();
     canvasDiv.style.position = "absolute";
     canvasDiv.style.zIndex = "0";
@@ -79,7 +81,7 @@ class Dashboard {
   //draw a random number of stars in random areas. randomly choose their color from a bunch of pastels.
   CanvasRenderingContext2D drawStars(CanvasRenderingContext2D ctx) {
     Math.Random random = new Math.Random(starship.getId());
-    for(int i = 0; i <= 15 + random.nextInt(50); i++) {
+    for (int i = 0; i <= 15 + random.nextInt(50); i++) {
       int x = random.nextInt(WIDTH);
       int y = random.nextInt(HEIGHT);
       int r = 1 + random.nextInt(3);
@@ -91,13 +93,9 @@ class Dashboard {
     }
   }
 
-  CanvasRenderingContext2D drawFocus(CanvasRenderingContext2D ctx) {
+  CanvasRenderingContext2D drawFocus(CanvasRenderingContext2D ctx) {}
 
-  }
-
-  CanvasRenderingContext2D drawWindow(CanvasRenderingContext2D ctx) {
-
-  }
+  CanvasRenderingContext2D drawWindow(CanvasRenderingContext2D ctx) {}
 
   CanvasRenderingContext2D drawFrame(CanvasRenderingContext2D ctx) {
     String casingColor = "#a6a6a6";
@@ -108,8 +106,6 @@ class Dashboard {
     ctx.fillRect(0, HEIGHT - 140, WIDTH, 100);
     ctx.fillRect(0, 0, 180, HEIGHT);
     ctx.fillRect(WIDTH - 180, 0, 160, HEIGHT);
-
-
 
     ctx.fillStyle = casingColor;
 
@@ -131,118 +127,113 @@ class Dashboard {
 
     List<List<int>> availableStartingPoints = SEGMENT_STARTING_POINTS;
 
+    Math.Random rand = new Math.Random(starship.getId());
+    int displayCutoff = rand.nextInt(availableStartingPoints.length);
 
+    //setup labels
+    List<String> labels = new List<String>();
+    labels.addAll(starship.dashboardLabels);
 
-      Math.Random rand = new Math.Random(starship.getId());
-      int displayCutoff = rand.nextInt(availableStartingPoints.length);
+    //setup the main displays
+    for (int i = 0; i < displayCutoff; i++) {
+      DivElement wrapper = new DivElement();
+      int index = rand.nextInt(availableStartingPoints.length);
 
-      //setup labels
-      List<String> labels = new List<String>();
-      labels.addAll(starship.dashboardLabels);
+      List<int> coordinates = availableStartingPoints.removeAt(index);
 
-      //setup the main displays
-      for(int i = 0; i < displayCutoff; i++) {
-        DivElement wrapper = new DivElement();
-        List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
+      //add a label
+      int labelIndex = rand.nextInt(labels.length);
+      String label = labels[labelIndex];
+      labels.removeAt(labelIndex);
 
-        //add a label
-        int labelIndex = rand.nextInt(labels.length);
-        String label = labels[labelIndex];
-        labels.removeAt(labelIndex);
+      Display display =
+          makeDisplay(rand.nextInt(4), rand.nextInt(101), 100, label);
 
-        Display display = makeDisplay(rand.nextInt(4), rand.nextInt(101), 100, label);
+      segments[coordinates[2]] = display;
 
-        print(encodeDatastringOfSegment(display));
+      //make the svg
+      Svg.SvgSvgElement svg = display.graphicalDisplay();
+      wrapper.style.position = "absolute";
+      //print(svg.getAttribute("height"));
+      int x = coordinates[0] +
+          (boxWidth - int.parse(svg.getAttribute("width"))) ~/ 2;
+      int y = coordinates[1] +
+          (boxWidth - int.parse(svg.getAttribute("height"))) ~/ 2;
+      wrapper.style.top = "${y}px";
+      wrapper.style.left = "${x}px";
+      wrapper.append(svg);
 
-        //make the svg
-        Svg.SvgSvgElement svg = display.graphicalDisplay();
-        wrapper.style.position = "absolute";
-        //print(svg.getAttribute("height"));
-        int x = coordinates[0] + (boxWidth - int.parse(svg.getAttribute("width"))) ~/ 2;
-        int y = coordinates[1] + (boxWidth - int.parse(svg.getAttribute("height"))) ~/ 2;
-        wrapper.style.top = "${y}px";
-        wrapper.style.left = "${x}px";
-        wrapper.append(svg);
+      //String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
 
+      wrapper.appendText(label);
+      ret.append(wrapper);
+    }
 
-        //String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
+    //add filler elements
+    while (availableStartingPoints.length > 0) {
+      int spotInOrder = rand.nextInt(availableStartingPoints.length);
+      List<int> coordinates = availableStartingPoints.removeAt(spotInOrder);
 
-        wrapper.appendText(label);
-        ret.append(wrapper);
-      }//h
+      //determine what kind of filler
+      int type = rand.nextInt(2);
+      if (type == 0) {
+        Buttons filler = new Buttons(rand);
 
-      //add filler elements
-      while(availableStartingPoints.length > 0) {
-        List<int> coordinates = availableStartingPoints.removeAt(rand.nextInt(availableStartingPoints.length));
+        Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+        segments[coordinates[2]] = filler;
 
-        //determine what kind of filler
-        int type = rand.nextInt(2);
-        if(type == 0) {
-          Buttons filler = new Buttons(rand);
+        //print(encodeDatastringOfSegment(filler));
 
-          Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+        int x = coordinates[0] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+        int y = coordinates[1] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
 
-          print(encodeDatastringOfSegment(filler));
+        fillerSvg.style.position = "absolute";
+        fillerSvg.style.top = "${y}px";
+        fillerSvg.style.left = "${x}px";
 
-          int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
-          int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+        ret.append(fillerSvg);
+      } else if (type == 1) {
+        Switches filler = new Switches(rand);
 
-          fillerSvg.style.position = "absolute";
-          fillerSvg.style.top = "${y}px";
-          fillerSvg.style.left = "${x}px";
+        Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+        segments[coordinates[2]] = filler;
 
-          ret.append(fillerSvg);
-        } else if(type == 1) {
-          Switches filler = new Switches(rand);
+        //print(encodeDatastringOfSegment(filler));
+        int x = coordinates[0] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+        int y = coordinates[1] +
+            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
 
-          Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
+        fillerSvg.style.position = "absolute";
+        fillerSvg.style.top = "${y}px";
+        fillerSvg.style.left = "${x}px";
 
-          print(encodeDatastringOfSegment(filler));
-          int x = coordinates[0] + (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
-          int y = coordinates[1] + (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
-
-          fillerSvg.style.position = "absolute";
-          fillerSvg.style.top = "${y}px";
-          fillerSvg.style.left = "${x}px";
-
-          ret.append(fillerSvg);
-        }
-
-
+        ret.append(fillerSvg);
       }
+    }
 
-
-      return ret;
+    return ret;
   }
-
-
 
   //TODO make this use the constatns
   static Display makeDisplay(int id, num value, num maxValue, String label) {
-    if(id == 0)
-      return new AnalogueGague(value, maxValue, true, false, label);
-    if(id == 1)
-      return new AnalogueGague(value, maxValue, false, true, label);
-    if(id == 2)
-      return new NixieTube(value, maxValue, label);
-    if(id == 3)
-      return new SevenSegmentDisplay(value, maxValue, label);
+    if (id == 0) return new AnalogueGague(value, maxValue, true, false, label);
+    if (id == 1) return new AnalogueGague(value, maxValue, false, true, label);
+    if (id == 2) return new NixieTube(value, maxValue, label);
+    if (id == 3) return new SevenSegmentDisplay(value, maxValue, label);
     return null;
   }
-
-
-
 
   /*paraphrased notes from JR about datastrings:
 -take shortcuts where you can, but beware of the ways they can limit you
 -you can store booleans as a single bit and then pack multiple bits together into a byte (8 bits)
  */
-
   /*
   So for these datastrings I think im good, but the dashboard ones maybe not.
   Most of the space is gonna be occupied by strings, but I can simplify everything else.
  */
-
   /*
   if the first character is one of the following it's a display.
     0: analogue gague with needle
@@ -258,7 +249,7 @@ class Dashboard {
   static String encodeDatastringOfSegment(DashboardSegment segment) {
     String ret;
 
-    if(segment is Display) {
+    if (segment is Display) {
       //what am I? [0]
       ret = "${segment.getTypeId()}";
       //what is my value? [1-2]
@@ -271,20 +262,21 @@ class Dashboard {
       }
       //what is my name? [3-n]
       ret += segment.getLabel();
-    } else if(segment is FillerSVG) {
+    } else if (segment is FillerSVG) {
       ret = "4";
       List<bool> bits = [];
-      if(segment is Switches) { //i can tell the difference between these based on how long they are. Switches should be 2 digits, buttons should be 3
+      if (segment is Switches) {
+        //i can tell the difference between these based on how long they are. Switches should be 2 digits, buttons should be 3
         bits.addAll(segment.toggleStates);
         ret += BitConverter.toUnsignedHexadecimal(bits);
-      } else if(segment is Buttons) {
-        for(int i = 0; i < segment.colorStates.length; i++) {
+      } else if (segment is Buttons) {
+        for (int i = 0; i < segment.colorStates.length; i++) {
           if (segment.colorStates[i] == 0 || segment.colorStates[i] == 1) {
             bits.add(false);
           } else {
             bits.add(true);
           }
-          if(segment.colorStates[i] == 0 || segment.colorStates[i] == 2) {
+          if (segment.colorStates[i] == 0 || segment.colorStates[i] == 2) {
             bits.add(false);
           } else {
             bits.add(true);
@@ -307,10 +299,11 @@ class Dashboard {
   static DashboardSegment decodeDatastringOfSegment(String datastring) {
     DashboardSegment segment;
 
-    int displayId = int.parse(datastring.substring(0,1));
-    if(displayId < 4) { //todo change this if you add more display types
+    int displayId = int.parse(datastring.substring(0, 1));
+    if (displayId < 4) {
+      //todo change this if you add more display types
       String label = datastring.substring(4, datastring.length - 1);
-      int displayValue = int.parse(datastring.substring(1,4));
+      int displayValue = int.parse(datastring.substring(1, 4));
       segment = makeDisplay(displayId, displayValue, 100, label);
     } else {
       //todo implement building the other things
@@ -319,13 +312,17 @@ class Dashboard {
     return segment;
   }
 
+  static String encodeCompleteDatastring(List<DashboardSegment> segments) {
+    String ret = "";
+    //print(segments.toString());
+    for(int i = 0; i < segments.length; i++) {
+      ret = "$ret${encodeDatastringOfSegment(segments[i])}";
+    }
 
-
-
-
+    //print(ret);
+    return Uri.encodeComponent(ret);
+  }
 }
-
-//this is gonna be hard.
 
 /*LAYERS IN ORDER
 -black canvas BG.
