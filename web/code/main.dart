@@ -31,32 +31,7 @@ void main() {
   output = querySelector('#output');
   canvasSpot = querySelector('#canvasSpot');
 
-  if (shareLink != null && newLink != null) {
-    if (Uri.base.queryParameters['id'] == null) {
-      Random rand = new Random();
-      seed = rand.nextInt(MAX_SEED);
-      shareLink.appendHtml(
-          '<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
-      newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
-    } else {
-      seed = int.parse(Uri.base.queryParameters['id']);
-      shareLink.appendHtml(
-          '<a href="${Uri.base.toString()}">link to this ship</a>');
-      newLink.appendHtml('<a href="${Uri.base.toString().substring(
-          0, Uri.base.toString().indexOf("?"))}">make new ship</a>');
-    }
-  }
-
-  if (dashboardLink != null) {
-    dashboardLink.appendHtml(
-        '<a href="dashboard.html?id=$seed">view ship dashboard</a>'
-    );
-  }
-  if (statsheetLink != null) {
-    statsheetLink.appendHtml(
-        '<a href="index.html?id=$seed">view ship stats</a>'
-    );
-  }
+  String datastringQueryFull = "";
 
 
   //Starship starship = Starship.getRandomStarship(seed);
@@ -64,11 +39,21 @@ void main() {
 
   Starship starship;
 
+
+  //id is the seed
+  if (Uri.base.queryParameters['id'] == null) {
+    Random rand = new Random();
+    seed = rand.nextInt(MAX_SEED);
+  } else {
+    seed = int.parse(Uri.base.queryParameters['id']);
+  }
+
   //b for blueprint
   if (Uri.base.queryParameters['b'] == null) {
     starship = Starship.getRandomStarship(seed);
   } else {
     starship = Starship.parseDataString(Uri.base.queryParameters['b'], seed);
+    datastringQueryFull += "&b=${Uri.base.queryParameters['b']}";
   }
 
   //window.console.table(starship);
@@ -88,12 +73,51 @@ void main() {
   }
   if (canvasSpot != null) {
     Dashboard dashboard = new Dashboard(starship);
-    canvasSpot.append(dashboard.buildRandomDashboard());
-    //todo allow custom dashboards
-    print("my display data string is\n"
+
+    //d for dashboard
+    if (Uri.base.queryParameters['d'] == null) {
+      canvasSpot.append(dashboard.buildRandomDashboard());
+    } else {
+      String datastring = Uri.base.queryParameters['d'];
+      canvasSpot.append(dashboard.buildCustomDashboard(datastring));
+      datastringQueryFull += "&d=${Uri.base.queryParameters['d']}";
+    }
+
+    print("my dashboard data string is\n"
     "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
+  }
 
+  //prepare Links
+  if (shareLink != null && newLink != null) {
+    if (Uri.base.queryParameters['id'] == null) {
+      Random rand = new Random();
+      seed = rand.nextInt(MAX_SEED);
+      if(datastringQueryFull == "") {
+        shareLink.appendHtml(
+            '<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
+      } else {
+        shareLink.appendHtml(
+            '<a href="${Uri.base.toString()}&id=$seed">link to this ship</a>');
+      }
+      newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
+    } else {
+      seed = int.parse(Uri.base.queryParameters['id']);
+      shareLink.appendHtml(
+          '<a href="${Uri.base.toString()}">link to this ship</a>');
+      newLink.appendHtml('<a href="${Uri.base.toString().substring(
+          0, Uri.base.toString().indexOf("?"))}">make new ship</a>');
+    }
+  }
 
+  if (dashboardLink != null) {
+    dashboardLink.appendHtml(
+        '<a href="dashboard.html?id=${seed}$datastringQueryFull">view ship dashboard</a>'
+    );
+  }
+  if (statsheetLink != null) {
+    statsheetLink.appendHtml(
+        '<a href="index.html?id=${seed}$datastringQueryFull">view ship stats</a>'
+    );
   }
 }
 
@@ -138,3 +162,8 @@ void buildDisplay(Starship starship) {
     output.append(table);
 }
 
+/*
+  right so for URLs.
+  -if there is a datastring already in the URL include it when linking to
+  the ship from the seed link & the dashboard link
+ */
