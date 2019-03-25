@@ -10,12 +10,14 @@ switches
 */
 
 class Switches implements FillerSVG {
- Random random;
  List<bool> toggleStates;
 
- Switches(Random random) {
-  this.random = random;
-  toggleStates = [];
+ static Switches randomSwitches(Random random) {
+   return new Switches(randomToggleStates(random));
+ }
+
+ Switches(List<bool> toggleStates) {
+  this.toggleStates = toggleStates;
  }
 
  @override
@@ -50,21 +52,26 @@ class Switches implements FillerSVG {
    switchPortion.setAttribute("rx", "3");
    switchPortion.setAttribute("ry", "12");
    switchPortion.setAttribute("fill", "#CCCCCC");
-   if(random.nextBool()) {
+   if(toggleStates[i]) {
     switchPortion.setAttribute("cy", "${coordinates[1] + 25 - 12}");
-    toggleStates.add(true);
    } else {
     switchPortion.setAttribute("cy", "${coordinates[1] + 25 + 12}");
-    toggleStates.add(false);
    }
    ret.append(switchPortion);
   }
   return ret;
  }
+
+ static List<bool> randomToggleStates(Random random) {
+   List<bool> toggleStates = [];
+   for(int i = 0; i < 6; i++) {
+     toggleStates.add(random.nextBool());
+   }
+   return toggleStates;
+ }
 }
 
 class Buttons implements FillerSVG {
- Random random;
  List<int> colorStates;
  static final List<String> COLORS = [
   "#b35555", //red
@@ -73,9 +80,13 @@ class Buttons implements FillerSVG {
   "#b3b355", //yellow
  ];
 
- Buttons(Random random) {
-  this.random = random;
-  colorStates = [];
+ static Buttons randomButtons(Random random) {
+  List<int> colorStates = randomColorStates(random);
+  return new Buttons(colorStates);
+ }
+
+ Buttons(List<int> colorStates){
+   this.colorStates = colorStates;
  }
 
  @override
@@ -103,14 +114,21 @@ class Buttons implements FillerSVG {
    base.setAttribute("stroke", "#555555");
    base.setAttribute("stroke-width", "5");
 
-   int color = random.nextInt(COLORS.length);
-   colorStates.add(color);
-   base.setAttribute("fill", COLORS[color]);
+   base.setAttribute("fill", COLORS[colorStates[i]]);
    ret.append(base);
 
 
   }
   //print(colorStates);
   return ret;
+ }
+
+ static List<int> randomColorStates(Random random) {
+   List<int> ret = [];
+   for(int i = 0; i < 6; i++) {
+     int color = random.nextInt(COLORS.length);
+     ret.add(color);
+   }
+   return ret;
  }
 }

@@ -6,7 +6,7 @@ import 'Room.dart';
 import 'Dashboard.dart';
 import 'dart:svg';
 import 'displays/Display.dart';
-import 'BitConverter.dart';
+import 'DatastringUtilities.dart';
 
 final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
@@ -88,7 +88,8 @@ void main() {
   }
   if (canvasSpot != null) {
     Dashboard dashboard = new Dashboard(starship);
-    canvasSpot.append(dashboard.buildDashboard());
+    canvasSpot.append(dashboard.buildRandomDashboard());
+    //todo allow custom dashboards
     print("my display data string is\n"
     "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
 

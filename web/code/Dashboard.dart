@@ -3,7 +3,7 @@ import 'dart:svg' as Svg;
 import 'dart:math' as Math;
 import 'DashboardSegment.dart';
 import 'Starship.dart';
-import 'BitConverter.dart';
+import 'DatastringUtilities.dart';
 
 class Dashboard {
   static final int WIDTH = 1200;
@@ -50,7 +50,7 @@ class Dashboard {
     this.starship = starship;
   }
 
-  DivElement buildDashboard() {
+  DivElement buildRandomDashboard() {
     DivElement ret = new DivElement();
     //ret.style.position = "relative";
 
@@ -66,6 +66,28 @@ class Dashboard {
     drawStars(ctx);
     drawFrame(ctx);
     ret.append(drawRandomDisplays());
+
+    canvasDiv.append(canvas);
+    ret.append(canvasDiv);
+    return ret;
+  }
+
+  DivElement buildCustomDashboard(String datastring) {
+    DivElement ret = new DivElement();
+    //ret.style.position = "relative";
+
+    DivElement canvasDiv = new DivElement();
+    canvasDiv.style.position = "absolute";
+    canvasDiv.style.zIndex = "0";
+    CanvasElement canvas = new CanvasElement();
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    CanvasRenderingContext2D ctx = canvas.context2D;
+
+    drawBackground(ctx);
+    drawStars(ctx);
+    drawFrame(ctx);
+    ret.append(drawCustomDisplays(datastring));
 
     canvasDiv.append(canvas);
     ret.append(canvasDiv);
@@ -119,6 +141,7 @@ class Dashboard {
   //assume they fit in 160 x 100 size area
   //should be room for 19 displays
   DivElement drawRandomDisplays() {
+
     int boxWidth = 160;
     int boxHeight = 100;
     DivElement ret = new DivElement();
@@ -177,7 +200,7 @@ class Dashboard {
       //determine what kind of filler
       int type = rand.nextInt(2);
       if (type == 0) {
-        Buttons filler = new Buttons(rand);
+        Buttons filler =  Buttons.randomButtons(rand);
 
         Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
         segments[coordinates[2]] = filler;
@@ -195,7 +218,7 @@ class Dashboard {
 
         ret.append(fillerSvg);
       } else if (type == 1) {
-        Switches filler = new Switches(rand);
+        Switches filler = Switches.randomSwitches(rand);
 
         Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
         segments[coordinates[2]] = filler;
@@ -217,7 +240,7 @@ class Dashboard {
     return ret;
   }
 
-  /*
+
   DivElement drawCustomDisplays(String datastring) {
     int boxWidth = 160;
     int boxHeight = 100;
@@ -225,18 +248,16 @@ class Dashboard {
     ret.style.position = "absolute";
     ret.style.zIndex = "1";
 
-
+    List<String> splitDatastrings = splitDatastring(datastring);
+    print(splitDatastrings);
     //setup the main displays
     for (int i = 0; i < 19; i++) {
       DivElement wrapper = new DivElement();
 
-
       List<int> coordinates = SEGMENT_STARTING_POINTS[i];
 
-      //add a label
-
       //TODO SPLIT THE DATASTRING
-      Display display = decodeDatastringOfSegment(datastring);
+      DashboardSegment display = decodeDatastringOfSegment(splitDatastrings[i]);
 
       segments[coordinates[2]] = display;
 
@@ -253,59 +274,15 @@ class Dashboard {
       wrapper.append(svg);
 
       //String label = temporaryFlavorLabels[rand.nextInt(temporaryFlavorLabels.length)];
-
-      wrapper.appendText(label);
-      ret.append(wrapper);
-    }
-
-    //add filler elements
-    while (availableStartingPoints.length > 0) {
-      int spotInOrder = rand.nextInt(availableStartingPoints.length);
-      List<int> coordinates = availableStartingPoints.removeAt(spotInOrder);
-
-      //determine what kind of filler
-      int type = rand.nextInt(2);
-      if (type == 0) {
-        Buttons filler = new Buttons(rand);
-
-        Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
-        segments[coordinates[2]] = filler;
-
-        //print(encodeDatastringOfSegment(filler));
-
-        int x = coordinates[0] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
-        int y = coordinates[1] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
-
-        fillerSvg.style.position = "absolute";
-        fillerSvg.style.top = "${y}px";
-        fillerSvg.style.left = "${x}px";
-
-        ret.append(fillerSvg);
-      } else if (type == 1) {
-        Switches filler = new Switches(rand);
-
-        Svg.SvgSvgElement fillerSvg = filler.graphicalDisplay();
-        segments[coordinates[2]] = filler;
-
-        //print(encodeDatastringOfSegment(filler));
-        int x = coordinates[0] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
-        int y = coordinates[1] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
-
-        fillerSvg.style.position = "absolute";
-        fillerSvg.style.top = "${y}px";
-        fillerSvg.style.left = "${x}px";
-
-        ret.append(fillerSvg);
+      if(display is Display) {
+        String label = display.getLabel();
+        wrapper.appendText(label);
       }
+      ret.append(wrapper);
     }
 
     return ret;
   }
-   */
 
   //TODO make this use the constatns
   static Display makeDisplay(int id, num value, num maxValue, String label) {
@@ -358,7 +335,9 @@ class Dashboard {
       if (segment is Switches) {
         //i can tell the difference between these based on how long they are. Switches should be 2 digits, buttons should be 3
         bits.addAll(segment.toggleStates);
-        ret += BitConverter.toUnsignedHexadecimal(bits);
+        //print(segment.toggleStates);
+        //print( DatastringUtilities.toUnsignedHexadecimal(bits));
+        ret += DatastringUtilities.toUnsignedHexadecimal(bits);
       } else if (segment is Buttons) {
         for (int i = 0; i < segment.colorStates.length; i++) {
           if (segment.colorStates[i] == 0 || segment.colorStates[i] == 1) {
@@ -372,7 +351,7 @@ class Dashboard {
             bits.add(true);
           }
         }
-        ret += BitConverter.toUnsignedHexadecimal(bits);
+        ret += DatastringUtilities.toUnsignedHexadecimal(bits);
       }
     }
 
@@ -396,7 +375,24 @@ class Dashboard {
       int displayValue = int.parse(datastring.substring(1, 4));
       segment = makeDisplay(displayId, displayValue, 100, label);
     } else {
-      //todo implement building the other things
+
+      String hexData = datastring.substring(1, datastring.length - 1);
+      List<bool> bits = DatastringUtilities.fromUnsignedHexadecimal(hexData);
+
+      //its switches if 8 bits and buttons if 12 bits
+      if(bits.length == 12) {
+        List<int> colorStates = new List<int>();
+        for(int i = 0; i < 6; i++) {
+          List<bool> colorBits = [bits[2 * i], bits[2 * i + 1]];
+          int myColor = int.parse(DatastringUtilities.toUnsignedHexadecimal(colorBits));
+          colorStates.add(myColor);
+        }
+
+        segment = new Buttons(colorStates);
+
+      } else {
+        segment = new Switches(bits);
+      }
     }
 
     return segment;
@@ -413,11 +409,20 @@ class Dashboard {
     return Uri.encodeComponent(ret);
   }
 
-  /*static List<String> splitDatastring(String datastring) {
+  static List<String> splitDatastring(String datastring) {
+    String decodedString = Uri.decodeComponent(datastring);
     String single= "";
     List<String> ret = new List<String>();
-    for(int i = 0; i < datastring.)
-  }*/
+    for(int i = 0; i < decodedString.length; i++) {
+      single = "${single}${DatastringUtilities.getCharAt(decodedString, i)}";
+      if(decodedString.codeUnitAt(i) == ("'").codeUnitAt(0)) {
+        ret.add(single);
+        single = ""; //reset single
+      }
+    }
+    return ret;
+  }
+
 }
 
 /*LAYERS IN ORDER

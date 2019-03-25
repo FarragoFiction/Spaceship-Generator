@@ -2,25 +2,9 @@ import 'dart:math';
 import 'dart:core';
 
 //MAKE ALL METHODS STATIC HERE PLEASE. it isnt too necessary but it is nice.
-class BitConverter {
-  static Map<int, String> HEXADECIMAL_DIGITS = {
-    0 : "0",
-    1 : "1",
-    2 : "2",
-    3 : "3",
-    4 : "4",
-    5 : "5",
-    6 : "6",
-    7 : "7",
-    8 : "8",
-    9 : "9",
-    10: "A",
-    11: "B",
-    12: "C",
-    13: "D",
-    14: "E",
-    15: "F",
-  };
+class DatastringUtilities {
+  static List<String> HEXADECIMAL_DIGITS = ["0", "1", "2", "3", "4", "5", "6",
+    "7", "8", "9", "A", "B", "C", "D", "E", "F",];
 
 
   static String toUnsignedHexadecimal(List<bool> bits) {
@@ -51,5 +35,27 @@ class BitConverter {
   }
 
   static List<bool> fromUnsignedHexadecimal(String hex) {
+    List<bool> ret = new List<bool>();
+    for(int i = 0; i < hex.length; i++) {
+      String hexDigit = getCharAt(hex, i);
+      int digitValue = HEXADECIMAL_DIGITS.indexOf(hexDigit);
+      for(int j = 0; j < 4; j++) {
+        if(digitValue ~/ pow(2, 3-j) > 0) {
+          digitValue = digitValue % pow(2, 3-j);
+          ret.add(true);
+        } else {
+          ret.add(false);
+        }
+      }
+    }
+    return(ret);
+  }
+
+  static String getCharAt(String string, int index) {
+    if(index == string.length - 1) {
+      return string.substring(string.length - 1);
+    } else {
+      return string.substring(index, index + 1);
+    }
   }
 }
