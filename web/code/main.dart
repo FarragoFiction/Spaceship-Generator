@@ -58,7 +58,8 @@ void main() {
 
   //window.console.table(starship);
 
-  print("my Beta data string is\n${starship.getDatastring()}");
+  print("my Beta data string is\n"
+      "${Starship.getDatastring(starship.getNumRooms(), starship.getName())}");
 
 
   if (name != null)
@@ -137,7 +138,7 @@ void roomList(Starship starship) {
 void buildDisplay(Starship starship) {
   TableElement table = new TableElement();
   table.style.width = "70%";
-  for(int i=0; i < Room.rooms.length; i++) {
+  for(int i=0; i < Room.ROOMS.length; i++) {
     SvgSvgElement element;
 
     if(starship.getNumOfRoomType(i) > 0) {
@@ -149,7 +150,7 @@ void buildDisplay(Starship starship) {
       bar.style.textAlign = "left";
 
       TableCellElement text = new TableCellElement();
-      text.appendText("${Room.rooms[i]}:");
+      text.appendText("${Room.ROOMS[i]}:");
       text.style.textAlign = "right";
 
       TableRowElement thisRow = new TableRowElement();

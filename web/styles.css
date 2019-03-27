@@ -11,6 +11,18 @@ html, body {
   color: #FFFFFF;
 }
 
+input {
+  font-family: 'Comfortaa', sans serif;
+  text-align: center;
+}
+
+#nameField {
+    background-color: #000000;
+    color: #FFFFFF;
+    font-family: 'Major Mono Display', monospace;
+    font-size: 40px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Major Mono Display', monospace;
     text-align: center;

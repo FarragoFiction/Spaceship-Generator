@@ -95,7 +95,7 @@ class Starship {
 
     //assign rooms
     for(int i = 0; i < starship.rooms.length; i++) {
-      starship.rooms[i] = new Room(rand.nextInt(Room.rooms.length));
+      starship.rooms[i] = new Room(rand.nextInt(Room.ROOMS.length));
     }
     starship.sortRooms();
 
@@ -127,7 +127,7 @@ class Starship {
 
   int getUniqueRoomTypes() {
     int ret = 0;
-    for(int i=0; i < Room.rooms.length; i++) {
+    for(int i=0; i < Room.ROOMS.length; i++) {
       if (getNumOfRoomType(i) > 0)
         ret++;
     }
@@ -140,7 +140,7 @@ class Starship {
 
   int getNumOfMaxRoom() {
     int ret = 0;
-    for(int i=0; i < Room.rooms.length; i++) {
+    for(int i=0; i < Room.ROOMS.length; i++) {
       if (getNumOfRoomType(i) > ret)
         ret = getNumOfRoomType(i);
     }
@@ -397,6 +397,14 @@ class Starship {
     return id;
   }
 
+  List<int> getNumRooms() {
+    List<int> ret = [];
+    for(int i = 0; i < Room.ROOMS.length; i++) {
+      ret.add(getNumOfRoomType(i));
+    }
+    return ret;
+  }
+
   //gonna make a test version, and ask JR how to improve it later
 
   /*
@@ -405,12 +413,12 @@ class Starship {
   -each is seperated by a dash, which signifies the next one
   -in case i make future room additions the ship name is seperated from the numbers by two(2) dashes
   */
-  String getDatastring() {
+  static String getDatastring(List<int> numRooms, String name) {
     String ret = "";
-    for(int i = 0; i < Room.rooms.length; i++) {
-      ret = "$ret${getNumOfRoomType(i)}-";
+    for(int i = 0; i < Room.ROOMS.length; i++) {
+      ret = "$ret${numRooms[i]}-";
     }
-    ret = "$ret-${getName()}";
+    ret = "$ret-${name}";
 
 
     //gotta encode it so i can shove into URLs

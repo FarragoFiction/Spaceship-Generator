@@ -14,7 +14,7 @@ class Room {
   static final int CREW_QUARTERS = 11;
   static final int SCIENCE_EQUIPMENT = 12;
 
-  static Map<int, String> rooms = {
+  static final Map<int, String> ROOMS = {
      0: "plating", //ideally never used //haha nevermind it has a use
 
      1: "life support",
@@ -37,7 +37,7 @@ class Room {
   }
 
   String toString() {
-    return rooms[type];
+    return ROOMS[type];
   }
 
 }
