@@ -96,11 +96,14 @@ void main() {
       if(datastringQueryFull == "") {
         shareLink.appendHtml(
             '<a href="${Uri.base.toString()}?id=$seed">link to this ship</a>');
+        newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
       } else {
         shareLink.appendHtml(
             '<a href="${Uri.base.toString()}&id=$seed">link to this ship</a>');
+        newLink.appendHtml('<a href="${Uri.base.toString().substring(
+            0, Uri.base.toString().indexOf("?"))}">make new ship</a>');
       }
-      newLink.appendHtml('<a href="${Uri.base.toString()}">make new ship</a>');
+
     } else {
       seed = int.parse(Uri.base.queryParameters['id']);
       shareLink.appendHtml(
