@@ -19,10 +19,34 @@ final List<String> DEFAULT_FIRST_NAMES = [
   "Pluto",
 
   //cities
-
+  "Tokyo",
+  "Memphis",
+  "Atlanta",
+  "Paris",
+  "London",
+  "Boston",
+  "Dallas",
+  "Fort Worth",
+  "Nashville",
 
   //people
   "Einstein",
+  "Lovelace",
+  "Aldrin",//apollo 11
+  "Armstrong",
+  "Collins",
+  "Galileo",
+
+
+  //animals
+  "Hedgehog",
+  "Wolf",
+  "Fox",
+  "Beagle",
+  "Cuttlefish",
+  "Horse",
+  "Bigfoot",
+  "Bee",
 
   //miscellaneous
   "Needle",
@@ -179,9 +203,10 @@ class Starship {
     List<String> secondNames = [""]; //Want having NO second name to be a possibility.
     //second names should be capitalized and have a space before them.
 
+    /*
     if(getSize() > 40) {
-      secondNames.add(" Overcoat"); //Hello yes it is me, homestuck gargbage
-    }
+      secondNames.add(" Overcoat"); //was originally a homestuck ref but it's innaccurate
+    }*/
 
 
     if(getNumOfRoomType(Room.CREW_QUARTERS) > 0 && getNumOfRoomType(Room.LIFE_SUPPORT) > 0) {
@@ -449,6 +474,8 @@ class Starship {
     }
 
     starship.trueName = decodedString.substring(1);
+    starship.dashboardLabels = new List<String>();
+    starship.dashboardLabels.addAll(DEFAULT_DASHBOARD_LABELS);
     starship.setDescriptionAndName(new Random(seed));
     return starship;
   }
