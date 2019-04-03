@@ -53,7 +53,7 @@ void main() {
     starship = Starship.getRandomStarship(seed);
   } else {
     starship = Starship.parseDataString(Uri.base.queryParameters['b'], seed);
-    datastringQueryFull += "&b=${Uri.base.queryParameters['b']}";
+    datastringQueryFull += "&b=${Uri.encodeFull(Uri.base.queryParameters['b'])}";
   }
 
   //window.console.table(starship);
@@ -81,12 +81,15 @@ void main() {
     } else {
       String datastring = Uri.base.queryParameters['d'];
       canvasSpot.append(dashboard.buildCustomDashboard(datastring));
-      datastringQueryFull += "&d=${Uri.base.queryParameters['d']}";
     }
 
     print("my dashboard data string is\n"
     "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
   }
+
+  //make sure the datastringqueryfull has the D
+  if(Uri.base.queryParameters['d'] != null)
+    datastringQueryFull += "&d=${Uri.encodeFull(Uri.base.queryParameters['d'])}";
 
   //prepare Links
   if (shareLink != null && newLink != null) {
@@ -113,6 +116,7 @@ void main() {
     }
   }
 
+  print(datastringQueryFull);
   if (dashboardLink != null) {
     dashboardLink.appendHtml(
         '<a href="dashboard.html?id=${seed}$datastringQueryFull">view ship dashboard</a>'

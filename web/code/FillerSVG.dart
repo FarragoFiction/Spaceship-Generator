@@ -20,6 +20,7 @@ class Switches implements FillerSVG {
   this.toggleStates = toggleStates;
  }
 
+
  @override
  SvgSvgElement graphicalDisplay() {
   SvgSvgElement ret = new SvgSvgElement();
@@ -131,4 +132,5 @@ class Buttons implements FillerSVG {
    }
    return ret;
  }
+
 }

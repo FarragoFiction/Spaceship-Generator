@@ -221,7 +221,6 @@ class Starship {
       dashboardLabels.add("lives");
     } else {
       description += " It is a drone.";
-
       secondNames.add(" Drone");
     }
 
@@ -232,7 +231,6 @@ class Starship {
 
     if (getNumOfRoomType(Room.THRUSTERS) <= 0) {
       description += " It is a stationary satellite.";
-
       secondNames.add(" Station");
       secondNames.add(" Space Station");
     } else {
