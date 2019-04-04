@@ -112,15 +112,26 @@ void updateRoomValues(int roomId, int value) {
 }
 
 void buildDatastrings() {
-  AnchorElement a = new AnchorElement();
+  AnchorElement statLink = new AnchorElement();
   String statDatastring = Starship.getDatastring(roomValues, nameField.value);
 
   String dashboardDatastring = Dashboard.encodeCompleteDatastring(getDashboardSegments());
 
-  a.href = "index.html?b=${statDatastring}&d=$dashboardDatastring&id=$id";
+  statLink.href = "index.html?b=${statDatastring}&d=$dashboardDatastring&id=$id";
 
-  a.text = "View Spaceship";
-  linkToMyShip.append(a);
+  statLink.text = "View Spaceship";
+
+
+
+  AnchorElement dashboardLink= new AnchorElement();
+  dashboardLink.href = "dashboard.html?b=${statDatastring}&d=$dashboardDatastring&id=$id";
+
+  dashboardLink.text = "View Dashboard";
+
+
+  linkToMyShip.append(statLink);
+  linkToMyShip.appendText("   ");//some blank space to seperate the links
+  linkToMyShip.append(dashboardLink);
   linkToMyShip.append(new BRElement());
 }
 
