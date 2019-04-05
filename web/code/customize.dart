@@ -92,7 +92,7 @@ void roomList() {
     }
 
     roomValues.add(int.parse(roomField.value));
-    roomField.onInput.listen((e) => updateRoomValues(i, int.parse(roomField.value)));
+    roomField.onChange.listen((e) => updateRoomValues(i, roomField.value));
 
     numInput.append(roomField);
     TableCellElement name = new TableCellElement();
@@ -107,8 +107,13 @@ void roomList() {
     roomFieldContainer.append(table);
 }
 
-void updateRoomValues(int roomId, int value) {
-  roomValues[roomId] = value;
+void updateRoomValues(int roomId, String value) {
+  int numValue = int.parse(value, onError: (source) => null);
+  if(numValue != null && numValue >= 0) {
+    roomValues[roomId] = int.parse(value);
+  } else {
+    window.alert("please enter a valid number. negative numbers and non-whole numbers are not allowed.");
+  }
 }
 
 void buildDatastrings() {
