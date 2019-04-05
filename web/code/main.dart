@@ -149,7 +149,12 @@ void buildDisplay(Starship starship) {
     SvgSvgElement element;
 
     if(starship.getNumOfRoomType(i) > 0) {
-      NixieTube numbers = new NixieTube(starship.getNumOfRoomType(i), 99, "");
+      NixieTube numbers;
+      if(starship.getNumOfRoomType(i) > 99) {
+        numbers = new NixieTube(starship.getNumOfRoomType(i), starship.getNumOfRoomType(i), "");
+      } else {
+        numbers = new NixieTube(starship.getNumOfRoomType(i), 99, "");
+      }
 
       element = numbers.graphicalDisplay();
       TableCellElement bar = new TableCellElement();
