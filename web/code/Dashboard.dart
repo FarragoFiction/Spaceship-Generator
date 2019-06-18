@@ -110,7 +110,7 @@ class Dashboard {
 
       ctx.fillStyle = STAR_COLORS[random.nextInt(STAR_COLORS.length)];
       ctx.beginPath();
-      ctx.arc(x, y, r, 0, 2 * Math.PI);
+      ctx.arc(x, y, r, 0, 2 * Math.pi);
       ctx.fill();
     }
   }

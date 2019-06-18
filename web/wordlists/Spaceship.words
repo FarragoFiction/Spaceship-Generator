@@ -1,0 +1,97 @@
+TextEngine Word List
+
+@names
+@adjectives
+@Mission
+
+planet
+    Mercury
+    Venus
+    Earth
+    Mars
+    Jupiter
+    Saturn
+    Uranus
+    Neptune
+    Pluto
+
+city
+    Tokoyo
+    Memphis
+    Atlanta
+    Paris
+    London
+    Boston
+    Dallas
+    Fort Worth
+    Nashville
+
+historicFigure
+    Einstein
+    Lovelace
+    Aldrin
+    Armstrong
+    Collins
+    Galileo
+
+starshipAnimal
+    @noun_animal
+    Hedgehog
+    Wolf
+    Fox
+    Beagle
+    Cuttlefish
+    Horse
+    Bigfoot
+    Bee
+
+starshipFirstName
+    #planet#
+    #city#
+    #historicFigure#
+    #starshipAnimal#
+    Needle
+    Starshine
+    Cowboy
+    Thimble
+    Husk
+
+starshipSecondName
+    //its deliberately empty, because these are all supposed to be added via code.
+
+starshipFullName
+    #starshipFirstName# #starshipSecondName#
+    #name_all# #starshipSecondName#: 0.1
+    #adjective# #starshipSecondName#: 0.1
+    #magicalCompanionTypes#: 0.1
+
+
+    Engineer
+    Mechanic
+    Technician
+    IT worker
+    Repairman
+
+crewmemberJobsTactical
+    Captain
+    Security Detail
+    Commander
+    Marine
+    Officer
+    Quartermaster
+
+crewmemberJobsScience
+    Researcher
+    Scientist
+    Doctor
+    Nurse
+    Test subject
+
+crewmemberJobsOther
+    Janitor
+    Stowaway
+    Passenger
+    Friend
+    Hitchhiker
+    Entertainer
+    Prisoner

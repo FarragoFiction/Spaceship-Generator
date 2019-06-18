@@ -5,17 +5,25 @@ version: 0.1.0
 
 
 environment:
-  sdk: '>=1.20.1 <2.0.0'
+  sdk: '>=2.2.0 <3.0.0'
 
-#dependencies:
-#  path: ^1.4.1
+dependencies:
+  path: ^1.4.1
+  TextEngine:
+    git: git://github.com/FarragoFiction/TextEngine.git
+  CommonLib:
+    git: git://github.com/FarragoFiction/CommonLib.git
+  DollLibCorrect:
+    git: git://github.com/FarragoFiction/DollLibCorrect.git
+
 
 dev_dependencies:
-  browser: ^0.10.0
-  dart_to_js_script_rewriter: ^1.0.1
+  build_runner:  ^1.3.0
+  build_test: ^0.10.2
+  build_web_compilers: ^1.2.0
 
 transformers:
-- dart_to_js_script_rewriter
+
 
 # Uncomment the following in sdk 1.24+ to make pub serve
 # use dartdevc (webdev.dartlang.org/tools/dartdevc).

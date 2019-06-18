@@ -1,12 +1,15 @@
 import 'dart:html';
 import 'dart:core';
 import 'dart:math';
-import 'Starship.dart';
-import 'Room.dart';
-import 'Dashboard.dart';
 import 'dart:svg';
-import 'displays/Display.dart';
-import 'DatastringUtilities.dart';
+import 'dart:async';
+
+import 'code/Starship.dart';
+import 'code/Room.dart';
+import 'code/Dashboard.dart';
+import 'code/Crew.dart';
+
+import 'code/displays/Display.dart';
 
 final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
@@ -18,9 +21,10 @@ HeadingElement name;
 HeadingElement id;
 DivElement output;
 DivElement canvasSpot;
+DivElement crewSpot;
+String string;
 
-
-void main() {
+void main() async{
   int seed;
   //hello farrago
   shareLink = querySelector('#sharelink');
@@ -31,6 +35,7 @@ void main() {
   id = querySelector('#id');
   output = querySelector('#output');
   canvasSpot = querySelector('#canvasSpot');
+  crewSpot = querySelector('#crewSpot');
 
   String datastringQueryFull = "";
 
@@ -51,9 +56,9 @@ void main() {
 
   //b for blueprint
   if (Uri.base.queryParameters['b'] == null) {
-    starship = Starship.getRandomStarship(seed);
+    starship = await Starship.getRandomStarship(seed);
   } else {
-    starship = Starship.parseDataString(Uri.base.queryParameters['b'], seed);
+    starship = await Starship.parseDataString(Uri.base.queryParameters['b'], seed);
     datastringQueryFull += "&b=${Uri.encodeFull(Uri.base.queryParameters['b'])}";
   }
 
@@ -64,7 +69,7 @@ void main() {
 
 
   if (name != null)
-    name.text = "${starship.getName()}";
+    name.text = await "${starship.getName()}";
   if (id != null)
     id.text = "ID: ${starship.getId()}";
 
@@ -85,7 +90,7 @@ void main() {
     }
 
     print("my dashboard data string is\n"
-    "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
+        "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
   }
 
   //make sure the datastringqueryfull has the D
@@ -128,6 +133,11 @@ void main() {
         '<a href="index.html?id=${seed}$datastringQueryFull">view ship stats</a>'
     );
   }
+
+  if(crewSpot != null) {
+    Crew crew = await Crew.makeCrewForStarship(starship);
+    crewSpot.append(await crew.getAllMemberDivs());
+  }
 }
 
 void roomList(Starship starship) {
@@ -139,6 +149,8 @@ void roomList(Starship starship) {
   }
   if(output != null)
     output.append(rooms);
+
+
 }
 
 

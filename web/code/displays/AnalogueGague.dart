@@ -48,11 +48,11 @@ class AnalogueGague implements Display {
 
     //add tick marks
     for(int i = 0; i <= 10; i++) {
-      double tickXStart = 75 * (1 - cos(PI * i / 10));
-      double tickXStop = 75 * (1 - .9 * cos(PI * i / 10));
+      double tickXStart = 75 * (1 - cos(pi * i / 10));
+      double tickXStop = 75 * (1 - .9 * cos(pi * i / 10));
 
-      double tickYStart = 75 * (1 - sin(PI * i / 10));
-      double tickYStop = 75 * (1 - .9 * sin(PI * i / 10));
+      double tickYStart = 75 * (1 - sin(pi * i / 10));
+      double tickYStop = 75 * (1 - .9 * sin(pi * i / 10));
 
       PathElement tickMark = new PathElement();
       tickMark.setAttribute("d", "M $tickXStart $tickYStart L $tickXStop $tickYStop");
@@ -61,8 +61,8 @@ class AnalogueGague implements Display {
     }
 
 
-    double stopX = 75 * (1 - .9 * cos(PI * value/maxValue));
-    double stopY = 75 * (1 - .9 * sin(PI * value/maxValue));
+    double stopX = 75 * (1 - .9 * cos(pi * value/maxValue));
+    double stopY = 75 * (1 - .9 * sin(pi * value/maxValue));
 
     //add the display portion
     if(bar) {

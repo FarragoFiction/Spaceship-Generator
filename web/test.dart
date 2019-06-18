@@ -1,6 +1,6 @@
 import 'dart:html';
 import 'dart:core';
-import 'displays/Display.dart';
+import 'code/displays/Display.dart';
 import 'dart:svg';
 
 NixieTube nixie;

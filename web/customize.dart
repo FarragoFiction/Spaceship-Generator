@@ -1,12 +1,13 @@
 import 'dart:core';
 import 'dart:html';
 import 'dart:math';
-import 'Starship.dart';
+import 'dart:async';
+import 'code/Starship.dart';
 import 'dart:svg';
-import 'Room.dart';
-import 'DashboardSegment.dart';
-import 'Dashboard.dart';
-import 'FillerSVG.dart';
+import 'code/Room.dart';
+import 'code/DashboardSegment.dart';
+import 'code/Dashboard.dart';
+import 'code/FillerSVG.dart';
 
 InputElement nameField;
 DivElement roomFieldContainer;
@@ -22,7 +23,7 @@ List<SegmentContainer> segmentContainers;
 DivElement dashboardFields;
 
 
-main() {
+main() async{
   //assign the fields
   nameField = document.querySelector('#nameField');
   roomFieldContainer = document.querySelector('#rooms');
@@ -32,14 +33,14 @@ main() {
 
   id = 0;
   if(Uri.base.queryParameters['b'] != null) {
-    starship = Starship.parseDataString(Uri.base.queryParameters['b'], id);
+    starship = await Starship.parseDataString(Uri.base.queryParameters['b'], id);
   }else if(Uri.base.queryParameters['id'] != null) {
     id = int.parse(Uri.base.queryParameters['id']);
-    starship = Starship.getRandomStarship(id);
+    starship = await Starship.getRandomStarship(id);
   } else {
     Random rand = new Random();
     id = rand.nextInt(2147483647);
-    starship = Starship.getRandomStarship(id);
+    starship = await Starship.getRandomStarship(id);
   }
 
   nameField.value = starship.getName();
