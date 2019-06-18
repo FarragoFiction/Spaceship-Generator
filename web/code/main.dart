@@ -22,6 +22,7 @@ DivElement canvasSpot;
 
 void main() {
   int seed;
+  //hello farrago
   shareLink = querySelector('#sharelink');
   newLink = querySelector('#newlink');
   dashboardLink = querySelector('#dashboardlink');
