@@ -90,6 +90,18 @@ class Starship {
   String description;
   List<String> dashboardLabels;
 
+  bool manned = false;
+  bool cryo = false;
+  bool mobile = false;
+  bool colonizing = false;
+  bool hasPlants = false;
+  bool construction = false;
+  bool weaponized = false;
+  bool shielded = false;
+  bool scientific = false;
+  bool warpCapable = false;
+  bool warpAnchor = false;
+
   Starship(int seed) {
     id = seed;
     trueName = "";
@@ -205,17 +217,22 @@ class Starship {
       String sizeAdj = crewSize();
       description += " It has a $sizeAdj sized crew.";
       dashboardLabels.add("crew");
+      manned = true;
     } else if (getNumOfRoomType(Room.CREW_QUARTERS) <= 0 &&
         getNumOfRoomType(Room.LIFE_SUPPORT) > 0) {
       description += " It has a pilot and no other crew.";
+      manned = true;
     } else if (getNumOfRoomType(Room.CREW_QUARTERS) > 0 &&
         getNumOfRoomType(Room.LIFE_SUPPORT) <= 0) {
       String sizeAdj = crewSize();
       description += " It has a $sizeAdj group of people frozen in cryostasis.";
       dashboardLabels.add("lives");
+      manned = false;
+      cryo = true;
     } else {
       description += " It is a drone.";
       secondNames.add(" Drone");
+      manned = false;
     }
 
     if (getNumOfRoomType(Room.HULL) > 0) {
@@ -226,11 +243,13 @@ class Starship {
       description += " It is a stationary satellite.";
       secondNames.add(" Station");
       secondNames.add(" Space Station");
+      mobile = false;
     } else {
       secondNames.add(" Ship");
       secondNames.add(" Starship");
 
       dashboardLabels.add("velocity");
+      mobile = true;
     }
 
     if (getNumOfRoomType(Room.LIFE_SUPPORT) > 0) {
@@ -247,15 +266,17 @@ class Starship {
         dashboardLabels.add("days left of voyage");
 
         secondNames.add(" Mayflower");
+        colonizing = true;
       }
 
       description +=
-          " It contains an artificial ecosystem, with many plants and animals.";
+          " It contains an artificial ecosystem, with many plants.";
 
-      secondNames.add(
-          " Biospace"); //todo this is a shitty name. please please come up with a better one.
+      secondNames.add(" Arboreum");
 
       dashboardLabels.add("specimens");
+
+      hasPlants = true;
     }
 
     if (getNumOfRoomType(Room.REPAIR_PARTS) > 0) {
@@ -276,6 +297,7 @@ class Starship {
             " It has an experimental onboard AI which can design and build new spacecraft.";
         dashboardLabels.add("ships built");
       }
+      construction = true;
     }
 
     if (getNumOfRoomType(Room.THRUSTERS) > cutoff &&
@@ -306,8 +328,10 @@ class Starship {
         description += " It is incredibly well armed.";
         secondNames.add(
             " Destroyer"); //space stations can be destroyers, ala Death Star
+        weaponized = true;
       } else if (getNumOfRoomType(Room.WEAPONS_ARRAY) > 0) {
         description += " It has light firepower for combatting pirates.";
+        weaponized = true;
       } else if (getNumOfRoomType(Room.MUNITIONS_STORAGE) > cutoff) {
         description += " It is used to store wartime supplies.";
         secondNames.add(" Cache");
@@ -334,12 +358,13 @@ class Starship {
         description +=
             " It was designed for incredibly dangerous star systems.";
       }
+      shielded = true;
     }
 
     if (getNumOfRoomType(Room.SCIENCE_EQUIPMENT) > cutoff) {
       dashboardLabels.add("days without accident");
       dashboardLabels.add("blasphemies");
-
+      scientific = true;
       if (getNumOfRoomType(Room.THRUSTERS) == 0) {
         description += " It is an orbital research institute.";
         secondNames.add(" Laboratories");
@@ -357,10 +382,13 @@ class Starship {
       if (getNumOfRoomType(Room.THRUSTERS) > 0) {
         description += " It can travel between systems.";
         dashboardLabels.add("jumps remaining");
+        warpCapable = true;
       } else if (getNumOfRoomType(Room.STARGATE_KEY) > cutoff) {
         description +=
             " It is marked as a warp location for interstellar starships.";
         secondNames.add(" Anchor");
+        warpAnchor = true;
+
       }
     }
 

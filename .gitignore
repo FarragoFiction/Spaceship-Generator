@@ -1,6 +1,7 @@
 .idea/
 *.iml
 *.DS_Store
+web/images/
 
 # Files and directories created by pub
 .packages
