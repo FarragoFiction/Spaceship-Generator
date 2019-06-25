@@ -50,19 +50,19 @@ class Crewmember {
     //NAME EXCEPTIONS, BLAAH
     //dollsets 37(smol human) and 28(fek) should use human names.
     if(doll.renderingType == 37 || doll.renderingType == 28) {
-      TextEngine textEngine = new TextEngine();
+      TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       text.text = textEngine.phrase("kidname_all", story: textStory);
     } else if(doll.renderingType == 38){ //smol trols use troll names
-      TextEngine textEngine = new TextEngine();
+      TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       text.text = textEngine.phrase("trollname_all", story: textStory);
     } else if(doll.renderingType == 35) { //fruits have it at dollName
       text.text = await doll.dollName;
     } else if(doll.renderingType == 26) {
-      TextEngine textEngine = new TextEngine();
+      TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       text.text = textEngine.phrase("docname_temp", story: textStory);
@@ -99,7 +99,7 @@ class Crewmember {
     int jobType = possibleJobs[rand.nextInt(possibleJobs.length)];
 
     String ret = "UNIDENTIFIED PASSENGER";
-    TextEngine textEngine = new TextEngine();
+    TextEngine textEngine = new TextEngine(id);
     TextStory textStory = new TextStory();
     await textEngine.loadList("Spaceship");
     if(jobType == OTHER_JOB) {
