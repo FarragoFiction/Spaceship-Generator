@@ -49,26 +49,29 @@ class Crewmember {
 
     //NAME EXCEPTIONS, BLAAH
     //dollsets 37(smol human) and 28(fek) should use human names.
+    String name;
     if(doll.renderingType == 37 || doll.renderingType == 28) {
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
-      text.text = textEngine.phrase("kidname_all", story: textStory);
+      name = textEngine.phrase("kidname_all", story: textStory);
     } else if(doll.renderingType == 38){ //smol trols use troll names
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
-      text.text = textEngine.phrase("trollname_all", story: textStory);
+      name = textEngine.phrase("trollname_all", story: textStory);
     } else if(doll.renderingType == 35) { //fruits have it at dollName
-      text.text = await doll.dollName;
+      name = await doll.dollName;
     } else if(doll.renderingType == 26) {
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
-      text.text = textEngine.phrase("docname_temp", story: textStory);
+      name = textEngine.phrase("docname_temp", story: textStory);
     } else {
-      text.text = await doll.getNameFromEngine();
+      name = await doll.getNameFromEngine();
     }
+    text.appendHtml("<h3>${name}</h3>");
+
     ret.append(text);
 
     ret.appendText(stats.toString());
