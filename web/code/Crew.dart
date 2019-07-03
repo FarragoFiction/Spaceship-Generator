@@ -135,7 +135,7 @@ class Crew {
 
 
   
-  static Future<Crew> makeCrewForStarship(Starship starship) async{
+  static Future<Crew> makeRandomCrewForStarship(Starship starship) async{
     print("my id is ${starship.id}");
     Random rand = new Random(starship.id);
     int numCrew = starship.getNumOfRoomType(Room.CREW_QUARTERS) * (1 + rand.nextInt(5));
@@ -164,4 +164,6 @@ class Crew {
     }
     return new Crew(crewList);
   }
+  
 }
+
