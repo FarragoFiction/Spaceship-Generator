@@ -36,7 +36,7 @@ void main() async {
 
 
   //Starship starship = Starship.getRandomStarship(seed);
-  Starship starship = await Starship.parseDataString("20-1-0-3-2-1-4-0-3-0-1-5-0--Chicago%20Overcoat", seed);
+  Starship starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
 
   //Starship starship;
   //todo make default starship
