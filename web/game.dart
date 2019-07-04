@@ -73,6 +73,7 @@ void main() async {
 
     print("my dashboard data string is\n"
         "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
+    makeCrew();
   }
 
 
@@ -90,7 +91,6 @@ void roomList(Starship starship) {
 
 
 }
-
 
 void buildDisplay(Starship starship) {
   name.text = "${starship.getName()}";
@@ -134,4 +134,21 @@ void cycleShipDisp() {
     showShip = true;
     buildDisplay(starship);
   }
+}
+
+void cyclecrewDisp() {
+  if(showCrew) {
+    showCrew = false;
+      crewSpot.children = new List<Element>();
+  } else {
+    showCrew = true;
+    makeCrew();
+  }
+}
+
+void makeCrew() async {
+  if(crewSpot != null) {
+    Crew crew = await Crew.makeRandomCrewForStarship(starship);
+    crewSpot.append(await crew.getAllMemberDivs());
+}
 }
