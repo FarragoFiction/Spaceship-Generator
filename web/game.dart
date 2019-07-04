@@ -24,6 +24,13 @@ DivElement canvasSpot;
 DivElement crewSpot;
 String string;
 
+InputElement shipButton;
+InputElement crewButton;
+bool showShip = true;
+bool showCrew = true;
+
+Starship starship;
+
 void main() async {
   int seed = 85;
   name = querySelector('#name');
@@ -32,11 +39,17 @@ void main() async {
   canvasSpot = querySelector('#canvasSpot');
   crewSpot = querySelector('#crewSpot');
 
+  shipButton = querySelector('#shipButton');
+  crewButton = querySelector('#crewButton');
+
+  shipButton.onClick.listen((e) => cycleShipDisp());
+
+
   String datastringQueryFull = "";
 
 
   //Starship starship = Starship.getRandomStarship(seed);
-  Starship starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
+  starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
 
   //Starship starship;
   //todo make default starship
@@ -113,8 +126,12 @@ void buildDisplay(Starship starship) {
     output.append(table);
 }
 
-/*
-  right so for URLs.
-  -if there is a datastring already in the URL include it when linking to
-  the ship from the seed link & the dashboard link
- */
+void cycleShipDisp() {
+  if(showShip) {
+    showShip = false;
+    output.children = new List<Element>();
+  } else {
+    showShip = true;
+    buildDisplay(starship);
+  }
+}
