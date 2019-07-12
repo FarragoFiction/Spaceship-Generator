@@ -22,8 +22,8 @@ class crewStat {
   bool checkRoll(int check) {
     //dont use seeded random probably unless its decided later to rework where the random comes from
     Random rand = new Random();
-    if(value >= 0) {
-      int rolledValue = value + rand.nextInt(value ~/ 11.3);
+    if(value <= 0) {
+      int rolledValue =  value.abs() + rand.nextInt(value.abs() ~/ 11.3);
       if (rolledValue >= check)
         return true;
       else
