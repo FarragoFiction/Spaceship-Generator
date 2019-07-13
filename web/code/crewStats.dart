@@ -35,12 +35,21 @@ class CrewStat {
       print("value of $value has rolled 0 and had no skill");
       return 0;
     }
+    int rolledValue;
     if(value < 0) {
-      int rolledValue =  value.abs() + rand.nextInt(value.abs() ~/ 11.3);
+      if(value.abs() ~/ 11.3 > 0) {
+        rolledValue =  value.abs() + rand.nextInt(value.abs() ~/ 11.3);
+      } else {
+        rolledValue =  value.abs();
+      }
       print("value of $value has rolled $rolledValue and tried to be CONSISTENT");
       return rolledValue;
     } else {
-      int rolledValue = (value ~/ 11.3) + rand.nextInt(value);
+      if(value.abs() ~/ 11.3 > 0) {
+        rolledValue = (value ~/ 11.3) + rand.nextInt(value);
+      } else {
+        rolledValue = rand.nextInt(value);
+      }
       print("value of $value has rolled $rolledValue and tried to be EXPERIMENTAL");
       return rolledValue;
     }
