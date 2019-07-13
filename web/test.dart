@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:core';
 import 'code/displays/Display.dart';
 import 'dart:svg';
+import 'code/crewStats.dart';
 
 NixieTube nixie;
 AnalogueGague gague;

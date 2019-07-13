@@ -20,21 +20,41 @@ class crewStat {
   String name;
 
   bool checkRoll(int check) {
-    //dont use seeded random probably unless its decided later to rework where the random comes from
+    int rolledValue = getRollFromValue(value);
+    if(check <= rolledValue)
+      return true;
+    else
+      return false;
+  }
+
+
+  static int getRollFromValue(int value) {
     Random rand = new Random();
-    if(value <= 0) {
+    //always roll 0 if they have no skill there.
+    if(value == 0) {
+      print("value of $value has rolled 0 and had no skill");
+      return 0;
+    }
+    if(value < 0) {
       int rolledValue =  value.abs() + rand.nextInt(value.abs() ~/ 11.3);
-      if (rolledValue >= check)
-        return true;
-      else
-        return false;
+      print("value of $value has rolled $rolledValue and tried to be CONSISTENT");
+      return rolledValue;
     } else {
       int rolledValue = (value ~/ 11.3) + rand.nextInt(value);
-      if (rolledValue >= check)
-        return true;
-      else
-        return false;
+      print("value of $value has rolled $rolledValue and tried to be EXPERIMENTAL");
+      return rolledValue;
     }
-
   }
+
+  static void testStatRolls() {
+    for(int i = -113; i < 114; i++) {
+      for(int j = 0; j < 5; j++) {
+        getRollFromValue(i);
+      }
+    }
+  }
+}
+
+void main() {
+  crewStat.testStatRolls();
 }
