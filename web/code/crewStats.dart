@@ -15,7 +15,7 @@
 
 import 'dart:math';
 
-class crewStat {
+class CrewStat {
   int value;
   String name;
 
@@ -53,8 +53,4 @@ class crewStat {
       }
     }
   }
-}
-
-void main() {
-  crewStat.testStatRolls();
 }

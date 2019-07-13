@@ -14,6 +14,7 @@ SvgSvgElement sevenSegmentElement;
 DivElement output;
 InputElement slider;
 main() {
+
   nixie = new NixieTube(113, 200, "");
   nixieElement = nixie.graphicalDisplay();
   gague = new AnalogueGague(113, 200, true, true, "");
@@ -32,6 +33,7 @@ main() {
   output.append(dialElement);
   output.appendHtml("</br>");
 
+  CrewStat.testStatRolls();
 }
 
 void update(String value) {
