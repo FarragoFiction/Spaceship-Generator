@@ -46,7 +46,7 @@ class CrewStat {
       return rolledValue;
     } else {
       if(value.abs() ~/ 11.3 > 0) {
-        rolledValue = (value ~/ 11.3) + rand.nextInt(value);
+        rolledValue = (value ~/ 11.3) + (rand.nextInt(value) * 1.5).floor();
       } else {
         rolledValue = rand.nextInt(value);
       }
@@ -56,9 +56,12 @@ class CrewStat {
   }
 
   static void testStatRolls() {
-    for(int i = -113; i < 114; i++) {
-      for(int j = 0; j < 5; j++) {
+    for(int i = -113; i < 1; i++) {
+      for(int j = 0; j < 50; j++) {
         getRollFromValue(i);
+      }
+      for(int j = 0; j < 50; j++) {
+        getRollFromValue(i.abs());
       }
     }
   }
