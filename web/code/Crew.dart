@@ -17,16 +17,20 @@ class Crewmember {
   int id;
   CanvasElement dollCanvas;
 
-  /*
+
   //todo rip these out and plant in real stats.
   static final int OTHER_JOB = -1;
-  static final int ENGINEERING = 0;
-  static final int TACTICAL = 1;
-  static final int SCIENCE = 2;
 
-  static final int MAX = 10;*/
+  static final int MEDICINE = 0;
+  static final int RESEARCH = 1;
+  static final int ENGINEERING = 2;
+  static final int DIPLOMACY = 3;
+  static final int COMBAT = 4;
+  static final int SANITY = 5;
 
-  List<int> stats = new List<int>(3);
+  static final int MAX = 113;
+
+  List<int> stats = new List<int>(6);
   
   Crewmember(int id, Doll doll) {
     this.id = id;
@@ -39,6 +43,9 @@ class Crewmember {
     Random random = new Random(id);
     for(int i = 0; i < stats.length; i++) {
       stats[i] = random.nextInt(MAX);
+      if(random.nextBool()) {
+        stats[i] = 0 - stats[i];
+      }
     }
   }
 
