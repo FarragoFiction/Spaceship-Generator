@@ -36,23 +36,18 @@ class CrewStat {
       return 0;
     }
     int rolledValue;
-    if(value < 0) {
-      if(value.abs() ~/ 11.3 > 0) {
-        rolledValue =  value.abs() + rand.nextInt(value.abs() ~/ 11.3);
-      } else {
-        rolledValue =  value.abs();
-      }
-      print("value of $value has rolled $rolledValue and tried to be CONSISTENT");
-      return rolledValue;
-    } else {
-      if(value.abs() ~/ 11.3 > 0) {
-        rolledValue = (value ~/ 11.3) + (rand.nextInt(value) * 1.5).floor();
-      } else {
-        rolledValue = rand.nextInt(value);
-      }
-      print("value of $value has rolled $rolledValue and tried to be EXPERIMENTAL");
-      return rolledValue;
+
+    int spread = (113 + value) ~/ 10;
+
+    if(spread > 0) {
+      rolledValue = value.abs() + rand.nextInt(spread) - spread ~/ 2;
     }
+    if(value < 0) {
+      print("value of $value has rolled $rolledValue and tried to be CONSISTENT");
+    } else {
+      print("value of $value has rolled $rolledValue and tried to be EXPERIMENTAL");
+    }
+
   }
 
   static void testStatRolls() {
