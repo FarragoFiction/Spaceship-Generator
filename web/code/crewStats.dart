@@ -37,7 +37,7 @@ class CrewStat {
     }
     int rolledValue;
 
-    int spread = (113 + value) ~/ 10;
+    int spread = (113 + value) ~/ 5;
 
     if(spread > 0) {
       rolledValue = value.abs() + rand.nextInt(spread) - spread ~/ 2;
