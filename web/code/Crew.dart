@@ -16,13 +16,15 @@ class Crewmember {
   Doll doll;
   int id;
   CanvasElement dollCanvas;
+
+  /*
   //todo rip these out and plant in real stats.
   static final int OTHER_JOB = -1;
   static final int ENGINEERING = 0;
   static final int TACTICAL = 1;
   static final int SCIENCE = 2;
 
-  static final int MAX = 10;
+  static final int MAX = 10;*/
 
   List<int> stats = new List<int>(3);
   

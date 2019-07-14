@@ -65,33 +65,56 @@ starshipFullName
     #adjective# #starshipSecondName#: 0.1
     #magicalCompanionTypes#: 0.1
 
+crewmemberJobsMedicine
+    Doctor
+    Nurse
+    Pharmacist
+    Medic
+    Healer
+    Surgeon
+
+crewmemberJobsResearch
+    Researcher
+    Chemist
+    Scientist
+    Physicist
+    Biologist
+    Test subject
+
 crewmemberJobsEngineering
     Engineer
     Mechanic
     Technician
     IT worker
     Repairman
+    Roboticist
 
-crewmemberJobsTactical
+crewmemberJobsDiplomacy
     Captain
+    Diplomat
+    Ambassador
+    Politician
+    Trader
+    Merchant
+
+crewmemberJobsCombat
     Security Detail
     Commander
     Marine
     Officer
     Quartermaster
 
-crewmemberJobsScience
-    Researcher
-    Scientist
-    Doctor
-    Nurse
-    Test subject
+crewmemberJobsSanity
+    Therapist
+    Performer
+    Entertainer
+    Musician
+    Friend
+
 
 crewmemberJobsOther
     Janitor
     Stowaway
     Passenger
-    Friend
     Hitchhiker
-    Entertainer
     Prisoner
