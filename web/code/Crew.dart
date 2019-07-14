@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:async';
 import 'dart:html';
+import 'crewStats.dart';
 //import 'dart:math';
 
 import 'Starship.dart';
@@ -30,7 +31,7 @@ class Crewmember {
 
   static final int MAX = 113;
 
-  List<int> stats = new List<int>(6);
+  List<CrewStat> stats = new List<CrewStat>(6);
   
   Crewmember(int id, Doll doll) {
     this.id = id;
@@ -39,15 +40,47 @@ class Crewmember {
     buildCanvas();
   }
 
+
+  //todo this is shitty and awful and please rework this when you arent tired please
   void assignStats(int id) {
     Random random = new Random(id);
-    for(int i = 0; i < stats.length; i++) {
-      stats[i] = random.nextInt(MAX);
-      if(random.nextBool()) {
-        stats[i] = 0 - stats[i];
-      }
+    stats[MEDICINE] = new CrewStat("Medicine");
+    stats[MEDICINE].value = random.nextInt(MAX);
+    if(random.nextBool()) {
+      stats[MEDICINE].value = 0 - stats[MEDICINE].value;
+    }
+
+    stats[RESEARCH] = new CrewStat("Research");
+    stats[RESEARCH].value = random.nextInt(MAX);
+    if(random.nextBool()) {
+      stats[RESEARCH].value = 0 - stats[RESEARCH].value;
+    }
+
+    stats[ENGINEERING] = new CrewStat("Engineering");
+    stats[ENGINEERING].value = random.nextInt(MAX);
+    if(random.nextBool()) {
+      stats[ENGINEERING].value = 0 - stats[ENGINEERING].value;
+    }
+
+    stats[DIPLOMACY] = new CrewStat("Diplomacy");
+    stats[DIPLOMACY].value = random.nextInt(MAX);
+    if(random.nextBool()) {
+      stats[DIPLOMACY].value = 0 - stats[DIPLOMACY].value;
+    }
+
+    stats[COMBAT] = new CrewStat("Combat");
+    stats[COMBAT].value = random.nextInt(MAX);
+    if(random.nextBool()) {
+      stats[COMBAT].value = 0 - stats[COMBAT].value;
+    }
+
+    stats[SANITY] = new CrewStat("Sanity");
+    stats[SANITY].value = random.nextInt(MAX);
+    if(random.nextBool()) {
+      stats[SANITY].value = 0 - stats[SANITY].value;
     }
   }
+
 
   Future<void> buildCanvas() async{
     dollCanvas = await doll.getNewCanvas();
@@ -55,7 +88,7 @@ class Crewmember {
   
   Future<DivElement> getDivOutput() async {
     DivElement ret = new DivElement();
-    ret.append(await doll.getNewCanvas());
+    ret.append(await doll.getNewCanvas()); //todo make sure this is uncommented when you commit
     DivElement text = new DivElement();
 
     //NAME EXCEPTIONS, BLAAH
@@ -85,8 +118,14 @@ class Crewmember {
 
     ret.append(text);
 
-    ret.appendText(stats.toString());
+    //ret.appendText(stats.toString());
     ret.appendText(await getJob());
+
+    for(int i = 0; i < stats.length; i++) {
+      ret.append(new BRElement());
+      ret.appendText("${stats[i].name}: ${stats[i].value}");
+    }
+
     return ret;
   }
   
@@ -104,7 +143,7 @@ class Crewmember {
   Future<String> getJob() async{
     List<int> possibleJobs = [OTHER_JOB, OTHER_JOB, OTHER_JOB];
     for (int i = 0; i < stats.length; i++) {
-      for (int j = 0; j < stats[i]; j++) {
+      for (int j = 0; j < stats[i].value.abs(); j++) {
         possibleJobs.add(i);
       }
     }
@@ -120,10 +159,16 @@ class Crewmember {
       ret = textEngine.phrase("crewmemberJobsOther", story: textStory);
     } else if(jobType == ENGINEERING) {
       ret = textEngine.phrase("crewmemberJobsEngineering", story: textStory);
-    } else if(jobType == TACTICAL) {
-      ret = textEngine.phrase("crewmemberJobsTactical", story: textStory);
-    } else if(jobType == SCIENCE) {
-      ret = textEngine.phrase("crewmemberJobsScience", story: textStory);
+    } else if(jobType == COMBAT) {
+      ret = textEngine.phrase("crewmemberJobsCombat", story: textStory);
+    } else if(jobType == RESEARCH) {
+      ret = textEngine.phrase("crewmemberJobsResearch", story: textStory);
+    } else if(jobType == MEDICINE) {
+      ret = textEngine.phrase("crewmemberJobsMedicine", story: textStory);
+    } else if(jobType == DIPLOMACY) {
+      ret = textEngine.phrase("crewmemberJobsDiplomacy", story: textStory);
+    } else if(jobType == SANITY) {
+      ret = textEngine.phrase("crewmemberJobsSanity", story: textStory);
     }
     return ret;
   }

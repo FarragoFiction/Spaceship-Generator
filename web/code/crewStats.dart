@@ -9,7 +9,7 @@
   | Rage   | Realistic  | Sanity      | Idealistic | Hope   |
 
   so how i see it, a "stat" class can be a value between -113 and 113.
-  i'll say that a check can be between anywere between 1 and 150, though usually they wouldn't go that high or that low
+  i'll say that a  check can be between anywere between 1 and 150, though usually they wouldn't go that high or that low
 
 */
 
@@ -19,6 +19,10 @@ class CrewStat {
   int value;
   String name;
 
+  CrewStat(String name) {
+    value = 0;
+    this.name = name;
+  }
   bool checkRoll(int check) {
     int rolledValue = getRollFromValue(value);
     if(check <= rolledValue)
