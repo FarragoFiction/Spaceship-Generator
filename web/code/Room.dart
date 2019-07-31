@@ -1,4 +1,3 @@
-
 class Room {
   static final int HULL = 0;
   static final int LIFE_SUPPORT = 1;
@@ -15,20 +14,20 @@ class Room {
   static final int SCIENCE_EQUIPMENT = 12;
 
   static final Map<int, String> ROOMS = {
-     0: "plating", //ideally never used //haha nevermind it has a use
+     HULL: "plating", //ideally never used //haha nevermind it has a use
 
-     1: "life support",
-     2: "robot arm",
-     3: "munitions storage",
-     4: "weapons array",
-     5: "repair parts locker",
-     6: "commons area",
-     7: "fuel storage",
-     8: "thrusters",
-     9: "shields",
-    10: "warp key",
-    11: "crew quarters",
-    12: "science equipment",
+     LIFE_SUPPORT: "life support",
+     ROBOT_ARM: "robot arm",
+     MUNITIONS_STORAGE: "munitions storage",
+     WEAPONS_ARRAY: "weapons array",
+     REPAIR_PARTS: "repair parts locker",
+     COMMONS_AREA: "commons area",
+     FUEL_STORAGE: "fuel storage",
+     THRUSTERS: "thrusters",
+     SHIELDS: "shields",
+     STARGATE_KEY: "warp key",
+     CREW_QUARTERS: "crew quarters",
+     SCIENCE_EQUIPMENT: "science equipment",
   };
 
   int type;
@@ -36,8 +35,25 @@ class Room {
     this.type = type;
   }
 
+  @override
   String toString() {
     return ROOMS[type];
   }
+
+}
+
+class PlanetTrait extends Room {
+
+  static final int ROCK = 0;
+  static final int WATER = 1;
+  static final int ATMOSPHERE = 2;
+
+  static final Map<int, String> PLANET_TRAITS = {
+    ROCK: "rock",
+    WATER: "water",
+    ATMOSPHERE: "atmosphere",
+  };
+
+  PlanetTrait(int type) : super(type);
 
 }
