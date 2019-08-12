@@ -56,4 +56,53 @@ class Planet extends Starship{
 
     return planet;
   }
+
+  @override
+  void setDescriptionAndName(Random rand) async {
+    int cutoff = 2; //imma maybe change this later?
+    String description = "";
+    List<String> firstNames = DEFAULT_FIRST_NAMES;
+    List<String> secondNames = [
+      ""
+    ]; //Want having NO second name to be a possibility.
+    //second names should be capitalized and have a space before them.
+
+    //todo planet description bits go here, as do DETERMINING LIFE
+
+    //put the placeholder here if the planet is somehow descriptionless
+    if (description.length == 0) {
+      description += CATCHALL;
+    }
+
+    this.description = description;
+
+    /*this.defaultName =
+        "${firstNames[rand.nextInt(firstNames.length)]}"
+        "${secondNames[rand.nextInt(secondNames.length)]}";
+    */ //todo fix this
+    this.defaultName = await nameFromTextEngineTest(firstNames, secondNames);
+    print(defaultName);
+  }
+
+  @override
+  String getDescription() {
+    //have a bunch of strings that can get added together based on stats.
+    //default to "Nobody Knows" explanation
+    String ret = "";
+
+    //todo adjust for typical planet sizes
+    if (getSize() <= 15) {
+      ret += " It is a small planet.";
+    } else if (getSize() <= 35) {
+      ret += " It is a mid-sized planet.";
+    } else {
+      ret += " It is a large planet.";
+    }
+
+    ret += description;
+
+    return ret;
+  }
+
+  
 }
