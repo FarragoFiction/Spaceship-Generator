@@ -65,3 +65,19 @@ class CrewStat {
     }
   }
 }
+
+/*
+sample quest: examine mysterious organic object
+(failing each check in this example is assumed to only cause a minor setback, possibly injuring crew. it features a small check of each type but focuses on sanity)
+-examine and match object's movement patterns (Engineering)
+-communications interference occurs. keep the crew calm (sanity)
+-harvest a sample of it's trunk (combat, very small)
+-examine sample's properties(Research)
+-ship systems go down, evacuate to safe location (Sanity)
+-treat infected crewmember's wounds (Medicine)
+-inform next of kin (diplomacy)
+-console infected crewmember (Sanity. This is a higher difficulty check and it is raised slightly with each failed check earlier in the mission)
+    -that last sanity check determines whether or not the crewmember lives and becomes Corrupted, or Dies.
+
+this particular quest wouldn't be a common one. it would be fairly rare and would have different
+ */
