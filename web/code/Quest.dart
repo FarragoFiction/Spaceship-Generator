@@ -42,18 +42,28 @@ class QuestComponent {
 
 
 }
-
+//todo figure out what to do for having different penalties for failed quests
 class Quest {
   String initialText;
   String successText;
   String failureText;
   List<QuestComponent> components;
 
+  int componentsCompleted = 0;
+
   Quest(String initialText, String successText, String failureText, List<QuestComponent> components) {
     this.initialText = initialText;
     this.successText = successText;
     this.failureText = failureText;
     this.components = components;
+  }
 
+  void failurePenalty() {
+    if(componentsCompleted < components.length - 1) {
+      //the default quest penalty is making the last quest component harder
+      int penalizedValue = components[components.length - 1].targetRoll;
+      //don't want it to go beyond 120. this is above what would normally be the maximum, but still allows wiggle room for the skilled and lucky.
+      if(penalizedValue < 120 - 10)
+    }
   }
 }

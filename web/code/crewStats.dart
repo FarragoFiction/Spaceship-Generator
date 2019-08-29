@@ -16,6 +16,8 @@
 import 'dart:math';
 
 class CrewStat {
+  static int MAX_CHECK_DIFFICULTY = 120;
+  static int MAX_STAT = 113;
   int value;
   String name;
 
@@ -42,7 +44,7 @@ class CrewStat {
     }
     int rolledValue;
 
-    int spread = (113 + value) ~/ 5;
+    int spread = (MAX_STAT + value) ~/ 5;
 
     if(spread > 0) {
       rolledValue = value.abs() + rand.nextInt(spread) - spread ~/ 2;
@@ -64,7 +66,7 @@ class CrewStat {
     }
     int rolledValue;
 
-    int spread = (113 + value) ~/ 5;
+    int spread = (MAX_STAT + value) ~/ 5;
 
     if(spread > 0) {
       rolledValue = value.abs() + rand.nextInt(spread) - spread ~/ 2;
@@ -78,7 +80,7 @@ class CrewStat {
   }
 
   static void testStatRolls() {
-    for(int i = -113; i < 1; i++) {
+    for(int i = -1 * MAX_STAT; i < 1; i++) {
       for(int j = 0; j < 50; j++) {
         getRollFromValue(i);
       }
