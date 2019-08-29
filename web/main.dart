@@ -8,6 +8,7 @@ import 'code/Starship.dart';
 import 'code/Room.dart';
 import 'code/Dashboard.dart';
 import 'code/Crew.dart';
+import 'code/Planets.dart';
 
 import 'code/displays/Display.dart';
 
@@ -55,8 +56,9 @@ void main() async{
   }
 
   //b for blueprint
+  //todo undo this when done testing please
   if (Uri.base.queryParameters['b'] == null) {
-    starship = await Starship.getRandomStarship(seed);
+    starship = await Planet.getRandomPlanet(seed);
   } else {
     starship = await Starship.parseDataString(Uri.base.queryParameters['b'], seed);
     datastringQueryFull += "&b=${Uri.encodeFull(Uri.base.queryParameters['b'])}";

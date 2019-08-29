@@ -19,7 +19,6 @@ class Crewmember {
   CanvasElement dollCanvas;
 
 
-  //todo rip these out and plant in real stats.
   static final int OTHER_JOB = -1;
 
   static final int MEDICINE = 0;
