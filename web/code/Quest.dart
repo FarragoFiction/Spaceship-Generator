@@ -63,7 +63,13 @@ class Quest {
       //the default quest penalty is making the last quest component harder
       int penalizedValue = components[components.length - 1].targetRoll;
       //don't want it to go beyond 120. this is above what would normally be the maximum, but still allows wiggle room for the skilled and lucky.
-      if(penalizedValue < 120 - 10)
+      if(penalizedValue < CrewStat.MAX_CHECK_DIFFICULTY - 10) {
+        penalizedValue += 10;
+      } else {
+        penalizedValue = CrewStat.MAX_CHECK_DIFFICULTY;
+      }
+      components[components.length - 1].targetRoll = penalizedValue;
     }
+    //todo add penalty for failing the final quest
   }
 }
