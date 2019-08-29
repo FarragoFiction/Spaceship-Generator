@@ -39,4 +39,21 @@ class QuestComponent {
   bool runTest(Crewmember crewmember) {
     return crewmember.stats[statID].checkRoll(targetRoll);
   }
+
+
+}
+
+class Quest {
+  String initialText;
+  String successText;
+  String failureText;
+  List<QuestComponent> components;
+
+  Quest(String initialText, String successText, String failureText, List<QuestComponent> components) {
+    this.initialText = initialText;
+    this.successText = successText;
+    this.failureText = failureText;
+    this.components = components;
+
+  }
 }
