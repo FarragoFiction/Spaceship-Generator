@@ -58,7 +58,7 @@ void main() async{
   //b for blueprint
   //todo undo this when done testing please
   if (Uri.base.queryParameters['b'] == null) {
-    starship = await Planet.getRandomPlanet(seed);
+    starship = await Starship.getRandomStarship(seed);
   } else {
     starship = await Starship.parseDataString(Uri.base.queryParameters['b'], seed);
     datastringQueryFull += "&b=${Uri.encodeFull(Uri.base.queryParameters['b'])}";
