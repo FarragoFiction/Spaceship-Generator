@@ -70,6 +70,13 @@ class Quest {
       }
       components[components.length - 1].targetRoll = penalizedValue;
     }
-    //todo add penalty for failing the final quest
+    //todo add penalty for failing the final component in the chain
   }
+
+  QuestComponent getCurrentComponent() {
+    return components[componentsCompleted];
+  }
+
+
+
 }
