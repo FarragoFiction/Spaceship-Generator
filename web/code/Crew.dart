@@ -185,6 +185,11 @@ class Crew {
     for(int i = 0; i < crewList.length; i++) {
       ret.append(await crewList[i].getDivOutput());
     }
+    if(crewList.length == 0) {
+      DivElement aiCrew = new DivElement();
+      aiCrew.appendText("this spaceship has no crewmembers, save from a standard navigation AI.");
+      ret.append(aiCrew);
+    }
     return ret;
   }
 
