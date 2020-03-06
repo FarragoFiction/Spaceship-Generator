@@ -17,6 +17,7 @@ class Crewmember {
   Doll doll;
   int id;
   CanvasElement dollCanvas;
+  String name;
 
   static final int MAX_CANVAS_HEIGHT = 300;
   static final int MAX_CANVAS_WIDTH = 400;
@@ -38,7 +39,9 @@ class Crewmember {
     this.id = id;
     this.doll = doll;
     assignStats(id);
-    buildCanvas();
+    //buildName();
+    //buildCanvas();
+
   }
 
 
@@ -85,21 +88,24 @@ class Crewmember {
 
   //gets the canvas for the doll and scales it to a set size
   Future<CanvasElement> buildCanvas() async{
-    if(dollCanvas  == null) {
+    print("running buildCanvas of ${await buildName()}");
+    if(dollCanvas  != null) {
       return dollCanvas;
     }
 
     CanvasElement copy = await doll.getNewCanvas(); //todo replace this with call to rescaling function
     //return await doll.getNewCanvas();
     if(copy.height > MAX_CANVAS_HEIGHT) {
+      print("adjusting by height of ${await buildName()}");
       CanvasElement temp = new CanvasElement(width:copy.width, height:MAX_CANVAS_HEIGHT);
-      temp.context2D.scale(copy.height/MAX_CANVAS_HEIGHT, copy.height/MAX_CANVAS_HEIGHT); //make sure you scale equally on both axis or else itll be squashed
+      temp.context2D.scale(MAX_CANVAS_HEIGHT/copy.height, MAX_CANVAS_HEIGHT/copy.height); //make sure you scale equally on both axis or else itll be squashed
       temp.context2D.drawImage(copy, 0, 0);
       copy = temp;
     }
     if(copy.width > MAX_CANVAS_WIDTH) {
+      print("adjusting by width of ${await buildName()}");
       CanvasElement temp = new CanvasElement(width:MAX_CANVAS_WIDTH, height:copy.height);
-      temp.context2D.scale(copy.width/MAX_CANVAS_WIDTH, copy.width/MAX_CANVAS_WIDTH); //make sure you scale equally on both axis or else itll be squashed
+      temp.context2D.scale(MAX_CANVAS_WIDTH/copy.width, MAX_CANVAS_WIDTH/copy.width); //make sure you scale equally on both axis or else itll be squashed
       temp.context2D.drawImage(copy, 0, 0);
       copy = temp;
     }
@@ -110,12 +116,31 @@ class Crewmember {
   
   Future<DivElement> getDivOutput() async {
     DivElement ret = new DivElement();
+    //await buildCanvas();
     ret.append(await buildCanvas());
     DivElement text = new DivElement();
 
     //NAME EXCEPTIONS, BLAAH
     //dollsets 37(smol human) and 28(fek) should use human names.
-    String name;
+
+    text.appendHtml("<h3>${await buildName()}</h3>");
+
+    ret.append(text);
+
+    //ret.appendText(stats.toString());
+    ret.appendText(await getJob());
+
+    for(int i = 0; i < stats.length; i++) {
+      ret.append(new BRElement());
+      ret.appendText("${stats[i].name}: ${stats[i].value}");
+    }
+
+    return ret;
+  }
+
+  Future<String> buildName() async{
+    if(name != null) return name;
+
     if(doll.renderingType == 37 || doll.renderingType == 28) {
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
@@ -136,21 +161,8 @@ class Crewmember {
     } else {
       name = await doll.getNameFromEngine();
     }
-    text.appendHtml("<h3>${name}</h3>");
-
-    ret.append(text);
-
-    //ret.appendText(stats.toString());
-    ret.appendText(await getJob());
-
-    for(int i = 0; i < stats.length; i++) {
-      ret.append(new BRElement());
-      ret.appendText("${stats[i].name}: ${stats[i].value}");
-    }
-
-    return ret;
+    return name;
   }
-
   
   static Future<Crewmember> randomCrewmember(int id, int dolltype) async {
     Random rand = new Random(id);
