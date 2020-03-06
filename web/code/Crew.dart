@@ -18,8 +18,6 @@ class Crewmember {
   int id;
   CanvasElement dollCanvas;
 
-  static final int MAX_CANVAS_HEIGHT = 300;
-  static final int MAX_CANVAS_WIDTH = 400;
 
   static final int OTHER_JOB = -1;
 
@@ -83,34 +81,13 @@ class Crewmember {
   }
 
 
-  //gets the canvas for the doll and scales it to a set size
-  Future<CanvasElement> buildCanvas() async{
-    if(dollCanvas  == null) {
-      return dollCanvas;
-    }
-
-    CanvasElement copy = await doll.getNewCanvas(); //todo replace this with call to rescaling function
-    //return await doll.getNewCanvas();
-    if(copy.height > MAX_CANVAS_HEIGHT) {
-      CanvasElement temp = new CanvasElement(width:copy.width, height:MAX_CANVAS_HEIGHT);
-      temp.context2D.scale(copy.height/MAX_CANVAS_HEIGHT, copy.height/MAX_CANVAS_HEIGHT); //make sure you scale equally on both axis or else itll be squashed
-      temp.context2D.drawImage(copy, 0, 0);
-      copy = temp;
-    }
-    if(copy.width > MAX_CANVAS_WIDTH) {
-      CanvasElement temp = new CanvasElement(width:MAX_CANVAS_WIDTH, height:copy.height);
-      temp.context2D.scale(copy.width/MAX_CANVAS_WIDTH, copy.width/MAX_CANVAS_WIDTH); //make sure you scale equally on both axis or else itll be squashed
-      temp.context2D.drawImage(copy, 0, 0);
-      copy = temp;
-    }
-    dollCanvas = copy;
-    return dollCanvas;
-
+  Future<void> buildCanvas() async{
+    dollCanvas = await doll.getNewCanvas();
   }
   
   Future<DivElement> getDivOutput() async {
     DivElement ret = new DivElement();
-    ret.append(await buildCanvas());
+    ret.append(await doll.getNewCanvas()); //todo make sure this is uncommented when you commit
     DivElement text = new DivElement();
 
     //NAME EXCEPTIONS, BLAAH
@@ -150,7 +127,6 @@ class Crewmember {
 
     return ret;
   }
-
   
   static Future<Crewmember> randomCrewmember(int id, int dolltype) async {
     Random rand = new Random(id);
