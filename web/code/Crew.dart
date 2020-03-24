@@ -95,19 +95,22 @@ class Crewmember {
 
     CanvasElement copy = await doll.getNewCanvas(); //todo replace this with call to rescaling function
     //return await doll.getNewCanvas();
-    if(copy.height > MAX_CANVAS_HEIGHT) {
-      print("adjusting by height of ${await buildName()}");
-      CanvasElement temp = new CanvasElement(width:copy.width, height:MAX_CANVAS_HEIGHT);
-      temp.context2D.scale(MAX_CANVAS_HEIGHT/copy.height, MAX_CANVAS_HEIGHT/copy.height); //make sure you scale equally on both axis or else itll be squashed
-      temp.context2D.drawImage(copy, 0, 0);
-      copy = temp;
-    }
+    //CanvasElement temp = new CanvasElement(width:MAX_CANVAS_WIDTH, height:MAX_CANVAS_HEIGHT);
+    double scaleX = 1;
+    double scaleY = 1;
     if(copy.width > MAX_CANVAS_WIDTH) {
       print("adjusting by width of ${await buildName()}");
-      CanvasElement temp = new CanvasElement(width:MAX_CANVAS_WIDTH, height:copy.height);
-      temp.context2D.scale(MAX_CANVAS_WIDTH/copy.width, MAX_CANVAS_WIDTH/copy.width); //make sure you scale equally on both axis or else itll be squashed
-      temp.context2D.drawImage(copy, 0, 0);
-      copy = temp;
+      scaleX = MAX_CANVAS_WIDTH/copy.width;
+    }
+
+    if(copy.height > MAX_CANVAS_HEIGHT) {
+      print("adjusting by height of ${await buildName()}");
+      scaleY = MAX_CANVAS_HEIGHT / copy.height;
+    }
+    if(scaleY > scaleX) {
+      copy.style.transform = "scale($scaleX)";
+    } else {
+      copy.style.transform = "scale($scaleY)";
     }
     dollCanvas = copy;
     return dollCanvas;
