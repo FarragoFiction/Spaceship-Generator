@@ -10,6 +10,7 @@ import 'code/Dashboard.dart';
 import 'code/Crew.dart';
 
 import 'code/displays/Display.dart';
+import 'code/gameDashboard.dart';
 
 final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
@@ -27,7 +28,7 @@ String string;
 InputElement shipButton;
 InputElement crewButton;
 bool showShip = true;
-bool showCrew = true;
+bool showCrew = false;
 
 Starship starship;
 
@@ -43,6 +44,7 @@ void main() async {
   crewButton = querySelector('#crewButton');
 
   shipButton.onClick.listen((e) => cycleShipDisp());
+  crewButton.onClick.listen((e) => cycleCrewDisp());
 
 
   String datastringQueryFull = "";
@@ -61,18 +63,14 @@ void main() async {
     output.appendText(starship.getDescription());
   }
   if (canvasSpot != null) {
-    Dashboard dashboard = new Dashboard(starship);
+    GameDashboard dashboard = new GameDashboard(starship);
 
-    //d for dashboard
-    if (Uri.base.queryParameters['d'] == null) {
-      canvasSpot.append(dashboard.buildRandomDashboard());
-    } else {
-      String datastring = Uri.base.queryParameters['d'];
-      canvasSpot.append(dashboard.buildCustomDashboard(datastring));
-    }
+    String datastring = Uri.base.queryParameters['d'];
+    canvasSpot.append(dashboard.buildGameDashboard());
 
-    print("my dashboard data string is\n"
-        "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
+    //todo: allow datatstings to account for empty spots
+    //print("my dashboard data string is\n"
+    //  "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
     makeCrew();
   }
 
@@ -136,7 +134,7 @@ void cycleShipDisp() {
   }
 }
 
-void cyclecrewDisp() {
+void cycleCrewDisp() {
   if(showCrew) {
     showCrew = false;
       crewSpot.children = new List<Element>();

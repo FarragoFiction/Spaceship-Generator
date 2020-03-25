@@ -8,6 +8,9 @@ import 'DatastringUtilities.dart';
 class Dashboard {
   static final int WIDTH = 1200;
   static final int HEIGHT = 800;
+
+  static final int SEGMENT_WIDTH = 160;
+  static final int SEGMENT_HEIGHT = 100;
   static final List<String> STAR_COLORS = [
     "#FFFFFF",
     "#FFFFCC",
@@ -18,7 +21,7 @@ class Dashboard {
     "#CCCCFF",
   ];
 
-  static final List<List<int>> SEGMENT_STARTING_POINTS = [
+  static final List<List<int>> SEGMENT_STARTING_POINTS = [ //todo jesus, make a map
     //list of the coordinates i can start drawing displays in
     //and their index in THIS list because im dummy stupid
     [0, 0, 0],
@@ -142,8 +145,6 @@ class Dashboard {
   //should be room for 19 displays
   DivElement drawRandomDisplays() {
 
-    int boxWidth = 160;
-    int boxHeight = 100;
     DivElement ret = new DivElement();
     ret.style.position = "absolute";
     ret.style.zIndex = "1";
@@ -179,9 +180,9 @@ class Dashboard {
       wrapper.style.position = "absolute";
       //print(svg.getAttribute("height"));
       int x = coordinates[0] +
-          (boxWidth - int.parse(svg.getAttribute("width"))) ~/ 2;
+          (SEGMENT_WIDTH - int.parse(svg.getAttribute("width"))) ~/ 2;
       int y = coordinates[1] +
-          (boxWidth - int.parse(svg.getAttribute("height"))) ~/ 2;
+          (SEGMENT_WIDTH - int.parse(svg.getAttribute("height"))) ~/ 2;
       wrapper.style.top = "${y}px";
       wrapper.style.left = "${x}px";
       wrapper.append(svg);
@@ -208,9 +209,9 @@ class Dashboard {
         //print(encodeDatastringOfSegment(filler));
 
         int x = coordinates[0] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+            (SEGMENT_WIDTH - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
         int y = coordinates[1] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+            (SEGMENT_WIDTH - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
 
         fillerSvg.style.position = "absolute";
         fillerSvg.style.top = "${y}px";
@@ -225,9 +226,9 @@ class Dashboard {
 
         //print(encodeDatastringOfSegment(filler));
         int x = coordinates[0] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
+            (SEGMENT_WIDTH - int.parse(fillerSvg.getAttribute("width"))) ~/ 2;
         int y = coordinates[1] +
-            (boxWidth - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
+            (SEGMENT_WIDTH - int.parse(fillerSvg.getAttribute("height"))) ~/ 2;
 
         fillerSvg.style.position = "absolute";
         fillerSvg.style.top = "${y}px";
@@ -242,8 +243,6 @@ class Dashboard {
 
 
   DivElement drawCustomDisplays(String datastring) {
-    int boxWidth = 160;
-    int boxHeight = 100;
     DivElement ret = new DivElement();
     ret.style.position = "absolute";
     ret.style.zIndex = "1";
@@ -266,9 +265,9 @@ class Dashboard {
       wrapper.style.position = "absolute";
       //print(svg.getAttribute("height"));
       int x = coordinates[0] +
-          (boxWidth - int.parse(svg.getAttribute("width"))) ~/ 2;
+          (SEGMENT_WIDTH - int.parse(svg.getAttribute("width"))) ~/ 2;
       int y = coordinates[1] +
-          (boxWidth - int.parse(svg.getAttribute("height"))) ~/ 2;
+          (SEGMENT_WIDTH - int.parse(svg.getAttribute("height"))) ~/ 2;
       wrapper.style.top = "${y}px";
       wrapper.style.left = "${x}px";
       wrapper.append(svg);
