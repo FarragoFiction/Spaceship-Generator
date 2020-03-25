@@ -1,8 +1,10 @@
 import 'dart:html';
 import 'dart:core';
+import 'dart:async';
 import 'code/displays/Display.dart';
 import 'dart:svg';
 import 'code/crewStats.dart';
+import 'code/Crew.dart';
 
 NixieTube nixie;
 AnalogueGague gague;
@@ -22,8 +24,8 @@ main() {
   leds = new SevenSegmentDisplay(113, 200, "");
   sevenSegmentElement = leds.graphicalDisplay();
 
-  DivElement output = querySelector('#output');
-  InputElement slider = querySelector('#slider');
+  output = querySelector('#output');
+  slider = querySelector('#slider');
 
   slider.value = "113";
   slider.onInput.listen((e) => update(slider.value));
@@ -34,6 +36,14 @@ main() {
   output.appendHtml("</br>");
 
   CrewStat.testStatRolls();
+  testCrewNames();
+
+
+}
+
+Future<void> testCrewNames() async {
+  Crew crew = await Crew.testAllCrewNames();
+  output.append(await crew.getAllMemberDivs());
 }
 
 void update(String value) {

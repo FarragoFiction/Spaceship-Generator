@@ -149,5 +149,5 @@ void makeCrew() async {
     //oh god why was i regenerating the crew every time
     Crew crew = await starship.getCrew();
     crewSpot.append(await crew.getAllMemberDivs());
-}
+  }
 }

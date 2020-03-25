@@ -150,7 +150,7 @@ class Crewmember {
   Future<String> buildName() async{
     if(name != null) return name;
 
-    if(doll.renderingType == 37 || doll.renderingType == 28) {
+    if(doll.renderingType == 37 || doll.renderingType == 28 ) {
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
@@ -167,6 +167,21 @@ class Crewmember {
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       name = textEngine.phrase("docname_temp", story: textStory);
+    } else if(doll.renderingType == 85 || doll.renderingType == 46) { //treebabs and satyr kittens get troll grub names
+      TextEngine textEngine = new TextEngine(id);
+      TextStory textStory = new TextStory();
+      await textEngine.loadList("names");
+      name = textEngine.phrase("wigglername_all", story: textStory);
+    } else if(doll.renderingType == 47) { //cookie placeholder names taken from list of food
+      TextEngine textEngine = new TextEngine(id);
+      TextStory textStory = new TextStory();
+      await textEngine.loadList("names");
+      name = textEngine.phrase("cookiename_temp", story: textStory);
+    } else if(doll.renderingType == 48) { //magical girl 2 should be same as magicalgirl 1
+      TextEngine textEngine = new TextEngine(id);
+      TextStory textStory = new TextStory();
+      await textEngine.loadList("names");
+      name = textEngine.phrase("dollname_magicaldoll", story: textStory);
     } else {
       name = await doll.getNameFromEngine();
     }
@@ -271,6 +286,23 @@ class Crew {
     }
     return new Crew(crewList);
   }
-  
+
+
+  static Future<Crew> testAllCrewNames() async{
+    print("testing a crew with every species");
+    Random rand = new Random(85);
+    int numCrew = Doll.allDollTypes.length;
+
+    //build the crew
+    List<Crewmember> crewList = [];
+    for(int i = 0; i < numCrew; i++) {
+      int memberId = rand.nextInt(2147483647);
+      Crewmember member;
+      int memberSpeciesId = Doll.allDollTypes[i];
+      member = await Crewmember.randomCrewmember(memberId, memberSpeciesId);
+      crewList.add(member);
+    }
+    return new Crew(crewList);
+  }
 }
 
