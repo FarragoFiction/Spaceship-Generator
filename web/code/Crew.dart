@@ -21,7 +21,7 @@ class Crewmember {
   String job;
 
   static final int MAX_CANVAS_HEIGHT = 300;
-  static final int MAX_CANVAS_WIDTH = 400;
+  static final int MAX_CANVAS_WIDTH = 150; //adjusting for game display uwu
 
   static final int OTHER_JOB = -1;
 
