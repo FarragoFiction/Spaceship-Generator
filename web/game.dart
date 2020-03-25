@@ -146,7 +146,8 @@ void cycleCrewDisp() {
 
 void makeCrew() async {
   if(crewSpot != null) {
-    Crew crew = await Crew.makeRandomCrewForStarship(starship);
+    //oh god why was i regenerating the crew every time
+    Crew crew = await starship.getCrew();
     crewSpot.append(await crew.getAllMemberDivs());
 }
 }

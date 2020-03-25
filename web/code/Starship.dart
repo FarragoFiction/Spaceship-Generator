@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:core';
 import 'Room.dart';
 import 'dart:async';
+import 'Crew.dart';
 import 'package:TextEngine/TextEngine.dart';
 import 'package:CommonLib/Collection.dart';
 
@@ -89,6 +90,7 @@ class Starship {
   int id;
   String description;
   List<String> dashboardLabels;
+  Crew crew;
 
   bool manned = false;
   bool cryo = false;
@@ -449,6 +451,13 @@ class Starship {
     return ret;
   }
 
+  Future<Crew> getCrew() async {
+    if(crew == null) {
+      crew = await Crew.makeRandomCrewForStarship(this);
+    }
+    return crew;
+  }
+
   //gonna make a test version, and ask JR how to improve it later
 
   /*
@@ -535,4 +544,7 @@ class Starship {
         (Match m) => "${m[1].toUpperCase()}");
     return ret;
   }
+
+
+
 }
