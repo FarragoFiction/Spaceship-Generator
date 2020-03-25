@@ -18,6 +18,7 @@ class Crewmember {
   int id;
   CanvasElement dollCanvas;
   String name;
+  String job;
 
   static final int MAX_CANVAS_HEIGHT = 300;
   static final int MAX_CANVAS_WIDTH = 400;
@@ -136,7 +137,7 @@ class Crewmember {
     ret.append(text);
 
     //ret.appendText(stats.toString());
-    ret.appendText(await getJob());
+    ret.appendText(await getJob()); //todo DONT REGEN EVERY TIME
 
     for(int i = 0; i < stats.length; i++) {
       ret.append(new BRElement());
@@ -184,6 +185,7 @@ class Crewmember {
   }
 
   Future<String> getJob() async{
+    if(job != null) return job;
     List<int> possibleJobs = [OTHER_JOB, OTHER_JOB, OTHER_JOB];
     for (int i = 0; i < stats.length; i++) {
       for (int j = 0; j < stats[i].value.abs(); j++) {
@@ -213,6 +215,7 @@ class Crewmember {
     } else if(jobType == SANITY) {
       ret = textEngine.phrase("crewmemberJobsSanity", story: textStory);
     }
+    job = ret;
     return ret;
   }
 }

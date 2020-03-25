@@ -28,7 +28,7 @@ String string;
 InputElement shipButton;
 InputElement crewButton;
 bool showShip = true;
-bool showCrew = false;
+bool showCrew = true;
 
 Starship starship;
 
