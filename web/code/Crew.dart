@@ -93,9 +93,7 @@ class Crewmember {
       return dollCanvas;
     }
 
-    CanvasElement copy = await doll.getNewCanvas(); //todo replace this with call to rescaling function
-    //return await doll.getNewCanvas();
-    //CanvasElement temp = new CanvasElement(width:MAX_CANVAS_WIDTH, height:MAX_CANVAS_HEIGHT);
+    CanvasElement copy = await doll.getNewCanvas();
     double scaleX = 1;
     double scaleY = 1;
     if(copy.width > MAX_CANVAS_WIDTH) {
@@ -107,11 +105,18 @@ class Crewmember {
       print("adjusting by height of ${await buildName()}");
       scaleY = MAX_CANVAS_HEIGHT / copy.height;
     }
+    double scale;
     if(scaleY > scaleX) {
-      copy.style.transform = "scale($scaleX)";
+      scale = scaleX;
     } else {
-      copy.style.transform = "scale($scaleY)";
+      scale = scaleY;
     }
+    copy.style.transform = "scale($scale)";
+    copy.style.marginLeft = "-${(1-scale)*copy.width/2}px";
+    copy.style.marginRight = "-${(1-scale)*copy.width/2}px";
+    copy.style.marginTop = "-${(1-scale)*copy.height/2}px";
+    copy.style.marginBottom = "-${(1-scale)*copy.height/2}px";
+
     dollCanvas = copy;
     return dollCanvas;
 
