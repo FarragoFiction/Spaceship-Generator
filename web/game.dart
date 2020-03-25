@@ -25,10 +25,9 @@ DivElement canvasSpot;
 DivElement crewSpot;
 String string;
 
-InputElement shipButton;
-InputElement crewButton;
+InputElement toggleButton;
 bool showShip = true;
-bool showCrew = true;
+bool showCrew = false;
 
 Starship starship;
 
@@ -40,11 +39,10 @@ void main() async {
   canvasSpot = querySelector('#canvasSpot');
   crewSpot = querySelector('#crewSpot');
 
-  shipButton = querySelector('#shipButton');
-  crewButton = querySelector('#crewButton');
+  toggleButton = querySelector('#toggle');
 
-  shipButton.onClick.listen((e) => cycleShipDisp());
-  crewButton.onClick.listen((e) => cycleCrewDisp());
+  toggleButton.onClick.listen((e) => cycleShipDisp());//todo merge these into one method
+  toggleButton.onClick.listen((e) => cycleCrewDisp());
 
 
   String datastringQueryFull = "";
@@ -59,7 +57,7 @@ void main() async {
 
   buildDisplay(starship);
   //roomList(starship);
-  if (output != null) {
+  if (output != null && showShip == true) {
     output.appendText(starship.getDescription());
   }
   if (canvasSpot != null) {
@@ -145,7 +143,7 @@ void cycleCrewDisp() {
 }
 
 void makeCrew() async {
-  if(crewSpot != null) {
+  if(crewSpot != null && showCrew == true) {
     //oh god why was i regenerating the crew every time
     Crew crew = await starship.getCrew();
     crewSpot.append(await crew.getAllMemberDivs());
