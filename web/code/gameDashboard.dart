@@ -46,14 +46,12 @@ class GameDashboard extends Dashboard {
 
     return ret;
   }
-
-  //todo refactor the name sfor all these
   
   DivElement drawCommsButton() {
     //todo: comms button needs to be interactive.
     DivElement ret = new DivElement();
     List<int> coordinates = Dashboard.SEGMENT_STARTING_POINTS[0];
-    Buttons commButton = new Buttons([2, 0, 0, 2, 0, 0]); //todo make a custom part for this
+    Buttons commButton = new OneButton(1);
 
     Svg.SvgSvgElement commSvg = commButton.graphicalDisplay();
     segments[coordinates[2]] = commButton;
@@ -62,11 +60,21 @@ class GameDashboard extends Dashboard {
     int y = coordinates[1] +
         (Dashboard.SEGMENT_WIDTH - int.parse(commSvg.getAttribute("height"))) ~/ 2;
 
-    commSvg.style.position = "absolute";
-    commSvg.style.top = "${y}px";
-    commSvg.style.left = "${x}px";
+    ret.style.position = "absolute";
+    ret.style.top = "${y}px";
+    ret.style.left = "${x}px";
+
+    //label: Communicator
+    SpanElement commLabel = new SpanElement();
+    commLabel.appendText("Communicator");
+    commLabel.style.fontSize = "12px";
+    commLabel.style.position = "absolute";
+    commLabel.style.top = "45px";
+    commLabel.style.left = "50px";
+
 
     ret.append(commSvg);
+    ret.append(commLabel);
     return ret;
   }
 
@@ -88,6 +96,7 @@ class GameDashboard extends Dashboard {
     ret.style.left = "${x}px";
 
     ret.append(retSvg);
+    ret.appendHtml("<br>");
     ret.appendText(retSegment.label);
     return ret;
   }
@@ -110,6 +119,7 @@ class GameDashboard extends Dashboard {
     ret.style.left = "${x}px";
 
     ret.append(retSvg);
+    ret.appendHtml("<br>");
     ret.appendText(retSegment.label);
     return ret;
   }
@@ -132,6 +142,7 @@ class GameDashboard extends Dashboard {
     ret.style.left = "${x}px";
 
     ret.append(retSvg);
+    ret.appendHtml("<br>");
     ret.appendText(retSegment.label);
     return ret;
   }
@@ -157,20 +168,20 @@ class GameDashboard extends Dashboard {
     SpanElement shipLabel = new SpanElement();
     shipLabel.appendText("SHIP");
     shipLabel.style.position = "absolute";
-    shipLabel.style.top = "${40}px";
-    shipLabel.style.left = "${5}px";
+    shipLabel.style.top = "40px";
+    shipLabel.style.left = "5px";
 
     //label 2: ship data
     SpanElement crewLabel = new SpanElement();
     crewLabel.appendText("CREW");
     crewLabel.style.position = "absolute";
-    crewLabel.style.top = "${40}px";
-    crewLabel.style.left = "${100}px";
+    crewLabel.style.top = "40px";
+    crewLabel.style.left = "100px";
 
     //svg position
     retSvg.style.position = "absolute";
-    retSvg.style.top = "${0}px";
-    retSvg.style.left = "${0}px";
+    retSvg.style.top = "0px";
+    retSvg.style.left = "0px";
 
     ret.append(shipLabel);
     ret.append(crewLabel);

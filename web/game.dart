@@ -158,6 +158,7 @@ void buildCommsButton() {
   DivElement comm = dashboard.drawCommsButton();
   commsButton.children =  new List<Element>();
   commsButton.append(comm);
+
 }
 
 //todo hook in system for updating fuel display
