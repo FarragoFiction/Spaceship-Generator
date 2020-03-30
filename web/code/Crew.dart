@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:async';
 import 'dart:html';
 import 'crewStats.dart';
+import 'CrewFactions.dart';
 //import 'dart:math';
 
 import 'Starship.dart';
@@ -10,7 +11,6 @@ import 'Room.dart';
 import 'package:DollLibCorrect/DollRenderer.dart';
 import 'package:TextEngine/TextEngine.dart';
 import 'package:CommonLib/Random.dart';
-
 
 
 class Crewmember {
@@ -150,34 +150,35 @@ class Crewmember {
   Future<String> buildName() async{
     if(name != null) return name;
 
-    if(doll.renderingType == 37 || doll.renderingType == 28 ) {
+    if(doll.renderingType == CrewFactions.SMOL_KID_ID || doll.renderingType == CrewFactions.FEK_ID ) {
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       name = textEngine.phrase("kidname_all", story: textStory);
-    } else if(doll.renderingType == 38){ //smol trols use troll names
+    } else if(doll.renderingType == CrewFactions.SMOL_TROLL_ID){ //smol trols use troll names
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       name = textEngine.phrase("trollname_all", story: textStory);
-    } else if(doll.renderingType == 35) { //fruits have it at dollName
+    } /* //im not using fruit anymore but wanna leave this open
+      else if(doll.renderingType == 35) { //fruits have it at dollName
       name = await doll.dollName;
-    } else if(doll.renderingType == 26) {
+    }*/ else if(doll.renderingType == CrewFactions.DOC_ID) {
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       name = textEngine.phrase("docname_temp", story: textStory);
-    } else if(doll.renderingType == 85 || doll.renderingType == 46) { //treebabs and satyr kittens get troll grub names
+    } else if(doll.renderingType == CrewFactions.HOMESTUCK_LAMIA_TREE_BAB_ID || doll.renderingType == CrewFactions.HOMESTUCK_LAMIA_ID) { //treebabs and satyr kittens get troll grub names
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       name = textEngine.phrase("wigglername_all", story: textStory);
-    } else if(doll.renderingType == 47) { //cookie placeholder names taken from list of food
+    } else if(doll.renderingType == CrewFactions.COOKIE_ID) { //cookie placeholder names taken from list of food
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
       name = textEngine.phrase("cookiename_temp", story: textStory);
-    } else if(doll.renderingType == 48) { //magical girl 2 should be same as magicalgirl 1
+    } else if(doll.renderingType == CrewFactions.MAGICAL_GIRL_TWO_ID) { //magical girl 2 should be same as magicalgirl 1
       TextEngine textEngine = new TextEngine(id);
       TextStory textStory = new TextStory();
       await textEngine.loadList("names");
@@ -262,12 +263,12 @@ class Crew {
     Random rand = new Random(starship.id);
     int numCrew = starship.getNumOfRoomType(Room.CREW_QUARTERS) * (1 + rand.nextInt(5));
 
-    //am i predominantly one species, or a mixed bag?
-    bool isMonoSpecies = rand.nextBool();
+    //am i predominantly one faction, or a mixed bag?
+    bool isMonoFaction = rand.nextBool();
 
-    int mainSpeciesId;
-    if(isMonoSpecies) {
-      mainSpeciesId = Doll.allDollTypes[rand.nextInt(Doll.allDollTypes.length)];
+    List<int> mainFaction;
+    if(isMonoFaction) {
+      mainFaction = CrewFactions.ALL_FACTIONS[rand.nextInt(CrewFactions.ALL_FACTIONS.length)];
     }
 
     //build the crew
@@ -276,10 +277,10 @@ class Crew {
       int memberId = rand.nextInt(2147483647);
       Crewmember member;
 
-      if(isMonoSpecies && rand.nextDouble() <= 0.9) {
-        member = await Crewmember.randomCrewmember(memberId, mainSpeciesId);
+      if(isMonoFaction && rand.nextDouble() <= 0.9) {
+        member = await Crewmember.randomCrewmember(memberId, mainFaction[rand.nextInt(mainFaction.length)]);
       } else {
-        int memberSpeciesId = Doll.allDollTypes[rand.nextInt(Doll.allDollTypes.length)];
+        int memberSpeciesId = CrewFactions.ALL_IDS[rand.nextInt(CrewFactions.ALL_IDS.length)];
         member = await Crewmember.randomCrewmember(memberId, memberSpeciesId);
       }
       crewList.add(member);
