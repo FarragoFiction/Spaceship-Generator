@@ -152,3 +152,10 @@ class CrewFactions {
     MONSTER_GIRL_ID
   ];
 }
+
+/*
+  -Factions are grouped based on dollsets meant to represent the same species (trolls and grubs)
+    -or are otherwise related (magical girls and their chick familiars)
+  -dolls that can represent multiple species (ex. Fek) aren't in any faction
+    -these still generate when faction generation is ignored
+ */
