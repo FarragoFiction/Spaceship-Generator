@@ -25,9 +25,10 @@ DivElement canvasSpot;
 DivElement crewSpot;
 String string;
 
-InputElement toggleButton;
-bool showShip = true;
-bool showCrew = false;
+bool toggleShipCrew = true;
+
+GameDashboard dashboard;
+DivElement toggleButton;
 
 Starship starship;
 
@@ -41,9 +42,8 @@ void main() async {
 
   toggleButton = querySelector('#toggle');
 
-  toggleButton.onClick.listen((e) => cycleShipDisp());//todo merge these into one method
-  toggleButton.onClick.listen((e) => cycleCrewDisp());
-
+  //toggleButton.onClick.listen((e) => cycleShipDisp());//todo merge these into one method
+  //toggleButton.onClick.listen((e) => cycleCrewDisp());
 
   String datastringQueryFull = "";
 
@@ -57,15 +57,12 @@ void main() async {
 
   buildDisplay(starship);
   //roomList(starship);
-  if (output != null && showShip == true) {
-    output.appendText(starship.getDescription());
-  }
   if (canvasSpot != null) {
-    GameDashboard dashboard = new GameDashboard(starship);
+    dashboard = new GameDashboard(starship);
 
     String datastring = Uri.base.queryParameters['d'];
     canvasSpot.append(dashboard.buildGameDashboard());
-
+    buildShipDataToggle();
     //todo: allow datatstings to account for empty spots
     //print("my dashboard data string is\n"
     //  "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
@@ -120,32 +117,34 @@ void buildDisplay(Starship starship) {
   }
   if(output != null)
     output.append(table);
+  output.appendText(starship.getDescription());
 }
 
-void cycleShipDisp() {
-  if(showShip) {
-    showShip = false;
-    output.children = new List<Element>();
-  } else {
-    showShip = true;
+
+void cycleCrewShipDisp() {
+  if(!toggleShipCrew) {
+    crewSpot.children = new List<Element>();
     buildDisplay(starship);
-  }
-}
-
-void cycleCrewDisp() {
-  if(showCrew) {
-    showCrew = false;
-      crewSpot.children = new List<Element>();
+    toggleShipCrew = true;
   } else {
-    showCrew = true;
+    toggleShipCrew = false;
     makeCrew();
+    output.children = new List<Element>();
   }
+  buildShipDataToggle();
 }
 
 void makeCrew() async {
-  if(crewSpot != null && showCrew == true) {
+  if(crewSpot != null && toggleShipCrew == false) {
     //oh god why was i regenerating the crew every time
     Crew crew = await starship.getCrew();
     crewSpot.append(await crew.getAllMemberDivs());
   }
+}
+
+void buildShipDataToggle() {
+  DivElement toggle = dashboard.drawCrewShipSwitch(toggleShipCrew);
+  toggle.children.elementAt(2).onClick.listen((e)=> cycleCrewShipDisp());
+  toggleButton.children =  new List<Element>();
+  toggleButton.append(toggle);
 }

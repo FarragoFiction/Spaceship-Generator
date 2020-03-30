@@ -42,7 +42,7 @@ class GameDashboard extends Dashboard {
     ret.append(drawFuelGague());
     ret.append(drawHullGague());
     ret.append(drawCurrencyCounter());
-    ret.append(drawCrewShipSwitch());
+    //ret.append(drawCrewShipSwitch());
 
     return ret;
   }
@@ -136,11 +136,11 @@ class GameDashboard extends Dashboard {
     return ret;
   }
 
-  DivElement drawCrewShipSwitch() {
+  DivElement drawCrewShipSwitch(bool toggleState) {
     //todo ship/crew switch. should toggle the display between showing crew data and ship data.
     DivElement ret = new DivElement();
     List<int> coordinates = Dashboard.SEGMENT_STARTING_POINTS[18];
-    Switches retSegment = Switches([false, true, false, false, true, false]); //todo make a custom part for this
+    Switches retSegment = OneSwitch(toggleState); //todo make a custom part for this
 
     Svg.SvgSvgElement retSvg = retSegment.graphicalDisplay();
     segments[coordinates[2]] = retSegment;
@@ -153,7 +153,29 @@ class GameDashboard extends Dashboard {
     ret.style.top = "${y}px";
     ret.style.left = "${x}px";
 
+    //label 1: ship data
+    SpanElement shipLabel = new SpanElement();
+    shipLabel.appendText("SHIP");
+    shipLabel.style.position = "absolute";
+    shipLabel.style.top = "${40}px";
+    shipLabel.style.left = "${5}px";
+
+    //label 2: ship data
+    SpanElement crewLabel = new SpanElement();
+    crewLabel.appendText("CREW");
+    crewLabel.style.position = "absolute";
+    crewLabel.style.top = "${40}px";
+    crewLabel.style.left = "${100}px";
+
+    //svg position
+    retSvg.style.position = "absolute";
+    retSvg.style.top = "${0}px";
+    retSvg.style.left = "${0}px";
+
+    ret.append(shipLabel);
+    ret.append(crewLabel);
     ret.append(retSvg);
+    //return retSvg;
     return ret;
   }
 
