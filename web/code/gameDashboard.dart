@@ -38,10 +38,10 @@ class GameDashboard extends Dashboard {
     ret.style.position = "absolute";
     ret.style.zIndex = "1";
 
-    ret.append(drawCommsButton());
-    ret.append(drawFuelGague());
-    ret.append(drawHullGague());
-    ret.append(drawCurrencyCounter());
+    //ret.append(drawCommsButton());
+    //ret.append(drawFuelGague());
+    //ret.append(drawHullGague());
+    //ret.append(drawCurrencyCounter());
     //ret.append(drawCrewShipSwitch());
 
     return ret;
@@ -70,11 +70,11 @@ class GameDashboard extends Dashboard {
     return ret;
   }
 
-  DivElement drawFuelGague() {
+  DivElement drawFuelGague(int value) {
     //todo fuel gague should keep track of a fuel stat.
     DivElement ret = new DivElement();
     List<int> coordinates = Dashboard.SEGMENT_STARTING_POINTS[1];
-    AnalogueGague retSegment = AnalogueGague(50, 100, true, false, "fuel");
+    AnalogueGague retSegment = AnalogueGague(value, 100, true, false, "fuel");
 
     Svg.SvgSvgElement retSvg = retSegment.graphicalDisplay();
     segments[coordinates[2]] = retSegment;
@@ -92,11 +92,11 @@ class GameDashboard extends Dashboard {
     return ret;
   }
 
-  DivElement drawHullGague() {
+  DivElement drawHullGague(int value) {
     //todo hull gague should be hit points of some sort.
     DivElement ret = new DivElement();
     List<int> coordinates = Dashboard.SEGMENT_STARTING_POINTS[2];
-    AnalogueGague retSegment = AnalogueGague(50, 100, false, true, "hull strength");
+    AnalogueGague retSegment = AnalogueGague(value, 100, false, true, "hull strength");
 
     Svg.SvgSvgElement retSvg = retSegment.graphicalDisplay();
     segments[coordinates[2]] = retSegment;
@@ -114,11 +114,11 @@ class GameDashboard extends Dashboard {
     return ret;
   }
 
-  DivElement drawCurrencyCounter() {
+  DivElement drawCurrencyCounter(int value) {
     //todo currency counter. what does segundia use again?
     DivElement ret = new DivElement();
     List<int> coordinates = Dashboard.SEGMENT_STARTING_POINTS[4];
-    NixieTube retSegment = new NixieTube(113, 999, "Currency");
+    NixieTube retSegment = new NixieTube(value, 999, "Currency");
 
     Svg.SvgSvgElement retSvg = retSegment.graphicalDisplay();
     segments[coordinates[2]] = retSegment;

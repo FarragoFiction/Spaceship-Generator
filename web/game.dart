@@ -29,6 +29,10 @@ bool toggleShipCrew = true;
 
 GameDashboard dashboard;
 DivElement toggleButton;
+DivElement commsButton;
+DivElement fuelGague;
+DivElement hullGague;
+DivElement currencyCounter;
 
 Starship starship;
 
@@ -41,19 +45,15 @@ void main() async {
   crewSpot = querySelector('#crewSpot');
 
   toggleButton = querySelector('#toggle');
+  commsButton = querySelector("#commsButton");
+  fuelGague = querySelector("#fuel");
+  hullGague = querySelector("#hull");
+  currencyCounter = querySelector("#currency");
 
-  //toggleButton.onClick.listen((e) => cycleShipDisp());//todo merge these into one method
-  //toggleButton.onClick.listen((e) => cycleCrewDisp());
 
   String datastringQueryFull = "";
 
-
-  //Starship starship = Starship.getRandomStarship(seed);
   starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
-
-  //Starship starship;
-  //todo make default starship
-
 
   buildDisplay(starship);
   //roomList(starship);
@@ -63,6 +63,10 @@ void main() async {
     String datastring = Uri.base.queryParameters['d'];
     canvasSpot.append(dashboard.buildGameDashboard());
     buildShipDataToggle();
+    buildCommsButton();
+    buildCurrencyCounter();
+    buildFuelGague();
+    buildHullGague();
     //todo: allow datatstings to account for empty spots
     //print("my dashboard data string is\n"
     //  "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
@@ -147,4 +151,32 @@ void buildShipDataToggle() {
   toggle.children.elementAt(2).onClick.listen((e)=> cycleCrewShipDisp());
   toggleButton.children =  new List<Element>();
   toggleButton.append(toggle);
+}
+
+//todo hook in system for opening communications window
+void buildCommsButton() {
+  DivElement comm = dashboard.drawCommsButton();
+  commsButton.children =  new List<Element>();
+  commsButton.append(comm);
+}
+
+//todo hook in system for updating fuel display
+void buildFuelGague() {
+  DivElement gague = dashboard.drawFuelGague(50);
+  fuelGague.children =  new List<Element>();
+  fuelGague.append(gague);
+}
+
+//todo hook in system for updating hull display
+void buildHullGague() {
+  DivElement gague = dashboard.drawHullGague(50);
+  hullGague.children =  new List<Element>();
+  hullGague.append(gague);
+}
+
+//todo hook in system for updating hull display
+void buildCurrencyCounter() {
+  DivElement counter = dashboard.drawCurrencyCounter(113);
+  currencyCounter.children =  new List<Element>();
+  currencyCounter.append(counter);
 }
