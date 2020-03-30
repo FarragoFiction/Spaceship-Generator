@@ -26,6 +26,7 @@ DivElement crewSpot;
 String string;
 
 bool toggleShipCrew = true;
+bool commsWindowOpen = false;
 
 GameDashboard dashboard;
 DivElement toggleButton;
@@ -33,6 +34,7 @@ DivElement commsButton;
 DivElement fuelGague;
 DivElement hullGague;
 DivElement currencyCounter;
+DivElement commsWindow;
 
 Starship starship;
 
@@ -49,6 +51,8 @@ void main() async {
   fuelGague = querySelector("#fuel");
   hullGague = querySelector("#hull");
   currencyCounter = querySelector("#currency");
+
+  commsWindow = querySelector("#commsWindow");
 
 
   String datastringQueryFull = "";
@@ -153,12 +157,36 @@ void buildShipDataToggle() {
   toggleButton.append(toggle);
 }
 
+void openCommsWindow() {
+  commsWindow.children = new List<Element>();
+  if(!commsWindowOpen) {
+    DivElement ret = new DivElement();
+
+    //todo tweak here
+    ret.style.width = "800px";
+    ret.style.height = "500px";
+    ret.style.position = "absolute";
+    ret.style.top = "50px";
+    ret.style.left = "200px";
+    ret.style.boxShadow = "10px 5px 5px black";
+    ret.style.backgroundColor = "#0d3d6e";
+    ret.style.color = "#69b3ff";
+    ret.style.zIndex = "3";
+    ret.appendText("Hello world");
+    commsWindow.append(ret);
+    commsWindowOpen = true;
+  } else {
+    commsWindow.children = new List<Element>();
+    commsWindowOpen = false;
+  }
+}
+
 //todo hook in system for opening communications window
 void buildCommsButton() {
   DivElement comm = dashboard.drawCommsButton();
   commsButton.children =  new List<Element>();
+  comm.onClick.listen((e) => openCommsWindow());
   commsButton.append(comm);
-
 }
 
 //todo hook in system for updating fuel display
