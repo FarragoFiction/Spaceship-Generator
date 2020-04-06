@@ -38,7 +38,8 @@ main() {
 
   //CrewStat.testStatRolls();
   //testCrewNames();
-  Starmap starmap = Starmap.makeRandomStarmap(85);
+
+  Starmap starmap = Starmap.makeRandomStarmap(112);
   print(starmap.toString());
 }
 

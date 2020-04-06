@@ -10,7 +10,7 @@ final int MAX_STARS = 100;
 
 */
 class Starmap {
-  static final double DENSITY_FACTOR = 4.0;
+  static final double DENSITY_FACTOR = 8.0;
 
   double size; //the dimensions of your space cube.
   List<Star> stars;
