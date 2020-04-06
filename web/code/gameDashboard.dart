@@ -5,9 +5,13 @@ import 'DashboardSegment.dart';
 import 'Starship.dart';
 import 'Dashboard.dart';
 import 'DatastringUtilities.dart';
+import 'Starmap.dart';
 
 class GameDashboard extends Dashboard {
-  GameDashboard(Starship starship) :super(starship);
+  Starmap spacemap;
+  GameDashboard(Starship starship) :super(starship) {
+    spacemap = Starmap.makeRandomStarmap(starship.id);
+  }
 
 
 
@@ -190,4 +194,21 @@ class GameDashboard extends Dashboard {
     return ret;
   }
 
+
+  @override
+  drawStars(CanvasRenderingContext2D ctx) {
+    Math.Random random = new Math.Random(starship.getId());
+    for (int i = 0; i < spacemap.stars.length; i++) {
+      Star star = spacemap.stars[i];
+      int x = ((star.coordinates[0]/spacemap.size) * Dashboard.WIDTH).toInt();
+      int y = ((star.coordinates[1]/spacemap.size) * Dashboard.HEIGHT).toInt();
+      int r = 1 + ((star.coordinates[2]/spacemap.size) * 5).toInt();//1 + random.nextInt(3);
+
+      //todo make star colors for each
+      ctx.fillStyle = Dashboard.STAR_COLORS[random.nextInt(Dashboard.STAR_COLORS.length)];
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, 2 * Math.pi);
+      ctx.fill();
+    }
+  }
 }

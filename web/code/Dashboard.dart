@@ -104,7 +104,7 @@ class Dashboard {
   }
 
   //draw a random number of stars in random areas. randomly choose their color from a bunch of pastels.
-  CanvasRenderingContext2D drawStars(CanvasRenderingContext2D ctx) {
+  void drawStars(CanvasRenderingContext2D ctx) {
     Math.Random random = new Math.Random(starship.getId());
     for (int i = 0; i <= 15 + random.nextInt(50); i++) {
       int x = random.nextInt(WIDTH);
