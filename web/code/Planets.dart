@@ -4,6 +4,7 @@ import 'dart:math';
 import 'Room.dart';
 import 'Starship.dart';
 /*
+//todo this is low priority
 planets are gonna be pretty simple.
   -distance from sun
   -size

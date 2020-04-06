@@ -5,6 +5,7 @@ import 'code/displays/Display.dart';
 import 'dart:svg';
 import 'code/crewStats.dart';
 import 'code/Crew.dart';
+import 'code/Starmap.dart';
 
 NixieTube nixie;
 AnalogueGague gague;
@@ -35,10 +36,10 @@ main() {
   output.append(dialElement);
   output.appendHtml("</br>");
 
-  CrewStat.testStatRolls();
-  testCrewNames();
-
-
+  //CrewStat.testStatRolls();
+  //testCrewNames();
+  Starmap starmap = Starmap.makeRandomStarmap(85);
+  print(starmap.toString());
 }
 
 Future<void> testCrewNames() async {
