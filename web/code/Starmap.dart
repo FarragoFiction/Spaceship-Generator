@@ -12,12 +12,12 @@ final int MAX_STARS = 100;
 class Starmap {
   static final double DENSITY_FACTOR = 8.0;
 
-  double size; //the dimensions of your space cube.
+  double mapDimension; //the dimensions of your space cube.
   List<Star> stars;
 
   Starmap(int numStars) {
     stars = new List();
-    size = math.pow(numStars, 1.0/3) * DENSITY_FACTOR;
+    mapDimension = math.pow(numStars, 1.0/3) * DENSITY_FACTOR;
   }
 
   static Starmap makeRandomStarmap(int seed) {
@@ -25,10 +25,10 @@ class Starmap {
     int numStars = rand.nextInt(MAX_STARS - MIN_STARS) + MIN_STARS;
     Starmap ret = new Starmap(numStars);
     for(int i = 0; i < numStars; i++) {
-      double x = rand.nextDouble() * ret.size;
-      double y = rand.nextDouble() * ret.size;
-      double z = rand.nextDouble() * ret.size;
-      Star newStar = new Star(x, y, z);
+      double x = rand.nextDouble() * ret.mapDimension;
+      double y = rand.nextDouble() * ret.mapDimension;
+      double z = rand.nextDouble() * ret.mapDimension;
+      Star newStar = new Star(x, y, z, "$i");
       ret.stars.add(newStar);
     }
     return ret;
@@ -40,7 +40,7 @@ class Starmap {
     double totalFinalAvg = 0;
     for(int i = 0; i < stars.length; i++) {
       ret += stars[i].toString();
-      double closestDistance = size;
+      double closestDistance = mapDimension;
       double avgDistance = 0;
       for(int j = 0; j < stars.length; j++) {
         if(j != i) {
@@ -67,12 +67,14 @@ class Starmap {
 
 class Star {
   List<double> coordinates;
+  String name;
 
-  Star(double x, double y, double z) {
+  Star(double x, double y, double z, String name) {
     coordinates = new List(3);
     coordinates[0] = x;
     coordinates[1] = y;
     coordinates[2] = z;
+    this.name = name;
   }
 
   double distanceTo(Star target) {
@@ -85,6 +87,6 @@ class Star {
 
   @override
   toString() {
-    return "[${coordinates[0]},${coordinates[1]},${coordinates[2]}]";
+    return "star $name at (${coordinates[0]},${coordinates[1]},${coordinates[2]})";
   }
 }

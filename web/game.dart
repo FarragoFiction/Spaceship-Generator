@@ -5,6 +5,7 @@ import 'dart:svg';
 import 'dart:async';
 
 import 'code/Starship.dart';
+import 'code/Starmap.dart';
 import 'code/Room.dart';
 import 'code/Dashboard.dart';
 import 'code/Crew.dart';
@@ -35,8 +36,10 @@ DivElement fuelGague;
 DivElement hullGague;
 DivElement currencyCounter;
 DivElement commsWindow;
+DivElement navbar;
 
 Starship starship;
+Starmap spacemap;
 
 void main() async {
   int seed = 85;
@@ -53,11 +56,13 @@ void main() async {
   currencyCounter = querySelector("#currency");
 
   commsWindow = querySelector("#commsWindow");
+  navbar = querySelector("#navbar");
 
 
   String datastringQueryFull = "";
 
   starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
+  spacemap = Starmap.makeRandomStarmap(starship.id);
 
   buildDisplay(starship);
   //roomList(starship);
@@ -65,13 +70,16 @@ void main() async {
     dashboard = new GameDashboard(starship);
 
     String datastring = Uri.base.queryParameters['d'];
-    canvasSpot.append(dashboard.buildGameDashboard());
+    canvasSpot.append(dashboard.buildGameDashboard(spacemap));
+    canvasSpot.onClick.listen((e) => checkWindow(e));
+    //todo put onclick detector here dfor finding star locations
+
     buildShipDataToggle();
     buildCommsButton();
     buildCurrencyCounter();
     buildFuelGague();
     buildHullGague();
-    //todo: allow datatstings to account for empty spots
+    //todo: allow datatstings but only if its newgame+
     //print("my dashboard data string is\n"
     //  "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
     makeCrew();
@@ -208,4 +216,24 @@ void buildCurrencyCounter() {
   DivElement counter = dashboard.drawCurrencyCounter(113);
   currencyCounter.children =  new List<Element>();
   currencyCounter.append(counter);
+}
+
+void checkWindow(MouseEvent e) {
+  int mouseX = e.offset.x;
+  int mouseY = e.offset.y;
+
+  for(int i = 0; i < spacemap.stars.length; i++) {
+    //todo this will be offcenter
+    if((mouseX - dashboard.starDrawCoords[i].x) <= 10 && (mouseY - dashboard.starDrawCoords[i].y) <= 10) {
+      updateNavigationDisplay(i);
+      return;
+    }
+  }
+}
+
+void updateNavigationDisplay(int starNum) {
+  HeadingElement header = HeadingElement.h1();
+  header.appendText(spacemap.stars[starNum].toString());
+  navbar.children = new List<Element>();
+  navbar.append(header);
 }

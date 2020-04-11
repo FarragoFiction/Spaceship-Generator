@@ -8,14 +8,14 @@ import 'DatastringUtilities.dart';
 import 'Starmap.dart';
 
 class GameDashboard extends Dashboard {
-  Starmap spacemap;
+  List<Point<num>> starDrawCoords;
   GameDashboard(Starship starship) :super(starship) {
-    spacemap = Starmap.makeRandomStarmap(starship.id);
+    starDrawCoords = [];
   }
 
 
 
-  DivElement buildGameDashboard() {
+  DivElement buildGameDashboard(Starmap starmap) {
     DivElement ret = new DivElement();
     DivElement canvasDiv = new DivElement();
     canvasDiv.style.position = "absolute";
@@ -26,7 +26,7 @@ class GameDashboard extends Dashboard {
     CanvasRenderingContext2D ctx = canvas.context2D;
 
     drawBackground(ctx);
-    drawStars(ctx);//todo overwrite method to adjust for consistency
+    drawStarsFromMap(ctx, starmap);//todo overwrite method to adjust for consistency
     drawFrame(ctx);
 
     //todo this is the part where you draw the displays.
@@ -195,15 +195,16 @@ class GameDashboard extends Dashboard {
   }
 
 
-  @override
-  drawStars(CanvasRenderingContext2D ctx) {
+
+   void drawStarsFromMap(CanvasRenderingContext2D ctx, Starmap spacemap) {
     Math.Random random = new Math.Random(starship.getId());
+
     for (int i = 0; i < spacemap.stars.length; i++) {
       Star star = spacemap.stars[i];
-      int x = ((star.coordinates[0]/spacemap.size) * Dashboard.WIDTH).toInt();
-      int y = ((star.coordinates[1]/spacemap.size) * Dashboard.HEIGHT).toInt();
-      int r = 1 + ((star.coordinates[2]/spacemap.size) * 5).toInt();//1 + random.nextInt(3);
-
+      int x = ((star.coordinates[0]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
+      int y = ((star.coordinates[1]/spacemap.mapDimension) * Dashboard.HEIGHT).toInt();
+      int r = 1 + ((star.coordinates[2]/spacemap.mapDimension) * 5).toInt();//1 + random.nextInt(3);
+      starDrawCoords.add(new Point(x, y));
       //todo make star colors for each
       ctx.fillStyle = Dashboard.STAR_COLORS[random.nextInt(Dashboard.STAR_COLORS.length)];
       ctx.beginPath();
