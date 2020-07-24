@@ -15,6 +15,8 @@ class Starmap {
   double mapDimension; //the dimensions of your space cube.
   List<Star> stars;
 
+
+
   Starmap(int numStars) {
     stars = new List();
     mapDimension = math.pow(numStars, 1.0/3) * DENSITY_FACTOR;

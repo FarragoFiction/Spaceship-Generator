@@ -221,10 +221,16 @@ void buildCurrencyCounter() {
 void checkWindow(MouseEvent e) {
   int mouseX = e.offset.x;
   int mouseY = e.offset.y;
+  print("I think you're clicking at ($mouseX, $mouseY).");
 
   for(int i = 0; i < spacemap.stars.length; i++) {
     //todo this will be offcenter
-    if((mouseX - dashboard.starDrawCoords[i].x) <= 10 && (mouseY - dashboard.starDrawCoords[i].y) <= 10) {
+    int starX = dashboard.starDrawCoords[i].x;
+    int starY = dashboard.starDrawCoords[i].y;
+    //print("star $i at ($starX, $starY)");
+    //adding a bit of leeway. might fuck up if stars gen close together but i can just.... avoid that
+    if(((mouseX - starX) <= 15 && (mouseX - starX >= -5)) && ((mouseY - starY) <= 15 && (mouseY - starY) >= -5)) {
+      print("Success!");
       updateNavigationDisplay(i);
       return;
     }
