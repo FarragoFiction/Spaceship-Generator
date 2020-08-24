@@ -72,7 +72,7 @@ void main() async {
     dashboard = new GameDashboard(starship);
 
     String datastring = Uri.base.queryParameters['d'];
-    canvasSpot.append(dashboard.buildGameDashboard(spacemap));
+    canvasSpot.append(dashboard.buildGameDashboard(spacemap, location, location));
     canvasSpot.onClick.listen((e) => checkWindow(e));
     //todo put onclick detector here dfor finding star locations
 
@@ -239,7 +239,13 @@ void checkWindow(MouseEvent e) {
   }
 }
 
+void redrawCanvas(int starNum) {
+  canvasSpot.children = new List<Element>();
+  canvasSpot.append(dashboard.buildGameDashboard(spacemap, location, starNum)); //todo you probably don't need to redraw this every time, clean this up when it's time to work on improvements
+}
 
+void updateStarHighlighter(int starNum) {
+}
 
 void updateNavigationDisplay(int starNum) {
   Star oldStar = spacemap.stars[location];

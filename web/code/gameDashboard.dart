@@ -15,7 +15,7 @@ class GameDashboard extends Dashboard {
 
 
 
-  DivElement buildGameDashboard(Starmap starmap) {
+  DivElement buildGameDashboard(Starmap starmap, int oldLocation, int newLocation) {
     DivElement ret = new DivElement();
     DivElement canvasDiv = new DivElement();
     canvasDiv.style.position = "absolute";
@@ -27,6 +27,7 @@ class GameDashboard extends Dashboard {
 
     drawBackground(ctx);
     drawStarsFromMap(ctx, starmap);//todo overwrite method to adjust for consistency
+    drawHighlightAndTrace(ctx, oldLocation, newLocation, starmap);
     drawFrame(ctx);
 
     //todo this is the part where you draw the displays.
@@ -196,7 +197,7 @@ class GameDashboard extends Dashboard {
 
 
 
-   void drawStarsFromMap(CanvasRenderingContext2D ctx, Starmap spacemap) {
+  void drawStarsFromMap(CanvasRenderingContext2D ctx, Starmap spacemap) {
     Math.Random random = new Math.Random(starship.getId());
 
     for (int i = 0; i < spacemap.stars.length; i++) {
@@ -211,5 +212,18 @@ class GameDashboard extends Dashboard {
       ctx.arc(x, y, r, 0, 2 * Math.pi);
       ctx.fill();
     }
+  }
+
+  //draws an icon to highlight your current location, and draws a line to the next one if you're travelling there.
+  void drawHighlightAndTrace(CanvasRenderingContext2D ctx, int oldLocation, int newLocation, Starmap spacemap) {
+    Star oldStar = spacemap.stars[oldLocation];
+    Star newStar = spacemap.stars[newLocation];
+
+    int startX = ((oldStar.coordinates[0]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
+    int startY = ((oldStar.coordinates[1]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
+
+    ctx.fillStyle = "#FF0000";
+    ctx.ellipse(startX, startY, 3, 3, 0, 0, 0, true);
+    ctx.fill();
   }
 }
