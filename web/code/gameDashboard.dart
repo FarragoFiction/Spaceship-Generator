@@ -202,8 +202,8 @@ class GameDashboard extends Dashboard {
 
     for (int i = 0; i < spacemap.stars.length; i++) {
       Star star = spacemap.stars[i];
-      int x = ((star.coordinates[0]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
-      int y = ((star.coordinates[1]/spacemap.mapDimension) * Dashboard.HEIGHT).toInt();
+      int x = ((star.coordinates[0]/spacemap.mapDimension) * (Dashboard.WIDTH)).toInt();
+      int y = ((star.coordinates[1]/spacemap.mapDimension) * (Dashboard.HEIGHT - 150)).toInt();
       int r = 1 + ((star.coordinates[2]/spacemap.mapDimension) * 5).toInt();//1 + random.nextInt(3);
       starDrawCoords.add(new Point(x, y));
       //todo make star colors for each
@@ -220,10 +220,24 @@ class GameDashboard extends Dashboard {
     Star newStar = spacemap.stars[newLocation];
 
     int startX = ((oldStar.coordinates[0]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
-    int startY = ((oldStar.coordinates[1]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
+    int startY = ((oldStar.coordinates[1]/spacemap.mapDimension) * (Dashboard.HEIGHT - 150)).toInt();
 
-    ctx.fillStyle = "#FF0000";
-    ctx.ellipse(startX, startY, 3, 3, 0, 0, 0, true);
-    ctx.fill();
+    ctx.strokeStyle = "#FF0000"; //todo find a nicer color
+    print("trying to draw the circle at $startX, $startY");
+    ctx.moveTo(startX, startY);
+    ctx.ellipse(startX, startY, 20, 20, 0, 0, 2 * Math.pi, false);
+    ctx.stroke();
+
+    //this part is only relevant if old and new locations differ
+    if(oldLocation - newLocation != 0) {
+      print("trying to draw line.");
+      int endX = ((newStar.coordinates[0]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
+      int endY = ((newStar.coordinates[1]/spacemap.mapDimension) * (Dashboard.HEIGHT - 150)).toInt();
+
+      ctx.moveTo(startX, startY);
+      //ctx.beginPath();
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+    }
   }
 }

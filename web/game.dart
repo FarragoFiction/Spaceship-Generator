@@ -234,6 +234,7 @@ void checkWindow(MouseEvent e) {
     if(((mouseX - starX) <= 15 && (mouseX - starX >= -5)) && ((mouseY - starY) <= 15 && (mouseY - starY) >= -5)) {
       print("Success!");
       updateNavigationDisplay(i);
+      redrawCanvas(i);
       return;
     }
   }
@@ -244,8 +245,6 @@ void redrawCanvas(int starNum) {
   canvasSpot.append(dashboard.buildGameDashboard(spacemap, location, starNum)); //todo you probably don't need to redraw this every time, clean this up when it's time to work on improvements
 }
 
-void updateStarHighlighter(int starNum) {
-}
 
 void updateNavigationDisplay(int starNum) {
   Star oldStar = spacemap.stars[location];
