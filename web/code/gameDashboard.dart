@@ -226,7 +226,7 @@ class GameDashboard extends Dashboard {
     print("trying to draw the circle at $startX, $startY");
     ctx.moveTo(startX, startY);
     ctx.ellipse(startX, startY, 20, 20, 0, 0, 2 * Math.pi, false);
-    ctx.stroke();
+    //ctx.stroke();
 
     //this part is only relevant if old and new locations differ
     if(oldLocation - newLocation != 0) {
@@ -237,7 +237,7 @@ class GameDashboard extends Dashboard {
       ctx.moveTo(startX, startY);
       //ctx.beginPath();
       ctx.lineTo(endX, endY);
-      ctx.stroke();
     }
+    ctx.stroke();
   }
 }

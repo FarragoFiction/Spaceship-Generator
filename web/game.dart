@@ -40,7 +40,11 @@ DivElement navbar;
 
 Starship starship;
 Starmap spacemap;
+
 int location;
+int target;
+int distance;
+int fuel;
 
 void main() async {
   int seed = 85;
@@ -65,6 +69,9 @@ void main() async {
   starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
   spacemap = await Starmap.makeRandomStarmap(starship.id);
   location = 0; //always start at the first star in the system.
+  target = 0;
+  distance = 0;
+  fuel = 113;
 
   buildDisplay(starship);
   //roomList(starship);
@@ -201,7 +208,7 @@ void buildCommsButton() {
 
 //todo hook in system for updating fuel display
 void buildFuelGague() {
-  DivElement gague = dashboard.drawFuelGague(50);
+  DivElement gague = dashboard.drawFuelGague(fuel);
   fuelGague.children =  new List<Element>();
   fuelGague.append(gague);
 }
@@ -233,29 +240,35 @@ void checkWindow(MouseEvent e) {
     //adding a bit of leeway. might fuck up if stars gen close together but i can just.... avoid that
     if(((mouseX - starX) <= 15 && (mouseX - starX >= -5)) && ((mouseY - starY) <= 15 && (mouseY - starY) >= -5)) {
       print("Success!");
-      updateNavigationDisplay(i);
-      redrawCanvas(i);
+      if(target == i && distance < fuel) { //todo give an indication to the player when fuel is too low
+        fuel -= distance;
+        location = i;
+      }
+      target = i;
+      distance = updateNavigationDisplay();
+      redrawCanvas();
+      buildFuelGague();
       return;
     }
   }
 }
 
-void redrawCanvas(int starNum) {
+void redrawCanvas() {
   canvasSpot.children = new List<Element>();
-  canvasSpot.append(dashboard.buildGameDashboard(spacemap, location, starNum)); //todo you probably don't need to redraw this every time, clean this up when it's time to work on improvements
+  canvasSpot.append(dashboard.buildGameDashboard(spacemap, location, target)); //todo you probably don't need to redraw this every time, clean this up when it's time to work on improvements
 }
 
 
-void updateNavigationDisplay(int starNum) {
+int updateNavigationDisplay() {
   Star oldStar = spacemap.stars[location];
-  Star newStar = spacemap.stars[starNum];
+  Star newStar = spacemap.stars[target];
 
   HeadingElement header = HeadingElement.h1();
   header.appendText(newStar.toString());
 
   DivElement distanceElement = new DivElement();
   double distance = 0;
-  if(starNum != location) {
+  if(target != location) {
     //math! quadratic formula to find the distance between two points.
     double sum = 0;
     for(int i = 0; i < newStar.coordinates.length; i++) {
@@ -269,4 +282,5 @@ void updateNavigationDisplay(int starNum) {
   navbar.children = new List<Element>();
   navbar.append(header);
   navbar.append(distanceElement);
+  return distance.round();
 }
