@@ -40,6 +40,7 @@ DivElement navbar;
 
 Starship starship;
 Starmap spacemap;
+int location;
 
 void main() async {
   int seed = 85;
@@ -62,7 +63,8 @@ void main() async {
   String datastringQueryFull = "";
 
   starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
-  spacemap = Starmap.makeRandomStarmap(starship.id);
+  spacemap = await Starmap.makeRandomStarmap(starship.id);
+  location = 0; //always start at the first star in the system.
 
   buildDisplay(starship);
   //roomList(starship);
@@ -237,9 +239,29 @@ void checkWindow(MouseEvent e) {
   }
 }
 
+
+
 void updateNavigationDisplay(int starNum) {
+  Star oldStar = spacemap.stars[location];
+  Star newStar = spacemap.stars[starNum];
+
   HeadingElement header = HeadingElement.h1();
-  header.appendText(spacemap.stars[starNum].toString());
+  header.appendText(newStar.toString());
+
+  DivElement distanceElement = new DivElement();
+  double distance = 0;
+  if(starNum != location) {
+    //math! quadratic formula to find the distance between two points.
+    double sum = 0;
+    for(int i = 0; i < newStar.coordinates.length; i++) {
+      double delta = newStar.coordinates[i] - oldStar.coordinates[i];
+      sum += pow(delta, 2);
+    }
+    distance = sqrt(sum);
+  }
+  distanceElement.appendText("distance: ${distance.round()}");
+
   navbar.children = new List<Element>();
   navbar.append(header);
+  navbar.append(distanceElement);
 }

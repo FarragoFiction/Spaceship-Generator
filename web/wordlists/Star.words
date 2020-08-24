@@ -1,0 +1,120 @@
+TextEngine Word List
+
+@names
+@adjectives
+
+norseNumbers
+    ein
+    tveir
+    thrir
+    fjorir
+    fimm
+    sex
+    sjau
+    atta
+
+norseAnimals
+    sporodreki
+    fugl
+    dyr
+    kykvendi
+    gripr
+    maurr
+    bjorn
+    kykvendi
+    biae
+    byfluga
+    vifill
+    visundr
+    bikkja
+    galti
+    grithungr
+    kalfr
+    valdr
+    bufe
+    naut
+    fenathr
+    hoensa
+    rakki
+    dufa
+    orn
+    ari
+    elgr
+    fiskr
+    gas
+    haensn
+    drasill
+    mar
+
+norsePlants
+    akarn
+    askr
+    tre
+    bjarkan
+    fen
+    myrr
+    yr
+    horr
+    arfa-sata
+    korn
+    akr
+    rekavithr
+    thollr
+    lin
+    vithar-taug
+    skogr
+    holt
+    vithr
+    vin
+    ber
+    graes
+    torfa
+    grosugr
+    hey
+    gras
+    laufsblath
+    limar
+    lind
+    lag
+    stokkr
+    mjol
+    beiting
+
+
+
+norseAdj
+    mannathr
+    aldinn
+    fyrir
+    almattigr
+    einn
+    forn
+    reithr
+    storlatr
+    goethalauss
+
+norseMisc
+    mattr
+    bygth
+    stathr
+    ginnung
+    andskoti
+    elska
+    kaerleikr
+    engill
+    list
+    vel
+    loekr
+    rjothr
+    dalr
+
+
+planetNameBase
+    #norsePlants#
+    #norseMisc#
+    #norseAnimals#
+
+planetNameFinal
+    #planetNameBase#
+    #norseAdj# #planetNameBase#
+    #planetNameBase# #norseNumbers#

@@ -16,7 +16,7 @@ SvgSvgElement sevenSegmentElement;
 
 DivElement output;
 InputElement slider;
-main() {
+main() async {
 
   nixie = new NixieTube(113, 200, "");
   nixieElement = nixie.graphicalDisplay();
@@ -39,7 +39,7 @@ main() {
   //CrewStat.testStatRolls();
   //testCrewNames();
 
-  Starmap starmap = Starmap.makeRandomStarmap(112);
+  Starmap starmap = await Starmap.makeRandomStarmap(112);
   print(starmap.toString());
 }
 

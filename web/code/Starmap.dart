@@ -1,6 +1,10 @@
 import 'dart:core';
 import 'dart:async';
 import 'dart:math' as math;
+import 'Starship.dart';
+
+import 'package:TextEngine/TextEngine.dart';
+
 
 final int MIN_STARS = 15;
 final int MAX_STARS = 100;
@@ -22,15 +26,20 @@ class Starmap {
     mapDimension = math.pow(numStars, 1.0/3) * DENSITY_FACTOR;
   }
 
-  static Starmap makeRandomStarmap(int seed) {
+  static Future<Starmap> makeRandomStarmap(int seed) async {
     math.Random rand = new math.Random(seed);
     int numStars = rand.nextInt(MAX_STARS - MIN_STARS) + MIN_STARS;
     Starmap ret = new Starmap(numStars);
+    TextEngine textEngine = new TextEngine(seed);
+    TextStory textStory = new TextStory();
+    await textEngine.loadList("Star");
+
     for(int i = 0; i < numStars; i++) {
       double x = rand.nextDouble() * ret.mapDimension;
       double y = rand.nextDouble() * ret.mapDimension;
       double z = rand.nextDouble() * ret.mapDimension;
-      Star newStar = new Star(x, y, z, "$i");
+      String name = textEngine.phrase("planetNameFinal", story: textStory);
+      Star newStar = new Star(x, y, z, name);
       ret.stars.add(newStar);
     }
     return ret;
@@ -77,6 +86,7 @@ class Star {
     coordinates[1] = y;
     coordinates[2] = z;
     this.name = name;
+    print("$name at (${x.round()}, ${y.round()}, ${z.round()})");
   }
 
   double distanceTo(Star target) {
@@ -89,6 +99,6 @@ class Star {
 
   @override
   toString() {
-    return "star $name at (${coordinates[0]},${coordinates[1]},${coordinates[2]})";
+    return Starship.capitalize(name);
   }
 }
