@@ -196,7 +196,7 @@ void openCommsWindow() {
     } else {
       for(int i = 0; i < star.starships.length; i++) {
         Starship targetStarship = star.starships[i];
-        DivElement menuItem = new DivElement(); //todo make this pretty
+        ButtonElement menuItem = new ButtonElement(); //todo make this pretty
 
         //displays the name of the starship
         HeadingElement targetNameElement = new HeadingElement.h3();
@@ -216,10 +216,11 @@ void openCommsWindow() {
 
         //set up table
         TableElement table = new TableElement();
+        table.style.tableLayout = "fixed";
         TableRowElement r1 = new TableRowElement();
         TableCellElement c1A = new TableCellElement();
         TableCellElement c1B = new TableCellElement();
-        table.style.tableLayout = "fixed";
+
         c1A.style.width = "30%";
         c1B.style.width = "70%";
 

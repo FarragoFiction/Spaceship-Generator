@@ -46,3 +46,17 @@ table{
 tr {
   width: 50%;
 }
+
+button {
+    font-family: 'Comfortaa', sans serif;
+    text-align: center;
+    transition-duration: 0.2s;
+    color: #0d3d6e;
+    background-color: #69b3ff;
+    border: 3px solid #0d3d6e;
+    border-radius: 25px;
+}
+
+button:hover {
+    background-color: #cce6ff;
+}
