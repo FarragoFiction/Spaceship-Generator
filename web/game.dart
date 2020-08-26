@@ -262,9 +262,11 @@ int updateNavigationDisplay() {
   Star oldStar = spacemap.stars[location];
   Star newStar = spacemap.stars[target];
 
-  HeadingElement header = HeadingElement.h1();
-  header.appendText(newStar.toString());
+  //displays name of the star
+  HeadingElement starNameElement = HeadingElement.h3();
+  starNameElement.appendText(newStar.toString());
 
+  //displays distance to this star
   DivElement distanceElement = new DivElement();
   double distance = 0;
   if(target != location) {
@@ -276,10 +278,47 @@ int updateNavigationDisplay() {
     }
     distance = sqrt(sum);
   }
-  distanceElement.appendText("distance: ${distance.round()}");
+  distanceElement.appendText("Distance: ${distance.round()}");
+
+  //displays how many other starships are present
+  DivElement starshipsAtStarElement = new DivElement();
+  starshipsAtStarElement.appendText("Registered Vessels: ${newStar.starships.length}");
+
+  //determine any notable landmarks here
+  DivElement landmarkDisp = new DivElement();
+  landmarkDisp.appendText(newStar.listNotableLandmarks());
+
 
   navbar.children = new List<Element>();
+
+  //set up table
+  TableElement table = new TableElement();
+  TableRowElement r1 = new TableRowElement();
+  TableCellElement c1A = new TableCellElement();
+  TableCellElement c1B = new TableCellElement();
+
+  //set up column A
+  c1A.append(starNameElement);
+  c1A.append(distanceElement);
+  c1A.append(starshipsAtStarElement);
+
+  //set up column B
+  c1B.append(landmarkDisp);
+
+  //combine all
+  r1.append(c1A);
+  r1.append(c1B);
+  table.append(r1);
+
+  table.style.tableLayout = "fixed";
+  c1A.style.width = "50%";
+  c1B.style.width = "50%";
+
+  navbar.append(table);
+
+  /*
   navbar.append(header);
-  navbar.append(distanceElement);
+  navbar.append(distanceElement);*/
+
   return distance.round();
 }

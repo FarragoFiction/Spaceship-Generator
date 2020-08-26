@@ -130,6 +130,20 @@ class Star {
     return false;
   }
 
+  //todo update this as you add new features.
+  //returns a list of usable features the spaceships here have.
+  String listNotableLandmarks() {
+    String ret = "";
+    if(hasRefueling()) {
+      ret = "${ret}Refueling Station\n";
+    }
+
+    if(ret.compareTo("")== 0) {
+      return "No Notable Features.";
+    }
+    return ret;
+  }
+
   @override
   toString() {
     return Starship.capitalize(name);
