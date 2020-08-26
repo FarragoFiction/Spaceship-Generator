@@ -6,6 +6,8 @@ import 'Crew.dart';
 import 'package:TextEngine/TextEngine.dart';
 import 'package:CommonLib/Collection.dart';
 
+final int MAX_SEED = 2147483647;
+
 final String CATCHALL =
     " Nobody knows why this ship was built. Who did this, actually?";
 
