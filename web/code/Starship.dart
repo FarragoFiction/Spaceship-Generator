@@ -105,6 +105,7 @@ class Starship {
   bool scientific = false;
   bool warpCapable = false;
   bool warpAnchor = false;
+  bool refueling = false;
 
   Starship(int seed) {
     id = seed;
@@ -319,10 +320,12 @@ class Starship {
       dashboardLabels.add("fuel");
       if (getNumOfRoomType(Room.THRUSTERS) > 0) {
         description +=
-            " It is designed to transport fuel between distant colonies.";
+        " It is designed to transport fuel between distant colonies.";
         secondNames.add(" Freighter");
-      } else
+      } else {
         description += " It serves as a refueling station.";
+        bool refueling = true;
+      }
     }
 
     if (getNumOfRoomType(Room.MUNITIONS_STORAGE) > 0) {
@@ -419,7 +422,7 @@ class Starship {
         "${secondNames[rand.nextInt(secondNames.length)]}";
     */ //todo fix this
     this.defaultName = await nameFromTextEngineTest(firstNames, secondNames);
-    print(defaultName);
+    //print(defaultName);
   }
 
   String getDescription() {

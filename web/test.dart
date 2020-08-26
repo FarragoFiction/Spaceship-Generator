@@ -39,8 +39,10 @@ main() async {
   //CrewStat.testStatRolls();
   //testCrewNames();
 
-  Starmap starmap = await Starmap.makeRandomStarmap(112);
-  print(starmap.toString());
+  for(int i = 0; i < 112; i++) {
+    Starmap starmap = await Starmap.makeRandomStarmap(i);
+    //print(starmap.toString());
+  }
 }
 
 Future<void> testCrewNames() async {

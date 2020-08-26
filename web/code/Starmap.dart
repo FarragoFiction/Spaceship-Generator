@@ -40,10 +40,25 @@ class Starmap {
       double z = rand.nextDouble() * ret.mapDimension;
       String name = textEngine.phrase("planetNameFinal", story: textStory);
       Star newStar = new Star(x, y, z, name);
+      await newStar.genRandomStarships(rand);
       ret.stars.add(newStar);
     }
+    ret.getFractionOfRefuelingStars(); //todo this is debug please delete
     return ret;
   }
+
+  //returns the fraction of stars in this starmap with refueling stations.
+  double getFractionOfRefuelingStars() {
+    double numPassed = 0;
+    for(int i = 0; i < stars.length; i++) {
+      if(stars[i].hasRefueling()) numPassed++;
+    }
+    double ret = numPassed / stars.length;
+    print("percentage of refueling stations: ${(ret * 100).round()}%");
+    return numPassed / stars.length;
+  }
+
+
   @override
   toString() {
     String ret = "(STAR COORDINATES)   |dist(near, avg)\n";
@@ -88,7 +103,7 @@ class Star {
     coordinates[2] = z;
     starships = new List();
     this.name = name;
-    print("$name at (${x.round()}, ${y.round()}, ${z.round()})");
+    //print("$name at (${x.round()}, ${y.round()}, ${z.round()})");
   }
 
   double distanceTo(Star target) {
@@ -99,10 +114,20 @@ class Star {
     return math.sqrt(math.pow(relX, 2)+math.pow(relY, 2)+math.pow(relZ, 2));
   }
 
-  void genRandomStarships(math.Random rand) {
-    for(int i = 0; i < rand.nextInt(9); i++) {
-      starships.add(new Starship(rand.nextInt(MAX_SEED)));
+  void genRandomStarships(math.Random rand) async{
+    for(int i = 0; i < rand.nextInt(9); i++) { //todo figure out an optimal max ships per system
+      Starship newShip = await Starship.getRandomStarship(rand.nextInt(MAX_SEED));
+      await starships.add(newShip);
+      //print(starships[i].defaultName);
     }
+  }
+
+  bool hasRefueling() { //todo please watch this!! it's very important to see where refueling can happen for balance
+    //initial target with no feedback would be 50% to 10% of stars having a refueling station.
+    for(int i = 0; i < starships.length; i++) {
+      if(starships[i].refueling) return true;
+    }
+    return false;
   }
 
   @override
