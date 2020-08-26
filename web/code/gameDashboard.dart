@@ -83,11 +83,11 @@ class GameDashboard extends Dashboard {
     return ret;
   }
 
-  DivElement drawFuelGague(int value, int max) {
+  DivElement drawFuelGague(int value) {
     //todo fuel gague should keep track of a fuel stat.
     DivElement ret = new DivElement();
     List<int> coordinates = Dashboard.SEGMENT_STARTING_POINTS[1];
-    AnalogueGague retSegment = AnalogueGague(value, max, true, false, "fuel");
+    AnalogueGague retSegment = AnalogueGague(value, 100, true, false, "fuel");
 
     Svg.SvgSvgElement retSvg = retSegment.graphicalDisplay();
     segments[coordinates[2]] = retSegment;

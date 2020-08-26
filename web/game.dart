@@ -13,6 +13,7 @@ import 'code/Crew.dart';
 import 'code/displays/Display.dart';
 import 'code/gameDashboard.dart';
 
+final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
 TableCellElement newLink;
 TableCellElement dashboardLink;
@@ -70,7 +71,7 @@ void main() async {
   location = 0; //always start at the first star in the system.
   target = 0;
   distance = 0;
-  fuel = starship.getNumOfRoomType(7) * 100;
+  fuel = 113;
 
   buildDisplay(starship);
   //roomList(starship);
@@ -207,7 +208,7 @@ void buildCommsButton() {
 
 //todo hook in system for updating fuel display
 void buildFuelGague() {
-  DivElement gague = dashboard.drawFuelGague(fuel, starship.getNumOfRoomType(7) * 100);
+  DivElement gague = dashboard.drawFuelGague(fuel);
   fuelGague.children =  new List<Element>();
   fuelGague.append(gague);
 }
