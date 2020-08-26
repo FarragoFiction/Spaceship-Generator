@@ -12,7 +12,6 @@ import 'code/Planets.dart';
 
 import 'code/displays/Display.dart';
 
-final int MAX_SEED = 2147483647;
 TableCellElement shareLink;
 TableCellElement newLink;
 TableCellElement dashboardLink;

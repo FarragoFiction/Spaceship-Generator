@@ -79,12 +79,14 @@ class Starmap {
 class Star {
   List<double> coordinates;
   String name;
+  List<Starship> starships;
 
   Star(double x, double y, double z, String name) {
     coordinates = new List(3);
     coordinates[0] = x;
     coordinates[1] = y;
     coordinates[2] = z;
+    starships = new List();
     this.name = name;
     print("$name at (${x.round()}, ${y.round()}, ${z.round()})");
   }
@@ -95,6 +97,12 @@ class Star {
     double relZ = (target.coordinates[2] - coordinates[2]).abs();
 
     return math.sqrt(math.pow(relX, 2)+math.pow(relY, 2)+math.pow(relZ, 2));
+  }
+
+  void genRandomStarships(math.Random rand) {
+    for(int i = 0; i < rand.nextInt(9); i++) {
+      starships.add(new Starship(rand.nextInt(MAX_SEED)));
+    }
   }
 
   @override
