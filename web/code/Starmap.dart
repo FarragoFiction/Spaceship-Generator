@@ -51,7 +51,7 @@ class Starmap {
   double getFractionOfRefuelingStars() {
     double numPassed = 0;
     for(int i = 0; i < stars.length; i++) {
-      if(stars[i].hasRefueling()) numPassed++;
+      if(stars[i].hasRefueling() == true) numPassed++;
     }
     double ret = numPassed / stars.length;
     print("percentage of refueling stations: ${(ret * 100).round()}%");
@@ -125,7 +125,7 @@ class Star {
   bool hasRefueling() { //todo please watch this!! it's very important to see where refueling can happen for balance
     //initial target with no feedback would be 50% to 10% of stars having a refueling station.
     for(int i = 0; i < starships.length; i++) {
-      if(starships[i].refueling) return true;
+      if(starships[i].refueling == true) return true;
     }
     return false;
   }

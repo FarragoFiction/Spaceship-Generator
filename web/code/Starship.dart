@@ -324,7 +324,7 @@ class Starship {
         secondNames.add(" Freighter");
       } else {
         description += " It serves as a refueling station.";
-        bool refueling = true;
+        refueling = true;
       }
     }
 
