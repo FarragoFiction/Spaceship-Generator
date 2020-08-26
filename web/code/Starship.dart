@@ -94,6 +94,7 @@ class Starship {
   List<String> dashboardLabels;
   Crew crew;
 
+  //if you add new ship capabilities update getTraitText()
   bool manned = false;
   bool cryo = false;
   bool mobile = false;
@@ -550,6 +551,27 @@ class Starship {
     return ret;
   }
 
+  //displays a brief list of this ship's traits.
+  //TODO if you add new ship capabilities update here
+  List<String> getTraitText() {
+    List<String> ret = new List();
+    //time to feel guilty for a bunch of if statements
+    if(manned) {
+      ret.add("Crewed");
+    }
+    if(cryo) ret.add("Cryogenic Chambers");
+    if(mobile) ret.add("Ship");
+    if(colonizing) ret.add("Colony");
+    if(hasPlants) ret.add("Vegetation");
+    if(construction) ret.add("Construction Capabilities");
+    if(weaponized) ret.add("Armed");
+    if(shielded) ret.add("Shielded");
+    if(scientific) ret.add("Research");
+    if(warpCapable) ret.add("Warp Capable");
+    if(warpAnchor) ret.add("Warp Anchor");
+    if(refueling) ret.add("Refueling Station");
 
+    return ret;
+  }
 
 }

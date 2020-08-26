@@ -178,7 +178,7 @@ void openCommsWindow() {
   if(!commsWindowOpen) {
     DivElement ret = new DivElement();
 
-    //todo tweak here
+    //todo tweak window style here
     ret.style.width = "800px";
     ret.style.height = "500px";
     ret.style.position = "absolute";
@@ -188,7 +188,56 @@ void openCommsWindow() {
     ret.style.backgroundColor = "#0d3d6e";
     ret.style.color = "#69b3ff";
     ret.style.zIndex = "3";
-    ret.appendText("Hello world");
+
+    //displayed information: menu of available ships in the system
+    Star star = spacemap.stars[location];
+    if(star.starships.length == 0) {
+      ret.appendText("No vessels are in range.");
+    } else {
+      for(int i = 0; i < star.starships.length; i++) {
+        Starship targetStarship = star.starships[i];
+        DivElement menuItem = new DivElement(); //todo make this pretty
+
+        //displays the name of the starship
+        HeadingElement targetNameElement = new HeadingElement.h3();
+        targetNameElement.appendText(targetStarship.getName());
+
+        //displays interesting features about the starship.
+        DivElement traitListElement = new DivElement();
+        List<String> traitList = targetStarship.getTraitText();
+        if(traitList.length == 0) {
+          traitListElement.appendText("No notable features.");
+        } else {
+          traitListElement.appendText("${traitList[0]}");
+          for (int i = 1; i < traitList.length; i++) {
+            traitListElement.appendText(", ${traitList[i]}");
+          }
+        }
+
+        //set up table
+        TableElement table = new TableElement();
+        TableRowElement r1 = new TableRowElement();
+        TableCellElement c1A = new TableCellElement();
+        TableCellElement c1B = new TableCellElement();
+        table.style.tableLayout = "fixed";
+        c1A.style.width = "30%";
+        c1B.style.width = "70%";
+
+        //set up column A
+        c1A.append(targetNameElement);
+
+        //set up column B
+        c1B.append(traitListElement);
+
+        //combine all
+        r1.append(c1A);
+        r1.append(c1B);
+        table.append(r1);
+
+        menuItem.append(table);
+        ret.append(menuItem);
+      }
+    }
     commsWindow.append(ret);
     commsWindowOpen = true;
   } else {
@@ -197,7 +246,6 @@ void openCommsWindow() {
   }
 }
 
-//todo hook in system for opening communications window
 void buildCommsButton() {
   DivElement comm = dashboard.drawCommsButton();
   commsButton.children =  new List<Element>();
@@ -205,7 +253,6 @@ void buildCommsButton() {
   commsButton.append(comm);
 }
 
-//todo hook in system for updating fuel display
 void buildFuelGague() {
   DivElement gague = dashboard.drawFuelGague(fuel, starship.getNumOfRoomType(7) * 100);
   fuelGague.children =  new List<Element>();
