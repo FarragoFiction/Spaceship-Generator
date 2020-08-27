@@ -19,6 +19,7 @@ class Crewmember {
   CanvasElement dollCanvas;
   String name;
   String job;
+  int jobType;
 
   static final int MAX_CANVAS_HEIGHT = 300;
   static final int MAX_CANVAS_WIDTH = 150; //adjusting for game display uwu
@@ -42,7 +43,7 @@ class Crewmember {
     assignStats(id);
     //buildName();
     //buildCanvas();
-
+    jobType = -2;
   }
 
 
@@ -200,7 +201,13 @@ class Crewmember {
     return new Crewmember(id, doll);
   }
 
-  Future<String> getJob() async{
+  Future<int> getJobType() async {
+    if(jobType >= -1 && jobType <= 5) return jobType;
+    await getJob();
+    return jobType;
+  }
+
+  Future<String> getJob() async {
     if(job != null) return job;
     List<int> possibleJobs = [OTHER_JOB, OTHER_JOB, OTHER_JOB];
     for (int i = 0; i < stats.length; i++) {
@@ -210,7 +217,7 @@ class Crewmember {
     }
     print("possibleJobs: ${possibleJobs.length}");
     Random rand = new Random(id);
-    int jobType = possibleJobs[rand.nextInt(possibleJobs.length)];
+    jobType = possibleJobs[rand.nextInt(possibleJobs.length)];
 
     String ret = "UNIDENTIFIED PASSENGER";
     TextEngine textEngine = new TextEngine(id);

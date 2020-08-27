@@ -293,7 +293,12 @@ void startCommsWithShip(Starship target) async{
    * THE TEXT PART
    */
   SpanElement commsTextContent = new SpanElement();
-  commsTextContent.appendText(await generateDefaultDialogue(target.crew.crewList[0], target));
+  if(target.crew.crewList.length > 0) {
+    commsTextContent.appendText(await generateDefaultDialogue(target.crew.crewList[0], target));
+  } else {
+    //sometimes there's no crew.
+    commsTextContent.appendText(await generateDefaultDialogue(null, target));
+  }
 
 
   ret.append(commsTextContent);
@@ -308,8 +313,15 @@ Future<String> generateDefaultDialogue(Crewmember speaker, Starship target) asyn
 
   //add crew name, job, ship name
   //crew name
-  Word crewName = new Word(await speaker.getName());
-  Word jobName = new Word(await speaker.getJob());
+  Word crewName;
+  Word jobName;
+  if(speaker != null) {
+    crewName = new Word(await speaker.getName());
+    jobName = new Word(await speaker.getJob());
+  } else {
+    crewName = new Word("ID #${target.getId()}");
+    jobName = new Word("Operations AI");
+  }
   Word shipName = new Word(await target.getName());
 
   textEngine.sourceWordLists["crewName"].add(crewName);

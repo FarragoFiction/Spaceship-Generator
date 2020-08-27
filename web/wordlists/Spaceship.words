@@ -88,6 +88,7 @@ crewmemberJobsEngineering
     IT worker
     Repairman
     Roboticist
+    Ship architect
 
 crewmemberJobsDiplomacy
     Captain
@@ -103,6 +104,8 @@ crewmemberJobsCombat
     Marine
     Officer
     Quartermaster
+    Soldier
+    Mercenary
 
 crewmemberJobsSanity
     Therapist

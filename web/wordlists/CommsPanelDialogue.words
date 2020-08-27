@@ -2,6 +2,11 @@ TextEngine Word List
 
 defaultSentence
     #salutation#. #introduction#. #flavor#. #prompt#?
+    #salutation#. #flavor#. #prompt#?
+    #introduction#. #flavor#. #prompt#?
+    #salutation#. #introduction#. #prompt#?
+    #introduction#. #prompt#?
+    #prompt#?
 
 salutation
     howdy
