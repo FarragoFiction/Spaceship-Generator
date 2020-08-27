@@ -62,7 +62,6 @@ void main() async {
   commsWindow = querySelector("#commsWindow");
   navbar = querySelector("#navbar");
 
-
   String datastringQueryFull = "";
 
   starship = await Starship.parseDataString("1-3-0-0-2-0-0-1-2-1-1-2-2--Bird%20%20Starship", seed);
@@ -259,10 +258,32 @@ void startCommsWithShip(Starship target) async{
   //if there's a crew, you'll talk to a member of it.
   CanvasElement visualFeed = new CanvasElement();
   if(target.crew.crewList.length > 0) {
-    visualFeed = await target.crew.crewList[0].buildCanvas(); //todo make this random maybe?
+    visualFeed = await target.crew.crewList[0].buildCanvas(); //todo make this a random selection of crewmembers maybe?
   }
 
+  //setup for filter. THANK GOD I'VE ALREADY DONE THIS.
+  DefsElement defs = new DefsElement();
+  FilterElement blueFilter = new FilterElement();
+  blueFilter.id = "blue";
+
+  //FEGaussianBlurElement blurElement = new FEGaussianBlurElement();
+  //blurElement.setAttribute("stdDeviation", "3");
+
+  //blueFilter.append(blurElement);
+  //defs.append(blueFilter);
+
+  FEColorMatrixElement matrixElement = new FEColorMatrixElement();
+  matrixElement.setAttribute("values",
+      "0 0 0 1.9 -2.2 "
+      "0 1 0 0 0.3 "
+      "0 0 1 0 0.5 "
+      "0 0 0 0.7 0 ");
+  blueFilter.append(matrixElement);
+  defs.append(blueFilter);
+
   //put everything together
+  visualFeed.append(defs);
+  visualFeed.style.filter = "url(#blue)";
   ret.append(visualFeed);
   ret.appendText("HELLO? HELLO???");
   commsWindow.children = new List<Element>();
