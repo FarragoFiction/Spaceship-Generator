@@ -117,7 +117,8 @@ class Star {
   void genRandomStarships(math.Random rand) async{
     for(int i = 0; i < rand.nextInt(9); i++) { //todo figure out an optimal max ships per system
       Starship newShip = await Starship.getRandomStarship(rand.nextInt(MAX_SEED));
-      await starships.add(newShip);
+      await newShip.getCrew();
+      starships.add(newShip);
       //print(starships[i].defaultName);
     }
   }

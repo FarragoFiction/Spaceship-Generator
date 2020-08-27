@@ -173,21 +173,26 @@ void buildShipDataToggle() {
   toggleButton.append(toggle);
 }
 
+DivElement getBlankCommsWindow() {
+  DivElement ret = new DivElement();
+
+  //todo tweak window style here
+  ret.style.width = "800px";
+  ret.style.height = "500px";
+  ret.style.position = "absolute";
+  ret.style.top = "50px";
+  ret.style.left = "200px";
+  ret.style.boxShadow = "10px 5px 5px black";
+  ret.style.backgroundColor = "#0d3d6e";
+  ret.style.color = "#69b3ff";
+  ret.style.zIndex = "3";
+  return ret;
+}
+
 void openCommsWindow() {
   commsWindow.children = new List<Element>();
   if(!commsWindowOpen) {
-    DivElement ret = new DivElement();
-
-    //todo tweak window style here
-    ret.style.width = "800px";
-    ret.style.height = "500px";
-    ret.style.position = "absolute";
-    ret.style.top = "50px";
-    ret.style.left = "200px";
-    ret.style.boxShadow = "10px 5px 5px black";
-    ret.style.backgroundColor = "#0d3d6e";
-    ret.style.color = "#69b3ff";
-    ret.style.zIndex = "3";
+    DivElement ret = getBlankCommsWindow();
 
     //displayed information: menu of available ships in the system
     Star star = spacemap.stars[location];
@@ -236,6 +241,7 @@ void openCommsWindow() {
         table.append(r1);
 
         menuItem.append(table);
+        menuItem.onClick.listen((e) => startCommsWithShip(targetStarship));
         ret.append(menuItem);
       }
     }
@@ -245,6 +251,22 @@ void openCommsWindow() {
     commsWindow.children = new List<Element>();
     commsWindowOpen = false;
   }
+}
+
+void startCommsWithShip(Starship target) async{
+  DivElement ret = getBlankCommsWindow();
+
+  //if there's a crew, you'll talk to a member of it.
+  CanvasElement visualFeed = new CanvasElement();
+  if(target.crew.crewList.length > 0) {
+    visualFeed = await target.crew.crewList[0].buildCanvas(); //todo make this random maybe?
+  }
+
+  //put everything together
+  ret.append(visualFeed);
+  ret.appendText("HELLO? HELLO???");
+  commsWindow.children = new List<Element>();
+  commsWindow.append(ret);
 }
 
 void buildCommsButton() {
