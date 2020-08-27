@@ -13,6 +13,8 @@ import 'code/Crew.dart';
 import 'code/displays/Display.dart';
 import 'code/gameDashboard.dart';
 
+import 'package:TextEngine/TextEngine.dart';
+
 TableCellElement shareLink;
 TableCellElement newLink;
 TableCellElement dashboardLink;
@@ -285,9 +287,37 @@ void startCommsWithShip(Starship target) async{
   visualFeed.append(defs);
   visualFeed.style.filter = "url(#blue)";
   ret.append(visualFeed);
-  ret.appendText("HELLO? HELLO???");
+
+
+  /******
+   * THE TEXT PART
+   */
+  SpanElement commsTextContent = new SpanElement();
+  commsTextContent.appendText(await generateDefaultDialogue(target.crew.crewList[0], target));
+
+
+  ret.append(commsTextContent);
   commsWindow.children = new List<Element>();
   commsWindow.append(ret);
+}
+
+Future<String> generateDefaultDialogue(Crewmember speaker, Starship target) async{
+  TextEngine textEngine = new TextEngine();
+  TextStory textStory = new TextStory();
+  await textEngine.loadList("CommsPanelDialogue");
+
+  //add crew name, job, ship name
+  //crew name
+  Word crewName = new Word(await speaker.getName());
+  Word jobName = new Word(await speaker.getJob());
+  Word shipName = new Word(await target.getName());
+
+  textEngine.sourceWordLists["crewName"].add(crewName);
+  textEngine.sourceWordLists["job"].add(jobName);
+  textEngine.sourceWordLists["shipName"].add(shipName);
+
+  //todo incorporate flavor text selection based on job/ship capabilities/etc
+  return textEngine.phrase("defaultSentence", story: textStory);
 }
 
 void buildCommsButton() {
@@ -347,7 +377,6 @@ void redrawCanvas() {
   canvasSpot.children = new List<Element>();
   canvasSpot.append(dashboard.buildGameDashboard(spacemap, location, target)); //todo you probably don't need to redraw this every time, clean this up when it's time to work on improvements
 }
-
 
 int updateNavigationDisplay() {
   Star oldStar = spacemap.stars[location];

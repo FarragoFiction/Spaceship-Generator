@@ -89,7 +89,7 @@ class Crewmember {
 
   //gets the canvas for the doll and scales it to a set size
   Future<CanvasElement> buildCanvas() async{
-    print("running buildCanvas of ${await buildName()}");
+    print("running buildCanvas of ${await getName()}");
     if(dollCanvas  != null) {
       return dollCanvas;
     }
@@ -98,12 +98,12 @@ class Crewmember {
     double scaleX = 1;
     double scaleY = 1;
     if(copy.width > MAX_CANVAS_WIDTH) {
-      print("adjusting by width of ${await buildName()}");
+      print("adjusting by width of ${await getName()}");
       scaleX = MAX_CANVAS_WIDTH/copy.width;
     }
 
     if(copy.height > MAX_CANVAS_HEIGHT) {
-      print("adjusting by height of ${await buildName()}");
+      print("adjusting by height of ${await getName()}");
       scaleY = MAX_CANVAS_HEIGHT / copy.height;
     }
     double scale;
@@ -132,7 +132,7 @@ class Crewmember {
     //NAME EXCEPTIONS, BLAAH
     //dollsets 37(smol human) and 28(fek) should use human names.
 
-    text.appendHtml("<h3>${await buildName()}</h3>");
+    text.appendHtml("<h3>${await getName()}</h3>");
 
     ret.append(text);
 
@@ -147,7 +147,7 @@ class Crewmember {
     return ret;
   }
 
-  Future<String> buildName() async{
+  Future<String> getName() async{
     if(name != null) return name;
 
     if(doll.renderingType == CrewFactions.SMOL_KID_ID || doll.renderingType == CrewFactions.FEK_ID ) {

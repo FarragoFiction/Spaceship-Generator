@@ -1,0 +1,60 @@
+TextEngine Word List
+
+defaultSentence
+    #salutation#. #introduction#. #flavor#. #prompt#?
+
+salutation
+    howdy
+    hello
+    hi
+    greetings
+    salutations
+    sup
+
+//mix in job, crewName, or shipName as much as you want. vary which ones you put in
+introduction
+    this is #job# #crewName# of the #shipName#
+    you have reached the #shipName#
+    #crewName# here, resident #job#
+    #shipName#'s #job# speaking
+    i am the #job# here
+    my name is #crewName#
+    welcome to the #shipName# support line. you are speaking with #crewName#
+
+job
+    //intentionally empty
+
+crewName
+    //intentionally empty
+
+shipName
+    //intentionally empty
+
+//add more flavor from the code
+flavor
+    i was not expecting a call
+    it's nice to talk to someone
+
+helpVerbs
+    help
+    assist
+    aid
+    service
+
+issueNouns
+    issue
+    problem
+    predicament
+    concern
+
+prompt
+    how may i #helpVerbs# you
+    what do you want
+    why are you calling me
+    is something wrong
+    what seems to be the #issueNouns#
+    whats going on
+    do you need something
+
+
+//FLAVOR LINES BASED ON CREWMEMBERS JOB
