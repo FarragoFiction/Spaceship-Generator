@@ -187,6 +187,7 @@ DivElement getBlankCommsWindow() {
   ret.style.backgroundColor = "#0d3d6e";
   ret.style.color = "#69b3ff";
   ret.style.zIndex = "3";
+  ret.style.padding = "20px";
   return ret;
 }
 

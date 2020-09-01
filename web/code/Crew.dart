@@ -95,7 +95,8 @@ class Crewmember {
       return dollCanvas;
     }
 
-    CanvasElement copy = await doll.getNewCanvas();
+    //CanvasElement copy = await doll.getNewCanvas();
+    CanvasElement copy = new CanvasElement(width:400, height:400);  //TODO THIS IS DEBUG SO I DONT HAVE TO KEEP PULLING THE DOLL PARTS FOLDER. DELETE AND REPLACE WITH THE ABOVE.
     double scaleX = 1;
     double scaleY = 1;
     if(copy.width > MAX_CANVAS_WIDTH) {

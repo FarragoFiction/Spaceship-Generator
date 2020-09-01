@@ -222,9 +222,10 @@ class GameDashboard extends Dashboard {
     int startX = ((oldStar.coordinates[0]/spacemap.mapDimension) * Dashboard.WIDTH).toInt();
     int startY = ((oldStar.coordinates[1]/spacemap.mapDimension) * (Dashboard.HEIGHT - 150)).toInt();
 
-    ctx.strokeStyle = "#FF0000"; //todo find a nicer color
+    ctx.strokeStyle = "#69b3ff"; //todo find a nicer color
     print("trying to draw the circle at $startX, $startY");
-    ctx.moveTo(startX, startY);
+    ctx.lineWidth = 3;
+    ctx.moveTo(startX + 20, startY);
     ctx.ellipse(startX, startY, 20, 20, 0, 0, 2 * Math.pi, false);
     //ctx.stroke();
 
