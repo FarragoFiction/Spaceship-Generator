@@ -15,6 +15,7 @@ import 'code/gameDashboard.dart';
 
 import 'package:TextEngine/TextEngine.dart';
 
+
 TableCellElement shareLink;
 TableCellElement newLink;
 TableCellElement dashboardLink;
@@ -194,65 +195,70 @@ DivElement getBlankCommsWindow() {
 void openCommsWindow() {
   commsWindow.children = new List<Element>();
   if(!commsWindowOpen) {
-    DivElement ret = getBlankCommsWindow();
-
-    //displayed information: menu of available ships in the system
-    Star star = spacemap.stars[location];
-    if(star.starships.length == 0) {
-      ret.appendText("No vessels are in range.");
-    } else {
-      for(int i = 0; i < star.starships.length; i++) {
-        Starship targetStarship = star.starships[i];
-        ButtonElement menuItem = new ButtonElement(); //todo make this pretty
-
-        //displays the name of the starship
-        HeadingElement targetNameElement = new HeadingElement.h3();
-        targetNameElement.appendText(targetStarship.getName());
-
-        //displays interesting features about the starship.
-        DivElement traitListElement = new DivElement();
-        List<String> traitList = targetStarship.getTraitText();
-        if(traitList.length == 0) {
-          traitListElement.appendText("No notable features.");
-        } else {
-          traitListElement.appendText("${traitList[0]}");
-          for (int i = 1; i < traitList.length; i++) {
-            traitListElement.appendText(", ${traitList[i]}");
-          }
-        }
-
-        //set up table
-        TableElement table = new TableElement();
-        table.style.tableLayout = "fixed";
-        TableRowElement r1 = new TableRowElement();
-        TableCellElement c1A = new TableCellElement();
-        TableCellElement c1B = new TableCellElement();
-
-        c1A.style.width = "30%";
-        c1B.style.width = "70%";
-
-        //set up column A
-        c1A.append(targetNameElement);
-
-        //set up column B
-        c1B.append(traitListElement);
-
-        //combine all
-        r1.append(c1A);
-        r1.append(c1B);
-        table.append(r1);
-
-        menuItem.append(table);
-        menuItem.onClick.listen((e) => startCommsWithShip(targetStarship));
-        ret.append(menuItem);
-      }
-    }
-    commsWindow.append(ret);
-    commsWindowOpen = true;
+    displayCommsAdressBook();
   } else {
     commsWindow.children = new List<Element>();
     commsWindowOpen = false;
   }
+}
+
+void displayCommsAdressBook() {
+  commsWindow.children = new List<Element>();
+  DivElement ret = getBlankCommsWindow();
+
+  //displayed information: menu of available ships in the system
+  Star star = spacemap.stars[location];
+  if(star.starships.length == 0) {
+    ret.appendText("No vessels are in range.");
+  } else {
+    for(int i = 0; i < star.starships.length; i++) {
+      Starship targetStarship = star.starships[i];
+      ButtonElement menuItem = new ButtonElement();
+
+      //displays the name of the starship
+      HeadingElement targetNameElement = new HeadingElement.h3();
+      targetNameElement.appendText(targetStarship.getName());
+
+      //displays interesting features about the starship.
+      DivElement traitListElement = new DivElement();
+      List<String> traitList = targetStarship.getTraitText();
+      if(traitList.length == 0) {
+        traitListElement.appendText("No notable features.");
+      } else {
+        traitListElement.appendText("${traitList[0]}");
+        for (int i = 1; i < traitList.length; i++) {
+          traitListElement.appendText(", ${traitList[i]}");
+        }
+      }
+
+      //set up table
+      TableElement table = new TableElement();
+      table.style.tableLayout = "fixed";
+      TableRowElement r1 = new TableRowElement();
+      TableCellElement c1A = new TableCellElement();
+      TableCellElement c1B = new TableCellElement();
+
+      c1A.style.width = "30%";
+      c1B.style.width = "70%";
+
+      //set up column A
+      c1A.append(targetNameElement);
+
+      //set up column B
+      c1B.append(traitListElement);
+
+      //combine all
+      r1.append(c1A);
+      r1.append(c1B);
+      table.append(r1);
+
+      menuItem.append(table);
+      menuItem.onClick.listen((e) => startCommsWithShip(targetStarship));
+      ret.append(menuItem);
+    }
+  }
+  commsWindow.append(ret);
+  commsWindowOpen = true;
 }
 
 void startCommsWithShip(Starship target) async{
@@ -269,12 +275,6 @@ void startCommsWithShip(Starship target) async{
   FilterElement blueFilter = new FilterElement();
   blueFilter.id = "blue";
 
-  //FEGaussianBlurElement blurElement = new FEGaussianBlurElement();
-  //blurElement.setAttribute("stdDeviation", "3");
-
-  //blueFilter.append(blurElement);
-  //defs.append(blueFilter);
-
   FEColorMatrixElement matrixElement = new FEColorMatrixElement();
   matrixElement.setAttribute("values",
       "0 0 0 1.9 -2.2 "
@@ -289,11 +289,11 @@ void startCommsWithShip(Starship target) async{
   visualFeed.style.filter = "url(#blue)";
   ret.append(visualFeed);
 
-
   /******
    * THE TEXT PART
    */
   SpanElement commsTextContent = new SpanElement();
+
   if(target.crew.crewList.length > 0) {
     commsTextContent.appendText(await generateDefaultDialogue(target.crew.crewList[0], target));
   } else {
@@ -301,10 +301,43 @@ void startCommsWithShip(Starship target) async{
     commsTextContent.appendText(await generateDefaultDialogue(null, target));
   }
 
-
   ret.append(commsTextContent);
+
+  /*
+    OPTIONS.
+   */
+  List<ButtonElement> menuOptions = new List();
+  //OPEN DIALOGUE FOR PURCHASING FUEL
+  if(target.refueling == true) {
+    ButtonElement fuelOption = makeDialogueOptionButton("Ask about fuel prices.");
+    //todo onclicks
+    menuOptions.add(fuelOption);
+  }
+
+  //RETURN BACK TO THE LIST OF SHIPS
+  ButtonElement returnOption = makeDialogueOptionButton("Close communications with this vessel.");
+  returnOption.onClick.listen((e) => displayCommsAdressBook());
+  menuOptions.add(returnOption);
+
+
+  //build options
+  for(int i = 0; i < menuOptions.length; i++) {
+    DivElement div = new DivElement();
+    div.append(menuOptions[i]);
+    commsTextContent.append(div);
+  }
+
   commsWindow.children = new List<Element>();
   commsWindow.append(ret);
+}
+
+ButtonElement makeDialogueOptionButton(String text) {
+  ButtonElement ret = new ButtonElement();
+  ret.style.width = "100%";
+  HeadingElement head = new HeadingElement.h3();
+  head.appendText(text);
+  ret.append(head);
+  return ret;
 }
 
 Future<String> generateDefaultDialogue(Crewmember speaker, Starship target) async{
