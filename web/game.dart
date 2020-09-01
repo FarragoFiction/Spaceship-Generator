@@ -15,6 +15,9 @@ import 'code/gameDashboard.dart';
 
 import 'package:TextEngine/TextEngine.dart';
 
+final FUELTANK_MULTIPLIER = 100;
+final STARTING_CURRENCY = 122;
+
 
 TableCellElement shareLink;
 TableCellElement newLink;
@@ -46,7 +49,9 @@ Starmap spacemap;
 int location;
 int target;
 int distance;
+
 int fuel;
+int currency;
 
 void main() async {
   int seed = 85;
@@ -72,7 +77,9 @@ void main() async {
   location = 0; //always start at the first star in the system.
   target = 0;
   distance = 0;
-  fuel = starship.getNumOfRoomType(7) * 100;
+
+  fuel = starship.getNumOfRoomType(7) * FUELTANK_MULTIPLIER;
+  currency = STARTING_CURRENCY;
 
   buildDisplay(starship);
   //roomList(starship);
@@ -261,9 +268,7 @@ void displayCommsAdressBook() {
   commsWindowOpen = true;
 }
 
-void startCommsWithShip(Starship target) async{
-  DivElement ret = getBlankCommsWindow();
-
+Future<CanvasElement> getVisualFeed(Starship target) async {
   //if there's a crew, you'll talk to a member of it.
   CanvasElement visualFeed = new CanvasElement();
   if(target.crew.crewList.length > 0) {
@@ -278,20 +283,25 @@ void startCommsWithShip(Starship target) async{
   FEColorMatrixElement matrixElement = new FEColorMatrixElement();
   matrixElement.setAttribute("values",
       "0 0 0 1.9 -2.2 "
-      "0 1 0 0 0.3 "
-      "0 0 1 0 0.5 "
-      "0 0 0 0.7 0 ");
+          "0 1 0 0 0.3 "
+          "0 0 1 0 0.5 "
+          "0 0 0 0.7 0 ");
   blueFilter.append(matrixElement);
   defs.append(blueFilter);
 
   //put everything together
   visualFeed.append(defs);
   visualFeed.style.filter = "url(#blue)";
-  ret.append(visualFeed);
+  return visualFeed;
+}
 
-  /******
-   * THE TEXT PART
-   */
+void startCommsWithShip(Starship target) async{
+  DivElement ret = getBlankCommsWindow();
+
+  //build visual
+  ret.append(await getVisualFeed(target));
+
+  //text
   SpanElement commsTextContent = new SpanElement();
 
   if(target.crew.crewList.length > 0) {
@@ -303,14 +313,12 @@ void startCommsWithShip(Starship target) async{
 
   ret.append(commsTextContent);
 
-  /*
-    OPTIONS.
-   */
+  //options
   List<ButtonElement> menuOptions = new List();
   //OPEN DIALOGUE FOR PURCHASING FUEL
   if(target.refueling == true) {
     ButtonElement fuelOption = makeDialogueOptionButton("Ask about fuel prices.");
-    //todo onclicks
+    fuelOption.onClick.listen((e) => buyFuelComms(target));
     menuOptions.add(fuelOption);
   }
 
@@ -318,7 +326,6 @@ void startCommsWithShip(Starship target) async{
   ButtonElement returnOption = makeDialogueOptionButton("Close communications with this vessel.");
   returnOption.onClick.listen((e) => displayCommsAdressBook());
   menuOptions.add(returnOption);
-
 
   //build options
   for(int i = 0; i < menuOptions.length; i++) {
@@ -329,15 +336,6 @@ void startCommsWithShip(Starship target) async{
 
   commsWindow.children = new List<Element>();
   commsWindow.append(ret);
-}
-
-ButtonElement makeDialogueOptionButton(String text) {
-  ButtonElement ret = new ButtonElement();
-  ret.style.width = "100%";
-  HeadingElement head = new HeadingElement.h3();
-  head.appendText(text);
-  ret.append(head);
-  return ret;
 }
 
 Future<String> generateDefaultDialogue(Crewmember speaker, Starship target) async{
@@ -366,6 +364,114 @@ Future<String> generateDefaultDialogue(Crewmember speaker, Starship target) asyn
   return textEngine.phrase("defaultSentence", story: textStory);
 }
 
+void buyFuelComms(Starship target) async{
+  int exchangeRate = getFuelExchangeRate(target);
+  DivElement ret = getBlankCommsWindow();
+
+  //build visual
+  ret.append(await getVisualFeed(target));
+
+  //text
+  SpanElement commsTextContent = new SpanElement();
+
+  if(target.crew.crewList.length > 0) {
+    commsTextContent.appendText(await generateFuelDialogue(target.crew.crewList[0], target, exchangeRate));
+  } else {
+    //sometimes there's no crew.
+    commsTextContent.appendText(await generateFuelDialogue(null, target, exchangeRate));
+  }
+
+  ret.append(commsTextContent);
+
+  //options
+  List<ButtonElement> menuOptions = new List();
+
+  //BUY FUEL. FIRST CHECK ENOUGH TO FILL TANK, THEN CHECK HOW MUCH YOU CAN BUY WITH ALL YOUR CURRENCY.
+  int maxFuel = starship.getNumOfRoomType(Room.FUEL_STORAGE) * FUELTANK_MULTIPLIER;
+  int costFull = (maxFuel - fuel) * exchangeRate;
+  if(costFull <= 0) {
+    //do nothing
+  }else if(costFull <= currency) {
+    ButtonElement maxFuelOption = makeDialogueOptionButton("Fill up your fuel reserves for $costFull credits.");
+    maxFuelOption.onClick.listen((e) => fuelTransaction(-costFull, maxFuel - fuel, target));
+    menuOptions.add(maxFuelOption);
+  } else if(currency > exchangeRate) {
+    int bankruptFuel = (currency/exchangeRate).floor();
+    int costBankrupt = exchangeRate * bankruptFuel;
+    ButtonElement allCurrOption = makeDialogueOptionButton("Buy as much fuel as you can. (${costBankrupt} credits for ${bankruptFuel} fuel)");
+    allCurrOption.onClick.listen((e) => fuelTransaction(-costBankrupt, bankruptFuel, target));
+    menuOptions.add(allCurrOption);
+  }
+
+  //OPEN DEFAULT STARSHIP DIALOGUE
+  if(target.refueling == true) {
+    ButtonElement defaultOption = makeDialogueOptionButton("Ask about something else.");
+    defaultOption.onClick.listen((e) => startCommsWithShip(target));
+    menuOptions.add(defaultOption);
+  }
+
+  //RETURN BACK TO THE LIST OF SHIPS
+  ButtonElement returnOption = makeDialogueOptionButton("Close communications with this vessel.");
+  returnOption.onClick.listen((e) => displayCommsAdressBook());
+  menuOptions.add(returnOption);
+
+  //build options
+  for(int i = 0; i < menuOptions.length; i++) {
+    DivElement div = new DivElement();
+    div.append(menuOptions[i]);
+    commsTextContent.append(div);
+  }
+
+  commsWindow.children = new List<Element>();
+  commsWindow.append(ret);
+}
+
+void fuelTransaction(int currChange, int fuelChange, Starship target) {
+  changeCurrency(currChange);
+  changeFuel(fuelChange);
+  buyFuelComms(target);
+}
+
+void changeCurrency(int change) {
+  currency += change;
+  buildCurrencyCounter();
+}
+
+void changeFuel(int change) {
+  fuel += change;
+  buildFuelGague();
+}
+
+Future<String> generateFuelDialogue(Crewmember speaker, Starship target, int exchangeRate) async{
+  TextEngine textEngine = new TextEngine();
+  TextStory textStory = new TextStory();
+  await textEngine.loadList("CommsPanelDialogue");
+
+  //add cost
+  Word cost = new Word("$exchangeRate");
+
+  textEngine.sourceWordLists["cost"].add(cost);
+
+  //todo incorporate flavor text selection based on job/ship capabilities/etc
+  return textEngine.phrase("buyFuelSentence", story: textStory);
+}
+
+//todo rework to be more variable when you balance currency out
+int getFuelExchangeRate(Starship target) {
+  Random rand = new Random(target.getId());
+  return 1 + (rand.nextInt(5)/target.getNumOfRoomType(Room.FUEL_STORAGE)).floor();
+}
+
+ButtonElement makeDialogueOptionButton(String text) {
+  ButtonElement ret = new ButtonElement();
+  ret.style.width = "100%";
+  HeadingElement head = new HeadingElement.h3();
+  head.appendText(text);
+  ret.append(head);
+  return ret;
+}
+
+
 void buildCommsButton() {
   DivElement comm = dashboard.drawCommsButton();
   commsButton.children =  new List<Element>();
@@ -388,7 +494,7 @@ void buildHullGague() {
 
 //todo hook in system for updating hull display
 void buildCurrencyCounter() {
-  DivElement counter = dashboard.drawCurrencyCounter(113);
+  DivElement counter = dashboard.drawCurrencyCounter(currency);
   currencyCounter.children =  new List<Element>();
   currencyCounter.append(counter);
 }

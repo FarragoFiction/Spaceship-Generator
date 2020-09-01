@@ -8,6 +8,36 @@ defaultSentence
     #introduction#. #prompt#?
     #prompt#?
 
+buyFuelSentence
+    #affirmation#. #exchangeRate#. #confirmation#?
+    #affirmation#. #exchangeRate#.
+    #exchangeRate#. #confirmation#?
+    #exchangeRate#.
+
+affirmation
+    of course
+    why not
+    sure
+    absolutely
+    whatever
+    fine
+    i suppose
+
+exchangeRate
+    that will be #cost# for 1 fuel
+    1 fuel for #cost#
+    our current rate is #cost# for 1 fuel
+    prices are #cost# per 1 fuel
+
+cost
+
+confirmation
+    sounds good to you
+    you still interested
+    that work
+    do we have a deal
+    willing to trade
+
 salutation
     howdy
     hello
