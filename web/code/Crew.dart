@@ -20,6 +20,7 @@ class Crewmember {
   String name;
   String job;
   int jobType;
+  bool isCorrupted = false; //default
 
   static final int MAX_CANVAS_HEIGHT = 300;
   static final int MAX_CANVAS_WIDTH = 150; //adjusting for game display uwu

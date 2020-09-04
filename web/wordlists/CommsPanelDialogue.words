@@ -14,6 +14,36 @@ buyFuelSentence
     #exchangeRate#. #confirmation#?
     #exchangeRate#.
 
+getTestedSentence
+    #affirmation#. #testCost#. #confirmation#?
+    #affirmation#. #testCost#.
+    #testCost#. #confirmation#?
+    #testCost#.
+
+getTestFailSentence
+    looks like your crew is clean.
+    everyone here came up negative.
+    you are all free from the corrupted.
+    it hasn't gotten to you yet.
+
+getTestPassSentence
+    #concern#. #testPass#. please keep an eye on #corruptedNames#.
+
+testPass
+    it seems some of you are infected
+    i regret to inform you that your crew has become corrupted
+
+concern
+    yikes
+    jenkies
+    oh my
+    oh
+    dang
+    hmm
+    i am sorry
+
+corruptedNames
+
 affirmation
     of course
     why not
@@ -24,10 +54,15 @@ affirmation
     i suppose
 
 exchangeRate
-    that will be #cost# for 1 fuel
-    1 fuel for #cost#
-    our current rate is #cost# for 1 fuel
-    prices are #cost# per 1 fuel
+    that will be #cost# credits for 1 fuel
+    1 fuel for #cost# credits
+    our current rate is #cost# credits for 1 fuel
+    prices are #cost# credits per 1 fuel
+
+testCost
+    for your whole crew to be tested, it will cost #cost# credits
+    that will be #cost# credits for the testing
+
 
 cost
 

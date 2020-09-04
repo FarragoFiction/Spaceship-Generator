@@ -322,6 +322,13 @@ void startCommsWithShip(Starship target) async{
     menuOptions.add(fuelOption);
   }
 
+  //GET YOUR CREW TESTED FOR THE CORRUPTION (i swear this was planned before covid)
+  if(target.scientific == true && (await starship.getCrew()).crewList.length > 0) {
+    ButtonElement corruptionTestOption = makeDialogueOptionButton("Ask about a corruption test.");
+    corruptionTestOption.onClick.listen((e) => doCorruptionTest(target));
+    menuOptions.add(corruptionTestOption);
+  }
+
   //RETURN BACK TO THE LIST OF SHIPS
   ButtonElement returnOption = makeDialogueOptionButton("Close communications with this vessel.");
   returnOption.onClick.listen((e) => displayCommsAdressBook());
@@ -387,6 +394,7 @@ void buyFuelComms(Starship target) async{
   List<ButtonElement> menuOptions = new List();
 
   //BUY FUEL. FIRST CHECK ENOUGH TO FILL TANK, THEN CHECK HOW MUCH YOU CAN BUY WITH ALL YOUR CURRENCY.
+  //TODO EVENTUALLY SWITCH THIS OUT FOR A SLIDER-BASED PURCHASING MECHANISM
   int maxFuel = starship.getNumOfRoomType(Room.FUEL_STORAGE) * FUELTANK_MULTIPLIER;
   int costFull = (maxFuel - fuel) * exchangeRate;
   if(costFull <= 0) {
@@ -460,6 +468,170 @@ Future<String> generateFuelDialogue(Crewmember speaker, Starship target, int exc
 int getFuelExchangeRate(Starship target) {
   Random rand = new Random(target.getId());
   return 1 + (rand.nextInt(5)/target.getNumOfRoomType(Room.FUEL_STORAGE)).floor();
+}
+
+void doCorruptionTest(Starship target) async{
+  DivElement ret = getBlankCommsWindow();
+
+  //build visual
+  ret.append(await getVisualFeed(target));
+
+  //text
+  SpanElement commsTextContent = new SpanElement();
+
+  //todo make the cost variable. it's relatively cheap though.
+  int testingCost = starship.crew.crewList.length;
+  if(target.crew.crewList.length > 0) {
+    commsTextContent.appendText(await generateTestingInitDialogue(target.crew.crewList[0], target, testingCost));
+  } else {
+    //sometimes there's no crew.
+    commsTextContent.appendText(await generateTestingInitDialogue(null, target, testingCost));
+  }
+
+  ret.append(commsTextContent);
+
+  //options
+  List<ButtonElement> menuOptions = new List();
+
+  //only show this option if you can get tested.
+  if(testingCost <= currency) {
+    ButtonElement getTestedOption = makeDialogueOptionButton("Spend $testingCost credits to get your crew tested for the corruption.");
+    getTestedOption.onClick.listen((e) => getTested(testingCost, target));
+    menuOptions.add(getTestedOption);
+  }
+
+  //OPEN DEFAULT STARSHIP DIALOGUE
+  if(target.refueling == true) {
+    ButtonElement defaultOption = makeDialogueOptionButton("Ask about something else.");
+    defaultOption.onClick.listen((e) => startCommsWithShip(target));
+    menuOptions.add(defaultOption);
+  }
+
+  //RETURN BACK TO THE LIST OF SHIPS
+  ButtonElement returnOption = makeDialogueOptionButton("Close communications with this vessel.");
+  returnOption.onClick.listen((e) => displayCommsAdressBook());
+  menuOptions.add(returnOption);
+
+  //build options
+  for(int i = 0; i < menuOptions.length; i++) {
+    DivElement div = new DivElement();
+    div.append(menuOptions[i]);
+    commsTextContent.append(div);
+  }
+
+  commsWindow.children = new List<Element>();
+  commsWindow.append(ret);
+}
+
+Future<String> generateTestingInitDialogue(Crewmember speaker, Starship target, int totalCost) async{
+  TextEngine textEngine = new TextEngine();
+  TextStory textStory = new TextStory();
+  await textEngine.loadList("CommsPanelDialogue");
+
+  //add cost
+  Word cost = new Word("$totalCost");
+
+  textEngine.sourceWordLists["cost"].add(cost);
+
+  //todo incorporate flavor text selection based on job/ship capabilities/etc
+  return textEngine.phrase("getTestedSentence", story: textStory);
+}
+
+//:3
+void getTested(testingCost, target) async {
+  DivElement ret = getBlankCommsWindow();
+
+  //build visual
+  ret.append(await getVisualFeed(target));
+
+  //text
+  SpanElement commsTextContent = new SpanElement();
+
+  //check the whole crew to see if they're corrupted
+  List<Crewmember> corruptedCrewmembers = new List();
+  for(int i = 0; i < starship.crew.crewList.length; i++) {
+    if(starship.crew.crewList[i].isCorrupted) {
+      corruptedCrewmembers.add(starship.crew.crewList[i]);
+    }
+  }
+  Crewmember speaker = null;
+  if(target.crew.crewList.length > 0) {
+    speaker = target.crew.crewList[0];
+  }
+
+  print("the corrupted crewmembers are ${corruptedCrewmembers.toString()}");
+  if(corruptedCrewmembers.length <= 0) {
+    print("i think you do not have corrupted crewmembers.");
+    commsTextContent.appendText(await generateTestingNegativeDialogue(speaker, target));
+  } else { //POSITIVE TEST RESULTS
+    print("i think you have corrupted crewmembers.");
+    commsTextContent.appendText(await generateTestingPositiveDialogue(speaker, target, corruptedCrewmembers));
+    //todo append something more concerning.
+  }
+
+  ret.append(commsTextContent);
+
+  //options
+  List<ButtonElement> menuOptions = new List();
+
+  //OPEN DEFAULT STARSHIP DIALOGUE
+  if(target.refueling == true) {
+    ButtonElement defaultOption = makeDialogueOptionButton("Ask about something else.");
+    defaultOption.onClick.listen((e) => startCommsWithShip(target));
+    menuOptions.add(defaultOption);
+  }
+
+  //RETURN BACK TO THE LIST OF SHIPS
+  ButtonElement returnOption = makeDialogueOptionButton("Close communications with this vessel.");
+  returnOption.onClick.listen((e) => displayCommsAdressBook());
+  menuOptions.add(returnOption);
+
+  //build options
+  for(int i = 0; i < menuOptions.length; i++) {
+    DivElement div = new DivElement();
+    div.append(menuOptions[i]);
+    commsTextContent.append(div);
+  }
+
+  commsWindow.children = new List<Element>();
+  commsWindow.append(ret);
+}
+
+Future<String> generateTestingNegativeDialogue(Crewmember speaker, Starship target) async{
+  TextEngine textEngine = new TextEngine();
+  TextStory textStory = new TextStory();
+  await textEngine.loadList("CommsPanelDialogue");
+
+  //add cost
+  //Word cost = new Word("$totalCost");
+  //textEngine.sourceWordLists["cost"].add(cost);
+
+  //todo incorporate flavor text selection based on job/ship capabilities/etc
+  return textEngine.phrase("getTestFailSentence", story: textStory);
+}
+
+Future<String> generateTestingPositiveDialogue(Crewmember speaker, Starship target, List<Crewmember> corruptedCrewmembers) async{
+  TextEngine textEngine = new TextEngine();
+  TextStory textStory = new TextStory();
+  await textEngine.loadList("CommsPanelDialogue");
+
+  //add all the corrupted crewmembers
+  String allNamesString = "";
+  for(int i = 0; i < corruptedCrewmembers.length; i++) {
+    allNamesString += await corruptedCrewmembers[i].getName();
+
+    if(i < corruptedCrewmembers.length - 1) {
+      allNamesString += ", ";
+    }
+    if(i == corruptedCrewmembers.length - 2) {
+      allNamesString += "and ";
+    }
+  }
+  Word corruptedNames = new Word("${allNamesString}");
+  textEngine.sourceWordLists["corruptedNames"].add(corruptedNames);
+
+  //todo incorporate flavor text selection based on job/ship capabilities/etc
+  return textEngine.phrase("getTestPassSentence", story: textStory);
 }
 
 ButtonElement makeDialogueOptionButton(String text) {
