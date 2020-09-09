@@ -142,10 +142,23 @@ class Crewmember {
     //ret.appendText(stats.toString());
     ret.appendText(await getJob()); //todo DONT REGEN EVERY TIME
 
-    for(int i = 0; i < stats.length; i++) {
+    //proposal 1
+    /*for(int i = 0; i < stats.length; i++) {
       ret.append(new BRElement());
       ret.appendText("${stats[i].name}: ${stats[i].value}");
-    }
+    }*/
+    //proposal 2
+    ret.append(new BRElement());
+    DivElement skillBar = new DivElement();
+    skillBar.style.backgroundColor = "#cce6ff";
+    skillBar.style.color = "#69b3ff";
+    skillBar.style.width = "${100 * stats[jobType].value/CrewStat.MAX_STAT}%";
+    skillBar.style.textAlign = "left";
+    skillBar.style.overflow = "visible";
+    skillBar.style.marginLeft = "10px";
+    skillBar.style.marginRight = "10px";
+    skillBar.appendText("Skill");
+    ret.append(skillBar);
 
     return ret;
   }
