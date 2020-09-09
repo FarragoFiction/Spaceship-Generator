@@ -9,6 +9,7 @@ import 'code/Starmap.dart';
 import 'code/Room.dart';
 import 'code/Dashboard.dart';
 import 'code/Crew.dart';
+import 'code/Quest.dart';
 
 import 'code/displays/Display.dart';
 import 'code/gameDashboard.dart';
@@ -100,6 +101,10 @@ void main() async {
     //print("my dashboard data string is\n"
     //  "${Dashboard.encodeCompleteDatastring(dashboard.segments)}");
     makeCrew();
+
+    //todo this is debug
+    Quest debugQuest = Quest.getDebugQuest();
+    debugQuest.attemptQuest(await starship.getCrew());
   }
 
 

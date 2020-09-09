@@ -54,7 +54,7 @@ class CrewStat {
     } else {
       print("value of $value has rolled $rolledValue and tried to be EXPERIMENTAL");
     }
-
+    return rolledValue;
   }
 
   static int getRollFromValue(int value) {
